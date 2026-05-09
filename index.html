@@ -9,98 +9,50 @@
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
     
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    
-    body {
-      background: #f4f7f6; color: #333; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;
-    }
+    body { background: #f4f7f6; color: #333; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-    /* --- NAVIGASI --- */
-    .navbar {
-      display: flex; justify-content: space-between; gap: 10px; 
-      padding: 10px; margin: 15px auto 25px auto; 
-      width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; 
-      background: rgba(255, 255, 255, 0.95); border: 1px solid #cbd5e0;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.05); backdrop-filter: blur(10px);
-    }
-    
-    .nav-btn {
-      flex: 1; padding: 14px 10px; border: none; border-radius: 40px; 
-      font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; 
-      transition: 0.2s; color: #4a5568; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    
-    .nav-erm.active { background: #2b6cb0; color: #fff; }
-    .nav-pendapatan.active { background: #2f855a; color: #fff; }
+    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 10px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.95); border: 1px solid #cbd5e0; box-shadow: 0 10px 25px rgba(0,0,0,0.05); backdrop-filter: blur(10px); }
+    .nav-btn { flex: 1; padding: 14px 10px; border: none; border-radius: 40px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.2s; color: #4a5568; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .nav-erm.active { background: #2b6cb0; color: #fff; } .nav-pendapatan.active { background: #2f855a; color: #fff; }
 
     .container { padding: 0 20px 40px 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
     .page { display: none; } .page.active { display: block; }
 
-    /* --- BANNER --- */
-    .welcome-banner {
-      padding: 20px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; 
-      background: #fff; border-radius: 20px; border: 1px solid #e2e8f0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .welcome-banner h1 { color: #2d3748; font-size: 20px; font-weight: 800; }
-    .welcome-banner p { color: #718096; font-size: 13px; margin: 0; }
+    .welcome-banner { padding: 20px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: #fff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .welcome-banner h1 { color: #2d3748; font-size: 20px; font-weight: 800; } .welcome-banner p { color: #718096; font-size: 13px; margin: 0; }
 
-    /* --- ACTION BAR --- */
     .action-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
-    .search-box {
-      flex: 1; padding: 12px 20px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 12px; outline: none; 
-      background: #fff; min-width: 250px; max-width: 600px; transition: 0.2s;
-    }
+    .search-box { flex: 1; padding: 12px 20px; font-size: 14px; border: 1px solid #e2e8f0; border-radius: 12px; outline: none; background: #fff; min-width: 250px; max-width: 600px; transition: 0.2s; }
     .search-box:focus { border-color: #3182ce; box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1); }
-    
-    .btn-super {
-      background: #2d3748; color: white; border: none; border-radius: 12px; padding: 0 25px; height: 48px; font-weight: 600; cursor: pointer; 
-      display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s;
-    }
+    .btn-super { background: #2d3748; color: white; border: none; border-radius: 12px; padding: 0 25px; height: 48px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
 
-    /* --- LIST PASIEN GRID --- */
     #patientList { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
-    .patient-card { padding: 18px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; transition: 0.2s; }
+    .patient-card { padding: 18px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between;}
     .patient-card:hover { border-color: #cbd5e0; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .patient-info h3 { font-size: 16px; color: #1a202c; font-weight: 700; margin-bottom: 4px; }
-    .patient-info p { font-size: 12px; color: #718096; line-height: 1.4; }
+    .patient-info h3 { font-size: 16px; color: #1a202c; font-weight: 700; margin-bottom: 4px; } .patient-info p { font-size: 12px; color: #718096; line-height: 1.4; }
     
     .btn-group { display: flex; gap: 8px; margin-top: 15px; }
     .btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-    .btn-mulai { background: #ebf8ff; color: #2b6cb0; }
-    .btn-riwayat { background: #fffaf0; color: #c05621; }
-    .btn-edit { background: #f7fafc; color: #4a5568; border: 1px solid #e2e8f0; flex: 0; padding: 10px 15px; }
+    .btn-mulai { background: #ebf8ff; color: #2b6cb0; } .btn-riwayat { background: #fffaf0; color: #c05621; } .btn-edit { background: #f7fafc; color: #4a5568; border: 1px solid #e2e8f0; flex: 0; padding: 10px 15px; }
 
-    /* --- DASHBOARD REKAP --- */
     .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; margin-bottom: 20px; }
     .stat-card { padding: 15px; text-align: center; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; cursor: pointer; transition: 0.2s; }
     .stat-card:hover { border-color: #ed8936; background: #fffaf0; transform: scale(1.02); }
-    .stat-card i { font-size: 20px; margin-bottom: 5px; color: #4a5568; }
-    .stat-card h4 { font-size: 10px; color: #718096; text-transform: uppercase; }
-    .stat-card h2 { font-size: 16px; color: #1a202c; font-weight: 800; }
+    .stat-card i { font-size: 20px; margin-bottom: 5px; color: #4a5568; } .stat-card h4 { font-size: 10px; color: #718096; text-transform: uppercase; } .stat-card h2 { font-size: 16px; color: #1a202c; font-weight: 800; }
 
-    /* --- KALENDER --- */
     .calendar-container { background: #fff; border-radius: 20px; padding: 20px; border: 1px solid #e2e8f0; }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
     .cal-day-name { font-weight: 700; color: #4a5568; font-size: 12px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
     .cal-day { padding: 8px 4px; min-height: 75px; border: 1px solid #f7fafc; border-radius: 8px; display: flex; flex-direction: column; align-items: center; position: relative; }
-    .cal-day.has-data { cursor: pointer; background: #f0fff4; border-color: #c6f6d5; }
-    .cal-day.today { border: 2px solid #3182ce; }
-    .text-red { color: #e53e3e !important; }
-    
-    .visit-badge { font-size: 8px; background: #3182ce; color: #fff; padding: 1px 4px; border-radius: 4px; margin-top: 2px; }
-    .income-tag { font-size: 9px; color: #2f855a; font-weight: 700; margin-top: 2px; }
-    .logo-rp-emas { position: absolute; top: 4px; right: 4px; color: #ffd700; font-size: 9px; font-weight: 900; }
+    .cal-day.has-data { cursor: pointer; background: #f0fff4; border-color: #c6f6d5; } .cal-day.today { border: 2px solid #3182ce; } .text-red { color: #e53e3e !important; }
+    .visit-badge { font-size: 8px; background: #3182ce; color: #fff; padding: 1px 4px; border-radius: 4px; margin-top: 2px; } .income-tag { font-size: 9px; color: #2f855a; font-weight: 700; margin-top: 2px; } .logo-rp-emas { position: absolute; top: 4px; right: 4px; color: #ffd700; font-size: 9px; font-weight: 900; }
 
-    /* --- MODAL --- */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal-content { width: 95%; max-width: 600px; padding: 25px; max-height: 90vh; overflow-y: auto; background: #fff; border-radius: 20px; }
     .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-    .form-group { margin-bottom: 15px; }
-    .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; }
-    .form-control { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; outline: none; font-size: 14px; }
+    .form-group { margin-bottom: 15px; } .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 13px; } .form-control { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; outline: none; font-size: 14px; }
     .radio-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 5px; }
     
-    /* --- KHUSUS MOBILE --- */
     @media screen and (max-width: 768px) {
       .navbar { position: fixed; bottom: 0; top: auto; width: 100%; border-radius: 20px 20px 0 0; margin: 0; left: 0; max-width: 100%; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); }
       .container { padding: 10px 10px 100px 10px; }
@@ -124,9 +76,9 @@
       </div>
       <div class="action-bar">
         <input type="text" id="searchInput" class="search-box" placeholder="Cari Nama / Alamat / RT RW..." onkeyup="filterPasien()">
-        <button class="btn-super" onclick="bukaModal('modalTambah')"><i class="fas fa-plus"></i> Pasien</button>
+        <button class="btn-super" onclick="bukaModal('modalTambah')"><i class="fas fa-plus"></i> Pasien Baru</button>
       </div>
-      <div id="loaderData" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>
+      <div id="loaderData" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i> Memuat Data...</div>
       <div id="patientList"></div>
     </div>
 
@@ -141,7 +93,7 @@
       <div class="calendar-container">
         <div class="calendar-header" style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
             <button class="btn" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left"></i></button>
-            <h3 id="judulBulanKalender">Mei 2026</h3>
+            <h3 id="judulBulanKalender">Memuat...</h3>
             <button class="btn" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div id="gridKalender" class="calendar-grid"></div>
@@ -149,6 +101,7 @@
     </div>
   </div>
 
+  <!-- MODAL TAMBAH PASIEN -->
   <div id="modalTambah" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">Tambah Pasien Baru</div>
@@ -170,15 +123,46 @@
         </div>
         <div style="display:flex; gap:10px; margin-top:10px;">
           <button type="button" class="btn btn-edit" style="flex:1" onclick="tutupModal('modalTambah')">Batal</button>
-          <button type="submit" class="btn btn-mulai" style="flex:2; background:#2d3748; color:white;">Simpan Pasien</button>
+          <button type="submit" class="btn btn-mulai" id="btnSavePasien" style="flex:2; background:#2d3748; color:white;">Simpan Pasien</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- MODAL EDIT PASIEN -->
+  <div id="modalEditPasien" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">Edit Biodata Pasien</div>
+      <form onsubmit="submitEditPasien(event)">
+        <input type="hidden" id="editIdPasien">
+        <div class="form-group">
+          <label>Sapaan</label>
+          <div class="radio-group">
+            <label><input type="radio" name="editTitlePasien" value="Tn. "> Tn.</label>
+            <label><input type="radio" name="editTitlePasien" value="Ny. "> Ny.</label>
+            <label><input type="radio" name="editTitlePasien" value="An. "> An.</label>
+            <label><input type="radio" name="editTitlePasien" value="Nn. "> Nn.</label>
+            <label><input type="radio" name="editTitlePasien" value=""> Kosong</label>
+          </div>
+        </div>
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="editNama" class="form-control" required></div>
+        <div class="form-group"><label>Alamat</label><textarea id="editAlamat" class="form-control" rows="2" required></textarea></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="form-group"><label>RT</label><input type="number" id="editRT" class="form-control" required></div>
+          <div class="form-group"><label>RW</label><input type="number" id="editRW" class="form-control" required></div>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button type="button" class="btn btn-edit" style="flex:1" onclick="tutupModal('modalEditPasien')">Batal</button>
+          <button type="submit" class="btn btn-mulai" id="btnUpdatePasien" style="flex:2; background:#2d3748; color:white;">Update Biodata</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL PEMERIKSAAN BARU -->
   <div id="modalForm" class="modal-overlay">
     <div class="modal-content">
-      <div class="modal-header">Pemeriksaan: <span id="namaPasienDisp"></span></div>
+      <div class="modal-header">Pemeriksaan: <span id="namaPasienDisp" style="color:#2b6cb0;"></span></div>
       <form onsubmit="submitPemeriksaan(event)">
         <input type="hidden" id="idPasien">
         <div class="form-group"><label>Anamnesa / Keluhan</label><textarea id="anamnesa" class="form-control" rows="2" required></textarea></div>
@@ -188,61 +172,105 @@
           <div class="form-group"><label>Nadi</label><input type="text" id="nadi" class="form-control"></div>
           <div class="form-group"><label>RR</label><input type="text" id="rr" class="form-control"></div>
         </div>
-        <div class="form-group">
+        <div class="form-group" style="background:#f7fafc; padding:15px; border-radius:12px; border:1px solid #e2e8f0;">
           <label>Resep Obat (6 Baris)</label>
-          <input type="text" id="obat1" class="form-control" style="margin-bottom:5px;" placeholder="Obat 1">
-          <input type="text" id="obat2" class="form-control" style="margin-bottom:5px;" placeholder="Obat 2">
-          <input type="text" id="obat3" class="form-control" style="margin-bottom:5px;" placeholder="Obat 3">
-          <input type="text" id="obat4" class="form-control" style="margin-bottom:5px;" placeholder="Obat 4">
-          <input type="text" id="obat5" class="form-control" style="margin-bottom:5px;" placeholder="Obat 5">
+          <input type="text" id="obat1" class="form-control" style="margin-bottom:8px;" placeholder="Obat 1">
+          <input type="text" id="obat2" class="form-control" style="margin-bottom:8px;" placeholder="Obat 2">
+          <input type="text" id="obat3" class="form-control" style="margin-bottom:8px;" placeholder="Obat 3">
+          <input type="text" id="obat4" class="form-control" style="margin-bottom:8px;" placeholder="Obat 4">
+          <input type="text" id="obat5" class="form-control" style="margin-bottom:8px;" placeholder="Obat 5">
           <input type="text" id="obat6" class="form-control" placeholder="Obat 6">
         </div>
-        <div class="form-group"><label>Total Biaya (Rp)</label><input type="text" id="biaya" class="form-control" required oninput="formatRibuan(this)"></div>
+        <div class="form-group"><label>Total Biaya (Rp)</label><input type="text" id="biaya" class="form-control" required oninput="formatRibuan(this)" style="font-size:18px; font-weight:bold; color:#b7791f; border-color:#ecc94b;"></div>
         <div style="display:flex; gap:10px;">
           <button type="button" class="btn btn-edit" style="flex:1" onclick="tutupModal('modalForm')">Batal</button>
-          <button type="submit" class="btn btn-mulai" style="flex:2; background:#48bb78; color:white;">Simpan RM</button>
+          <button type="submit" class="btn btn-mulai" id="btnSimpanRM" style="flex:2; background:#48bb78; color:white;">Simpan Rekam Medis</button>
         </div>
       </form>
     </div>
   </div>
 
+  <!-- MODAL EDIT REKAM MEDIS -->
+  <div id="modalEditRM" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">Edit Rekam Medis</div>
+      <form onsubmit="submitEditRM(event)">
+        <input type="hidden" id="editRMRowIndex">
+        <div class="form-group"><label>Anamnesa / Keluhan</label><textarea id="editAnamnesa" class="form-control" rows="2" required></textarea></div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
+          <div class="form-group"><label>Tensi (TD)</label><input type="text" id="editTd" class="form-control"></div>
+          <div class="form-group"><label>Suhu (°C)</label><input type="text" id="editSuhu" class="form-control"></div>
+          <div class="form-group"><label>Nadi</label><input type="text" id="editNadi" class="form-control"></div>
+          <div class="form-group"><label>RR</label><input type="text" id="editRr" class="form-control"></div>
+        </div>
+        <div class="form-group" style="background:#f7fafc; padding:15px; border-radius:12px; border:1px solid #e2e8f0;">
+          <label>Resep Obat (6 Baris)</label>
+          <input type="text" id="editObat1" class="form-control" style="margin-bottom:8px;">
+          <input type="text" id="editObat2" class="form-control" style="margin-bottom:8px;">
+          <input type="text" id="editObat3" class="form-control" style="margin-bottom:8px;">
+          <input type="text" id="editObat4" class="form-control" style="margin-bottom:8px;">
+          <input type="text" id="editObat5" class="form-control" style="margin-bottom:8px;">
+          <input type="text" id="editObat6" class="form-control">
+        </div>
+        <div class="form-group"><label>Total Biaya (Rp)</label><input type="text" id="editBiaya" class="form-control" required oninput="formatRibuan(this)" style="font-size:18px; font-weight:bold; color:#b7791f; border-color:#ecc94b;"></div>
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn btn-edit" style="flex:1" onclick="tutupModal('modalEditRM')">Batal</button>
+          <button type="submit" class="btn btn-mulai" id="btnUpdateRM" style="flex:2; background:#ecc94b; color:#744210;">Update RM</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL RIWAYAT PASIEN -->
   <div id="modalRiwayat" class="modal-overlay">
     <div class="modal-content">
-      <div class="modal-header">Riwayat: <span id="namaRiwayat"></span></div>
-      <div id="loaderRiwayat" style="text-align:center;"><i class="fas fa-spinner fa-spin"></i></div>
+      <div class="modal-header">Riwayat: <span id="namaRiwayat" style="color:#2b6cb0;"></span></div>
+      <div id="loaderRiwayat" style="text-align:center; display:none;"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>
       <div id="listRiwayat" style="max-height: 400px; overflow-y:auto;"></div>
-      <button class="btn btn-edit" style="width:100%; margin-top:15px;" onclick="tutupModal('modalRiwayat')">Tutup</button>
+      <button class="btn btn-edit" style="width:100%; margin-top:15px; padding:12px;" onclick="tutupModal('modalRiwayat')">Tutup</button>
+    </div>
+  </div>
+
+  <!-- MODAL DETAIL KUNJUNGAN PERIODE / KALENDER -->
+  <div id="modalDetail" class="modal-overlay">
+    <div class="modal-content" style="max-width: 450px;">
+      <div class="modal-header"><span id="judulDetail">Detail Kunjungan</span></div>
+      <div id="listPasienDetail" style="max-height: 350px; overflow-y:auto; margin-bottom: 15px;"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #eee; padding-top:15px;">
+        <h4 style="margin:0; color:#2d3748; font-size:14px;">Total:</h4>
+        <h3 id="totalDetailDisp" style="margin:0; color:#2f855a; font-size:18px;"></h3>
+      </div>
+      <button class="btn btn-edit" style="width:100%; margin-top:15px; padding:12px;" onclick="tutupModal('modalDetail')">Tutup</button>
     </div>
   </div>
 
   <script>
-    // MASUKKAN URL GOOGLE SCRIPT ANDA DI SINI
+    // ==============================================================================
+    // WAJIB DIGANTI: Masukkan URL Web App dari Google Apps Script (berakhiran /exec)
+    // ==============================================================================
     const API_URL = "https://script.google.com/macros/s/AKfycbxk_b4GyPjIJe0gkqs447c9OElra9XIzOZR4ysafTcP8W2zEo2mXF6x0mThVx_HUAD3rA/exec"; 
 
-    function runGoogleScript(action, data, onSuccess) {
+    function runGoogleScript(action, data, onSuccess, btnId) {
+      if(API_URL === "MASUKKAN_LINK_APPS_SCRIPT_ANDA_DISINI") { alert("URL API belum dimasukkan di kode HTML!"); return; }
+      
       fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: action, data: data })
       })
       .then(r => r.json())
-      .then(res => { if(res.status === 'success') onSuccess(res.data); })
-      .catch(e => console.error("Koneksi gagal", e));
+      .then(res => { if(res.status === 'success') { onSuccess(res.data); } else { alert("Gagal memproses data."); } })
+      .catch(e => { alert("Koneksi gagal terhubung ke Database."); });
     }
 
-    let semuaPasien = [];
-    let dataPendapatanGlobal = null;
-    let dataKalenderGlobal = {};
-    let tanggalNavigasi = new Date();
+    let semuaPasien = []; let dataPendapatanGlobal = null; let dataKalenderGlobal = {};
+    let tanggalNavigasi = new Date(); let riwayatPasienGlobal = []; let currentPasienId = ""; let currentPasienNama = "";
 
     window.onload = () => { refreshData(); loadPendapatanBackground(); };
 
     function formatRibuan(input) {
-      let value = input.value.replace(/[^,\d]/g, '').toString();
-      let split = value.split(',');
-      let sisa = split[0].length % 3;
-      let rupiah = split[0].substr(0, sisa);
-      let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+      let value = input.value.replace(/[^,\d]/g, '').toString(); let split = value.split(',');
+      let sisa = split[0].length % 3; let rupiah = split[0].substr(0, sisa); let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
       if (ribuan) { let separator = sisa ? '.' : ''; rupiah += separator + ribuan.join('.'); }
       input.value = rupiah;
     }
@@ -250,31 +278,29 @@
     function switchTab(tabId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
-      if(tabId === 'pendapatan') loadPendapatanManual();
+      document.getElementById(tabId).classList.add('active'); event.currentTarget.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function bukaModal(id) { document.getElementById(id).style.display = 'flex'; }
     function tutupModal(id) { document.getElementById(id).style.display = 'none'; }
 
     function refreshData() {
-      document.getElementById('loaderData').style.display = 'block';
+      document.getElementById('loaderData').style.display = 'block'; document.getElementById('patientList').innerHTML = '';
       runGoogleScript('getDataPasien', null, data => {
-        semuaPasien = data;
-        document.getElementById('loaderData').style.display = 'none';
-        renderPasien(semuaPasien);
+        semuaPasien = data; document.getElementById('loaderData').style.display = 'none'; renderPasien(semuaPasien);
       });
     }
 
     function renderPasien(data) {
-      const list = document.getElementById('patientList');
-      list.innerHTML = '';
+      const list = document.getElementById('patientList'); list.innerHTML = '';
+      if(data.length === 0) { list.innerHTML = '<p style="text-align:center; padding:20px;">Data tidak ditemukan.</p>'; return; }
       data.forEach(p => {
         list.innerHTML += `
           <div class="patient-card">
-            <div class="patient-info"><h3>${p.nama}</h3><p>${p.alamat}, RT ${p.rt}/RW ${p.rw}</p></div>
+            <div class="patient-info"><h3>${p.nama}</h3><p><i class="fas fa-map-marker-alt"></i> ${p.alamat}, RT ${p.rt}/RW ${p.rw}</p></div>
             <div class="btn-group">
+              <button class="btn btn-edit" onclick="bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}')"><i class="fas fa-edit"></i></button>
               <button class="btn btn-riwayat" onclick="bukaRiwayat('${p.id}', '${p.nama}')">Riwayat</button>
               <button class="btn btn-mulai" onclick="bukaPemeriksaan('${p.id}', '${p.nama}')">Periksa</button>
             </div>
@@ -284,131 +310,141 @@
 
     function filterPasien() {
       const val = document.getElementById('searchInput').value.toLowerCase();
-      const filtered = semuaPasien.filter(p => (p.nama + p.alamat).toLowerCase().includes(val));
+      const filtered = semuaPasien.filter(p => (p.nama + p.alamat + "rt " + p.rt + "rw " + p.rw).toLowerCase().includes(val));
       renderPasien(filtered);
     }
 
     function submitTambahPasien(e) {
-      e.preventDefault();
+      e.preventDefault(); const btn = document.getElementById('btnSavePasien'); btn.innerHTML = 'Menyimpan...'; btn.disabled = true;
       const title = document.querySelector('input[name="titlePasien"]:checked').value;
-      const data = { 
-        nama: title + document.getElementById('newNama').value,
-        alamat: document.getElementById('newAlamat').value,
-        rt: document.getElementById('newRT').value,
-        rw: document.getElementById('newRW').value
-      };
+      const data = { nama: title + document.getElementById('newNama').value, alamat: document.getElementById('newAlamat').value, rt: document.getElementById('newRT').value, rw: document.getElementById('newRW').value };
       runGoogleScript('simpanPasienBaru', data, res => {
-        tutupModal('modalTambah');
-        refreshData();
-        bukaPemeriksaan(res.id, res.nama);
+        tutupModal('modalTambah'); document.getElementById('formTambahPasien').reset();
+        btn.innerHTML = 'Simpan Pasien'; btn.disabled = false; refreshData(); bukaPemeriksaan(res.id, res.nama);
       });
     }
 
-    function bukaPemeriksaan(id, nama) {
-      document.getElementById('idPasien').value = id;
-      document.getElementById('namaPasienDisp').innerText = nama;
-      bukaModal('modalForm');
+    function bukaEditPasien(id, namaFull, alamat, rt, rw) {
+      document.getElementById('editIdPasien').value = id; let sapaanDitemukan = ""; let namaAsli = namaFull;
+      for (let s of ["Tn. ", "Ny. ", "An. ", "Nn. "]) { if (namaFull.startsWith(s)) { sapaanDitemukan = s; namaAsli = namaFull.substring(s.length); break; } }
+      const radios = document.getElementsByName('editTitlePasien'); for (let i = 0; i < radios.length; i++) { if (radios[i].value === sapaanDitemukan) { radios[i].checked = true; break; } }
+      document.getElementById('editNama').value = namaAsli; document.getElementById('editAlamat').value = alamat; document.getElementById('editRT').value = rt; document.getElementById('editRW').value = rw;
+      bukaModal('modalEditPasien');
     }
+
+    function submitEditPasien(e) {
+      e.preventDefault(); const btn = document.getElementById('btnUpdatePasien'); btn.innerHTML = 'Update...'; btn.disabled = true;
+      const title = document.querySelector('input[name="editTitlePasien"]:checked').value;
+      const data = { id: document.getElementById('editIdPasien').value, nama: title + document.getElementById('editNama').value, alamat: document.getElementById('editAlamat').value, rt: document.getElementById('editRT').value, rw: document.getElementById('editRW').value };
+      runGoogleScript('updateBiodataPasien', data, () => { tutupModal('modalEditPasien'); btn.innerHTML = 'Update Biodata'; btn.disabled = false; refreshData(); });
+    }
+
+    function bukaPemeriksaan(id, nama) { document.getElementById('idPasien').value = id; document.getElementById('namaPasienDisp').innerText = nama; document.getElementById('formPemeriksaan').reset(); bukaModal('modalForm'); }
 
     function submitPemeriksaan(e) {
-      e.preventDefault();
+      e.preventDefault(); const btn = document.getElementById('btnSimpanRM'); btn.innerHTML = 'Memproses...'; btn.disabled = true;
       const d = {
-        idPasien: document.getElementById('idPasien').value,
-        namaPasien: document.getElementById('namaPasienDisp').innerText,
-        anamnesa: document.getElementById('anamnesa').value,
-        td: document.getElementById('td').value, suhu: document.getElementById('suhu').value,
-        nadi: document.getElementById('nadi').value, rr: document.getElementById('rr').value,
-        obat1: document.getElementById('obat1').value, obat2: document.getElementById('obat2').value,
-        obat3: document.getElementById('obat3').value, obat4: document.getElementById('obat4').value,
-        obat5: document.getElementById('obat5').value, obat6: document.getElementById('obat6').value,
+        idPasien: document.getElementById('idPasien').value, namaPasien: document.getElementById('namaPasienDisp').innerText, anamnesa: document.getElementById('anamnesa').value,
+        td: document.getElementById('td').value, suhu: document.getElementById('suhu').value, nadi: document.getElementById('nadi').value, rr: document.getElementById('rr').value,
+        obat1: document.getElementById('obat1').value, obat2: document.getElementById('obat2').value, obat3: document.getElementById('obat3').value, obat4: document.getElementById('obat4').value, obat5: document.getElementById('obat5').value, obat6: document.getElementById('obat6').value,
         biaya: document.getElementById('biaya').value.replace(/\./g, '')
       };
-      runGoogleScript('simpanPemeriksaan', d, () => {
-        tutupModal('modalForm');
-        loadPendapatanBackground();
-      });
+      runGoogleScript('simpanPemeriksaan', d, () => { tutupModal('modalForm'); btn.innerHTML = 'Simpan Rekam Medis'; btn.disabled = false; loadPendapatanBackground(); });
     }
 
     function bukaRiwayat(id, nama) {
-      document.getElementById('namaRiwayat').innerText = nama;
-      document.getElementById('listRiwayat').innerHTML = '';
-      bukaModal('modalRiwayat');
+      currentPasienId = id; currentPasienNama = nama; document.getElementById('namaRiwayat').innerText = nama; document.getElementById('listRiwayat').innerHTML = '';
+      bukaModal('modalRiwayat'); document.getElementById('loaderRiwayat').style.display = 'block';
       runGoogleScript('getRiwayatPasien', {idPasien: id}, data => {
-        document.getElementById('loaderRiwayat').style.display = 'none';
-        data.forEach(r => {
+        riwayatPasienGlobal = data; document.getElementById('loaderRiwayat').style.display = 'none';
+        if(data.length === 0) { document.getElementById('listRiwayat').innerHTML = '<p style="text-align:center;">Belum ada riwayat.</p>'; return; }
+        data.forEach((r, idx) => {
           document.getElementById('listRiwayat').innerHTML += `
-            <div class="riwayat-item" style="border-bottom:1px solid #eee; padding:10px 0;">
-              <small style="color:#2b6cb0; font-weight:bold;">${r.tanggal}</small>
-              <p style="font-size:13px;"><b>Keluhan:</b> ${r.anamnesa}</p>
-              <p style="font-size:12px; color:#666;"><b>Obat:</b> ${r.obat}</p>
+            <div style="background:#f7fafc; padding:15px; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-size:12px; font-weight:700; color:#2b6cb0;">${r.tanggal}</span><button class="btn btn-edit" onclick="bukaEditRM(${idx})">Edit</button></div>
+              <p style="font-size:13px; margin-bottom:5px;"><b>Keluhan:</b> ${r.anamnesa}</p>
+              <div style="font-size:12px; color:#4a5568; display:grid; grid-template-columns:1fr 1fr; margin-bottom:5px;"><span>TD: ${r.td||'-'}</span><span>Suhu: ${r.suhu?r.suhu+'°C':'-'}</span><span>Nadi: ${r.nadi||'-'}</span><span>RR: ${r.rr||'-'}</span></div>
+              <p style="font-size:12px; border-top:1px dashed #ccc; padding-top:5px; margin:0;"><b>Obat:</b> ${r.obat||'-'}</p>
             </div>`;
         });
       });
     }
 
-    function loadPendapatanBackground() {
-      runGoogleScript('getDataPendapatanFull', null, data => {
-        dataPendapatanGlobal = data;
-        updateUIPendapatan(data);
-      });
+    function bukaEditRM(index) {
+      const d = riwayatPasienGlobal[index];
+      document.getElementById('editRMRowIndex').value = d.rowIndex; document.getElementById('editAnamnesa').value = d.anamnesa;
+      document.getElementById('editTd').value = d.td; document.getElementById('editSuhu').value = d.suhu; document.getElementById('editNadi').value = d.nadi; document.getElementById('editRr').value = d.rr;
+      document.getElementById('editObat1').value = d.obat1||""; document.getElementById('editObat2').value = d.obat2||""; document.getElementById('editObat3').value = d.obat3||""; document.getElementById('editObat4').value = d.obat4||""; document.getElementById('editObat5').value = d.obat5||""; document.getElementById('editObat6').value = d.obat6||"";
+      document.getElementById('editBiaya').value = d.biaya; formatRibuan(document.getElementById('editBiaya'));
+      bukaModal('modalEditRM');
     }
 
-    function loadPendapatanManual() {
-      document.getElementById('loaderPendapatan').style.display = 'block';
-      runGoogleScript('getDataPendapatanFull', null, data => {
-        document.getElementById('loaderPendapatan').style.display = 'none';
-        document.getElementById('kontenPendapatan').style.display = 'block';
-        updateUIPendapatan(data);
-      });
+    function submitEditRM(e) {
+      e.preventDefault(); const btn = document.getElementById('btnUpdateRM'); btn.innerHTML = 'Update...'; btn.disabled = true;
+      const d = {
+        rowIndex: document.getElementById('editRMRowIndex').value, anamnesa: document.getElementById('editAnamnesa').value,
+        td: document.getElementById('editTd').value, suhu: document.getElementById('editSuhu').value, nadi: document.getElementById('editNadi').value, rr: document.getElementById('editRr').value,
+        obat1: document.getElementById('editObat1').value, obat2: document.getElementById('editObat2').value, obat3: document.getElementById('editObat3').value, obat4: document.getElementById('editObat4').value, obat5: document.getElementById('editObat5').value, obat6: document.getElementById('editObat6').value, 
+        biaya: document.getElementById('editBiaya').value.replace(/\./g, '')
+      };
+      runGoogleScript('updateRekamMedis', d, () => { tutupModal('modalEditRM'); btn.innerHTML = 'Update RM'; btn.disabled = false; loadPendapatanBackground(); bukaRiwayat(currentPasienId, currentPasienNama); });
     }
+
+    function loadPendapatanBackground() { runGoogleScript('getDataPendapatanFull', null, data => { dataPendapatanGlobal = data; updateUIPendapatan(data); }); }
+    function loadPendapatanManual() { document.getElementById('pdptHari').innerText = "Memuat..."; runGoogleScript('getDataPendapatanFull', null, data => { dataPendapatanGlobal = data; updateUIPendapatan(data); }); }
 
     function updateUIPendapatan(data) {
       const fmt = n => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
-      document.getElementById('pdptHari').innerText = fmt(data.summary.hari);
-      document.getElementById('pdptMinggu').innerText = fmt(data.summary.minggu);
-      document.getElementById('pdptBulan').innerText = fmt(data.summary.bulan);
-      document.getElementById('pdptTahun').innerText = fmt(data.summary.tahun);
-      dataKalenderGlobal = data.kalender;
-      renderKalender();
+      document.getElementById('pdptHari').innerText = fmt(data.summary.hari); document.getElementById('pdptMinggu').innerText = fmt(data.summary.minggu); document.getElementById('pdptBulan').innerText = fmt(data.summary.bulan); document.getElementById('pdptTahun').innerText = fmt(data.summary.tahun);
+      dataKalenderGlobal = data.kalender; renderKalender(); 
     }
 
-    function ubahBulanKalender(arah) {
-        tanggalNavigasi.setMonth(tanggalNavigasi.getMonth() + arah);
-        renderKalender();
+    function bukaDetailPeriode(periode) {
+      if(!dataPendapatanGlobal) return;
+      const dataList = dataPendapatanGlobal.lists[periode]; const totalBiaya = dataPendapatanGlobal.summary[periode];
+      document.getElementById('judulDetail').innerText = "Periode: " + (periode==='hari'?"Hari Ini":periode==='minggu'?"Minggu Ini":periode==='bulan'?"Bulan Ini":"Tahun Ini");
+      renderDetailList(dataList, totalBiaya);
     }
+
+    function bukaDetailKunjungan(dateKey) {
+      const data = dataKalenderGlobal[dateKey]; if (!data) return;
+      document.getElementById('judulDetail').innerText = new Date(dateKey).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      renderDetailList(data.pasien, data.totalBiaya);
+    }
+
+    function renderDetailList(dataList, totalBiaya) {
+      let html = '';
+      if(dataList.length === 0) { html = '<p style="text-align:center; font-size:13px; color:#718096;">Tidak ada kunjungan.</p>'; } 
+      else {
+        dataList.forEach((p, idx) => {
+          html += `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #eee;">
+              <div><span style="font-size:10px; background:#e2e8f0; padding:2px 6px; border-radius:4px; margin-right:5px;">${idx + 1}</span><span style="font-size:13px; font-weight:600;">${p.nama}</span><br><span style="font-size:10px; color:#718096; margin-left:25px;">${p.tglString}</span></div>
+              <span style="font-size:12px; color:#2f855a; font-weight:700;">Rp ${new Intl.NumberFormat('id-ID').format(p.biaya)}</span>
+            </div>`;
+        });
+      }
+      document.getElementById('listPasienDetail').innerHTML = html;
+      document.getElementById('totalDetailDisp').innerText = "Rp " + new Intl.NumberFormat('id-ID').format(totalBiaya);
+      bukaModal('modalDetail');
+    }
+
+    function ubahBulanKalender(arah) { tanggalNavigasi.setMonth(tanggalNavigasi.getMonth() + arah); renderKalender(); }
 
     function renderKalender() {
-      const year = tanggalNavigasi.getFullYear();
-      const month = tanggalNavigasi.getMonth();
-      const now = new Date();
+      const year = tanggalNavigasi.getFullYear(); const month = tanggalNavigasi.getMonth(); const now = new Date();
       document.getElementById('judulBulanKalender').innerText = `${["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][month]} ${year}`;
-      
-      const hariPertama = new Date(year, month, 1).getDay();
-      const jumlahHari = new Date(year, month + 1, 0).getDate();
-      const grid = document.getElementById('gridKalender');
-      grid.innerHTML = '';
-
-      ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => {
-        grid.innerHTML += `<div class="cal-day-name ${i===0?'text-red':''}">${d}</div>`;
-      });
-
+      const hariPertama = new Date(year, month, 1).getDay(); const jumlahHari = new Date(year, month + 1, 0).getDate();
+      const grid = document.getElementById('gridKalender'); grid.innerHTML = '';
+      ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => { grid.innerHTML += `<div class="cal-day-name ${i===0?'text-red':''}">${d}</div>`; });
       for (let i = 0; i < hariPertama; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
-
       for (let i = 1; i <= jumlahHari; i++) {
         let dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
         let isToday = (i === now.getDate() && month === now.getMonth() && year === now.getFullYear()) ? 'today' : '';
         let dataHarian = dataKalenderGlobal[dateKey];
-        
-        let htmlHarian = `<div class="cal-day ${isToday} ${dataHarian?'has-data':''}">
-          <div class="date-num">${i}</div>`;
-        
-        if(dataHarian) {
-          htmlHarian += `<div class="visit-badge">${dataHarian.jumlahKunjungan} Ps</div>`;
-          htmlHarian += `<div class="income-tag">Rp ${new Intl.NumberFormat('id-ID').format(dataHarian.totalBiaya)}</div>`;
-          htmlHarian += `<div class="logo-rp-emas">Rp</div>`;
-        }
-        htmlHarian += `</div>`;
-        grid.innerHTML += htmlHarian;
+        let htmlHarian = `<div class="cal-day ${isToday} ${dataHarian?'has-data':''}" ${dataHarian?`onclick="bukaDetailKunjungan('${dateKey}')"`:''}><div class="date-num">${i}</div>`;
+        if(dataHarian) { htmlHarian += `<div class="visit-badge">${dataHarian.jumlahKunjungan} Ps</div><div class="income-tag">Rp ${new Intl.NumberFormat('id-ID').format(dataHarian.totalBiaya)}</div><div class="logo-rp-emas">Rp</div>`; }
+        htmlHarian += `</div>`; grid.innerHTML += htmlHarian;
       }
     }
   </script>
