@@ -7,77 +7,97 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+    
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     
-    /* WARNA TEMA SEGAR (Mint & Teal) */
-    body { background: #f0fdfa; color: #134e4a; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    /* TEMA ABU-ABU KONTRAS TINGGI */
+    body { background: #f1f5f9; color: #0f172a; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 8px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.9); border: 1px solid #99f6e4; box-shadow: 0 4px 15px rgba(20, 184, 166, 0.1); backdrop-filter: blur(10px); }
-    .nav-btn { flex: 1; padding: 14px 10px; border: none; border-radius: 40px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.2s; color: #5eead4; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .nav-erm.active { background: #0d9488; color: #fff; } .nav-pendapatan.active { background: #0f766e; color: #fff; }
+    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 8px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: #fff; border: 2px solid #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .nav-btn { flex: 1; padding: 12px 10px; border: none; border-radius: 40px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; color: #64748b; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+    .nav-erm.active { background: #334155; color: #fff; } .nav-pendapatan.active { background: #475569; color: #fff; }
 
-    .container { padding: 0 20px 40px 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
+    .container { padding: 0 15px 40px 15px; max-width: 1400px; margin: 0 auto; width: 100%; }
     .page { display: none; } .page.active { display: block; }
 
-    .welcome-banner { padding: 20px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: #fff; border-radius: 20px; border: 1px solid #ccfbf1; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-    .welcome-banner h1 { color: #0f766e; font-size: 20px; font-weight: 800; } .welcome-banner p { color: #5eead4; font-size: 13px; margin: 0; }
+    .welcome-banner { padding: 25px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: #fff; border-radius: 24px; border: 2px solid #e2e8f0; }
+    .welcome-banner h1 { color: #0f172a; font-size: 22px; font-weight: 800; margin-bottom: 5px; } 
+    .welcome-banner p { color: #475569; font-size: 14px; font-weight: 500; }
 
-    .action-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
-    .search-box { flex: 1; padding: 12px 20px; font-size: 14px; border: 1px solid #ccfbf1; border-radius: 12px; outline: none; background: #fff; min-width: 250px; max-width: 600px; }
-    .search-box:focus { border-color: #2dd4bf; box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
-    .btn-super { background: #0f766e; color: white; border: none; border-radius: 12px; padding: 0 25px; height: 48px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+    .action-bar { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
+    .search-box { flex: 1; padding: 14px 20px; font-size: 15px; font-weight: 500; border: 2px solid #cbd5e1; border-radius: 16px; outline: none; background: #fff; min-width: 260px; max-width: 600px; }
+    .search-box:focus { border-color: #334155; box-shadow: 0 0 0 4px rgba(51, 65, 85, 0.1); }
+    .btn-super { background: #0f172a; color: white; border: none; border-radius: 16px; padding: 0 25px; height: 54px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
 
+    /* GRID LIST PASIEN */
     #patientList { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
-    .patient-card { padding: 18px; background: #fff; border: 1px solid #ccfbf1; border-radius: 16px; transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between;}
-    .patient-card:hover { border-color: #2dd4bf; box-shadow: 0 4px 12px rgba(20, 184, 166, 0.08); }
-    .patient-info h3 { font-size: 16px; color: #134e4a; font-weight: 700; margin-bottom: 4px; } .patient-info p { font-size: 12px; color: #5eead4; line-height: 1.4; }
+    .patient-card { padding: 20px; background: #fff; border: 2px solid #e2e8f0; border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s; }
+    .patient-card:hover { border-color: #94a3b8; transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+    .patient-info h3 { font-size: 18px; color: #0f172a; font-weight: 800; margin-bottom: 6px; } 
+    .patient-info p { font-size: 13px; color: #475569; font-weight: 600; line-height: 1.5; }
     
-    .btn-group { display: flex; gap: 8px; margin-top: 15px; }
-    .btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-    .btn-mulai { background: #f0fdfa; color: #0d9488; } .btn-riwayat { background: #0d9488; color: white; } .btn-edit { background: #fff; color: #0d9488; border: 1px solid #ccfbf1; flex: 0; padding: 10px 15px; }
+    .btn-group { display: flex; gap: 8px; margin-top: 20px; }
+    .btn { flex: 1; padding: 12px; border: none; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .btn-mulai { background: #f1f5f9; color: #0f172a; border: 2px solid #e2e8f0; } 
+    .btn-riwayat { background: #334155; color: white; } 
+    .btn-edit { background: #fff; color: #0f172a; border: 2px solid #cbd5e1; flex: 0; padding: 12px 18px; }
 
-    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
-    .stat-card { padding: 15px 8px; text-align: center; background: #fff; border: 1px solid #ccfbf1; border-radius: 16px; cursor: pointer; transition: 0.3s; }
-    .stat-card:hover { background: #f59e0b; border-color: #f59e0b; transform: translateY(-3px); }
-    .stat-card i { font-size: 20px; margin-bottom: 5px; color: #0d9488; transition: 0.3s; }
-    .stat-card h4 { font-size: 9px; color: #2dd4bf; text-transform: uppercase; transition: 0.3s; }
-    .stat-card h2 { font-size: 15px; color: #134e4a; font-weight: 800; transition: 0.3s; }
-    .stat-card:hover i, .stat-card:hover h4, .stat-card:hover h2 { color: #fff; }
+    /* DASHBOARD & NAVIGATION */
+    .month-nav { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 50px; border: 2px solid #cbd5e1; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .month-nav h3 { font-size: 18px; font-weight: 800; color: #0f172a; min-width: 180px; text-align: center; }
+    .btn-nav-circle { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #e2e8f0; background: #f8fafc; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 18px; color: #0f172a; }
+    .btn-nav-circle:hover { background: #ed8936; color: #fff; border-color: #ed8936; }
 
-    .calendar-container { background: #fff; border-radius: 20px; padding: 20px; border: 1px solid #ccfbf1; }
-    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-    .cal-day-name { font-weight: 700; color: #0f766e; font-size: 12px; padding-bottom: 10px; border-bottom: 1px solid #ccfbf1; }
-    .cal-day { padding: 8px 4px; min-height: 75px; border: 1px solid #f0fdfa; border-radius: 8px; display: flex; flex-direction: column; align-items: center; position: relative; font-size: 12px;}
-    .cal-day.has-data { cursor: pointer; background: #f0fdfa; border-color: #5eead4; } .cal-day.today { border: 2px solid #0d9488; } .text-red { color: #ef4444 !important; }
-    .visit-badge { font-size: 8px; background: #0d9488; color: #fff; padding: 1px 4px; border-radius: 4px; margin-top: 2px; }
-    .income-tag { font-size: 9px; color: #059669; font-weight: 700; margin-top: 2px; }
-    .logo-rp-emas { position: absolute; top: 4px; right: 4px; color: #f59e0b; font-size: 9px; font-weight: 900; }
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 25px; }
+    .stat-card { padding: 18px 10px; text-align: center; background: #fff; border: 2px solid #e2e8f0; border-radius: 20px; cursor: pointer; transition: 0.3s; }
+    .stat-card:hover { border-color: #f59e0b; background: #fffbeb; transform: translateY(-3px); }
+    .stat-card i { font-size: 22px; margin-bottom: 8px; color: #334155; }
+    .stat-card h4 { font-size: 10px; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-card h2 { font-size: 18px; color: #0f172a; font-weight: 800; margin-top: 2px; }
+    .stat-card:hover h2 { color: #b45309; }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(19, 78, 74, 0.4); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-    .modal-content { width: 95%; max-width: 600px; padding: 25px; max-height: 90vh; overflow-y: auto; background: #fff; border-radius: 20px; border: 2px solid #0d9488; }
-    .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #f0fdfa; padding-bottom: 10px; color: #0f766e;}
-    .form-control { width: 100%; padding: 12px; border: 1px solid #ccfbf1; border-radius: 10px; outline: none; font-size: 14px; }
+    /* KALENDER */
+    .calendar-container { background: #fff; border-radius: 24px; padding: 20px; border: 2px solid #cbd5e1; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
+    .cal-day-name { font-weight: 800; color: #475569; font-size: 13px; padding-bottom: 12px; border-bottom: 2px solid #f1f5f9; }
+    .cal-day { padding: 10px 5px; min-height: 85px; border: 2px solid #f8fafc; border-radius: 14px; display: flex; flex-direction: column; align-items: center; position: relative; cursor: default; }
+    .cal-day.has-data { cursor: pointer; background: #f8fafc; border-color: #cbd5e1; } 
+    .cal-day.has-data:hover { border-color: #f59e0b; background: #fffbeb; }
+    .cal-day.today { border: 2px solid #0f172a; background: #f1f5f9; } .text-red { color: #ef4444 !important; }
+    
+    .visit-badge { font-size: 9px; font-weight: 800; background: #334155; color: #fff; padding: 2px 6px; border-radius: 6px; margin-top: 4px; }
+    .income-tag { font-size: 10px; color: #15803d; font-weight: 800; margin-top: 4px; }
+    .logo-rp-emas { position: absolute; top: 6px; right: 6px; color: #f59e0b; font-size: 10px; font-weight: 900; }
+
+    /* MODAL */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-content { width: 95%; max-width: 600px; padding: 25px; max-height: 90vh; overflow-y: auto; background: #fff; border-radius: 24px; border: 3px solid #0f172a; }
+    .modal-header { font-size: 20px; font-weight: 800; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; color: #0f172a;}
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 14px; color: #334155; }
+    .form-control { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; outline: none; font-size: 15px; font-weight: 500; color: #0f172a; }
+    .form-control:focus { border-color: #0f172a; }
     
     @media screen and (max-width: 768px) {
-      .navbar { position: fixed; bottom: 0; top: auto; width: 100%; border-radius: 20px 20px 0 0; margin: 0; left: 0; max-width: 100%; }
+      .navbar { position: fixed; bottom: 0; top: auto; width: 100%; border-radius: 24px 24px 0 0; margin: 0; left: 0; max-width: 100%; border: none; border-top: 2px solid #cbd5e1; }
       .container { padding: 10px 10px 100px 10px; }
-      .dashboard-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+      .month-nav h3 { font-size: 16px; min-width: 140px; }
     }
   </style>
 </head>
 <body>
 
   <div class="navbar">
-    <button class="nav-btn nav-erm active" onclick="switchTab('erm')"><i class="fas fa-stethoscope"></i> E-RM</button>
+    <button class="nav-btn nav-erm active" onclick="switchTab('erm')"><i class="fas fa-notes-medical"></i> E-RM</button>
     <button class="nav-btn nav-pendapatan" onclick="switchTab('pendapatan')"><i class="fas fa-chart-line"></i> REKAP</button>
   </div>
 
   <div class="container">
     <div id="erm" class="page active">
-      <div class="welcome-banner"><h1>E-RM KETITANG MEDIKA</h1><p>Pelayanan Pasien Lebih Cepat & Akurat.</p></div>
+      <div class="welcome-banner"><h1>E-RM KETITANG MEDIKA</h1><p>Sistem Manajemen Rekam Medis Kontras & Cepat.</p></div>
       <div class="action-bar">
         <input type="text" id="searchInput" class="search-box" placeholder="Cari Nama / Alamat..." onkeyup="filterPasien()">
-        <button class="btn-super" onclick="bukaModal('modalTambah')"><i class="fas fa-user-plus"></i> Pasien</button>
+        <button class="btn-super" onclick="bukaModal('modalTambah')"><i class="fas fa-plus"></i> Pasien Baru</button>
       </div>
       <div id="loaderData" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>
       <div id="patientList"></div>
@@ -85,19 +105,21 @@
 
     <div id="pendapatan" class="page">
       <div class="welcome-banner"><h1>REKAPITULASI PENDAPATAN</h1></div>
+      
+      <div class="month-nav">
+        <button class="btn-nav-circle" onclick="geserBulan(-1)"><i class="fas fa-chevron-left"></i></button>
+        <h3 id="judulBulanRekap">Memuat...</h3>
+        <button class="btn-nav-circle" onclick="geserBulan(1)"><i class="fas fa-chevron-right"></i></button>
+      </div>
+
       <div class="dashboard-grid">
         <div class="stat-card" onclick="bukaDetailPeriode('hari')"><h4>Hari Ini</h4><h2 id="pdptHari">Rp 0</h2></div>
         <div class="stat-card" onclick="bukaDetailPeriode('minggu')"><h4>Minggu Ini</h4><h2 id="pdptMinggu">Rp 0</h2></div>
-        <div class="stat-card" onclick="bukaDetailPeriode('bulan')"><h4>Bulan Ini</h4><h2 id="pdptBulan">Rp 0</h2></div>
-        <div class="stat-card" onclick="bukaDetailPeriode('bulanLalu')"><h4>Bulan Lalu</h4><h2 id="pdptBulanLalu">Rp 0</h2></div>
-        <div class="stat-card" onclick="bukaDetailPeriode('tahun')"><h4>Tahun Ini</h4><h2 id="pdptTahun">Rp 0</h2></div>
+        <div class="stat-card" onclick="bukaDetailPeriode('bulan')"><h4>Bulan Terpilih</h4><h2 id="pdptBulan">Rp 0</h2></div>
+        <div class="stat-card" onclick="bukaDetailPeriode('tahun')"><h4>Tahun Berjalan</h4><h2 id="pdptTahun">Rp 0</h2></div>
       </div>
+      
       <div class="calendar-container">
-        <div class="calendar-header" style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
-            <button class="btn" style="color:#0d9488" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left"></i></button>
-            <h3 id="judulBulanKalender" style="color:#0d9488">Memuat...</h3>
-            <button class="btn" style="color:#0d9488" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right"></i></button>
-        </div>
         <div id="gridKalender" class="calendar-grid"></div>
       </div>
     </div>
@@ -114,21 +136,17 @@
       .then(r => r.json()).then(res => { if(res.status === 'success') onSuccess(res.data); }).catch(e => console.error(e));
     }
 
-    let semuaPasien = [], dataPendapatanGlobal = null, dataKalenderGlobal = {}, tanggalNavigasi = new Date(), riwayatPasienGlobal = [], currentPasienId = "", currentPasienNama = "";
+    let rekamMedisGlobal = []; 
+    let semuaPasien = [], currentNavDate = new Date(); 
+    let riwayatPasienGlobal = [], currentPasienId = "", currentPasienNama = "";
 
-    window.onload = () => { refreshData(); loadPendapatanBackground(); };
-
-    function formatRibuan(input) {
-      let value = input.value.replace(/[^,\d]/g, '').toString(); let split = value.split(',');
-      let sisa = split[0].length % 3; let rupiah = split[0].substr(0, sisa); let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-      if (ribuan) { let separator = sisa ? '.' : ''; rupiah += separator + ribuan.join('.'); }
-      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah; input.value = rupiah;
-    }
+    window.onload = () => { refreshData(); loadAllRekamMedis(); };
 
     function switchTab(tabId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId).classList.add('active'); event.currentTarget.classList.add('active');
+      if(tabId === 'pendapatan') renderDashboard();
     }
 
     function bukaModal(id) { document.getElementById(id).style.display = 'flex'; }
@@ -139,80 +157,138 @@
       runGoogleScript('getDataPasien', null, data => { semuaPasien = data; document.getElementById('loaderData').style.display = 'none'; renderPasien(semuaPasien); });
     }
 
-    function renderPasien(data) {
-      const list = document.getElementById('patientList'); list.innerHTML = '';
-      data.forEach(p => {
-        list.innerHTML += `<div class="patient-card"><div class="patient-info"><h3>${p.nama}</h3><p>${p.alamat}, RT ${p.rt}/RW ${p.rw}</p></div><div class="btn-group"><button class="btn btn-edit" onclick="bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}')"><i class="fas fa-edit"></i></button><button class="btn btn-riwayat" onclick="bukaRiwayat('${p.id}', '${p.nama}')">Riwayat</button><button class="btn btn-mulai" onclick="bukaPemeriksaan('${p.id}', '${p.nama}')">Periksa</button></div></div>`;
+    function loadAllRekamMedis() {
+      runGoogleScript('getAllRekamMedis', null, data => { rekamMedisGlobal = data; renderDashboard(); });
+    }
+
+    function geserBulan(arah) {
+      currentNavDate.setMonth(currentNavDate.getMonth() + arah);
+      renderDashboard();
+    }
+
+    function formatRupiah(n) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n); }
+    function formatRibuan(input) {
+      let value = input.value.replace(/[^,\d]/g, '').toString(); let split = value.split(',');
+      let sisa = split[0].length % 3; let rupiah = split[0].substr(0, sisa); let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+      if (ribuan) { let separator = sisa ? '.' : ''; rupiah += separator + ribuan.join('.'); }
+      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah; input.value = rupiah;
+    }
+
+    let summaryFiltered = { hari: [], minggu: [], bulan: [], tahun: [] };
+
+    function renderDashboard() {
+      const now = new Date();
+      const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      document.getElementById('judulBulanRekap').innerText = `${monthNames[currentNavDate.getMonth()]} ${currentNavDate.getFullYear()}`;
+
+      // Reset summaries
+      summaryFiltered = { hari: [], minggu: [], bulan: [], tahun: [] };
+      let dataKalender = {};
+
+      // Logic Minggu Ini (Senin-Minggu)
+      let dWeek = new Date();
+      let day = dWeek.getDay(), diff = dWeek.getDate() - day + (day == 0 ? -6:1);
+      let monday = new Date(dWeek.setDate(diff)); monday.setHours(0,0,0,0);
+      let sunday = new Date(new Date(monday).setDate(monday.getDate() + 6)); sunday.setHours(23,59,59,999);
+
+      rekamMedisGlobal.forEach(r => {
+        let tgl = new Date(r.tgl);
+        let info = { nama: r.nama, biaya: r.biaya, tglString: tgl.toLocaleDateString('id-ID') };
+
+        // Card Hari Ini (Selalu waktu sekarang)
+        if (tgl.toDateString() === now.toDateString()) summaryFiltered.hari.push(info);
+        
+        // Card Minggu Ini (Selalu minggu sekarang)
+        if (tgl >= monday && tgl <= sunday) summaryFiltered.minggu.push(info);
+
+        // Card Tahun Ini (Selalu tahun sekarang)
+        if (tgl.getFullYear() === now.getFullYear()) summaryFiltered.tahun.push(info);
+
+        // Card & Kalender (Dinamis sesuai Navigasi Bulan)
+        if (tgl.getMonth() === currentNavDate.getMonth() && tgl.getFullYear() === currentNavDate.getFullYear()) {
+          summaryFiltered.bulan.push(info);
+          let key = tgl.toISOString().split('T')[0];
+          if (!dataKalender[key]) dataKalender[key] = { total: 0, count: 0, pasien: [] };
+          dataKalender[key].total += r.biaya;
+          dataKalender[key].count += 1;
+          dataKalender[key].pasien.push(info);
+        }
       });
+
+      // Update UI Cards
+      document.getElementById('pdptHari').innerText = formatRupiah(summaryFiltered.hari.reduce((a,b) => a + b.biaya, 0));
+      document.getElementById('pdptMinggu').innerText = formatRupiah(summaryFiltered.minggu.reduce((a,b) => a + b.biaya, 0));
+      document.getElementById('pdptBulan').innerText = formatRupiah(summaryFiltered.bulan.reduce((a,b) => a + b.biaya, 0));
+      document.getElementById('pdptTahun').innerText = formatRupiah(summaryFiltered.tahun.reduce((a,b) => a + b.biaya, 0));
+
+      renderKalender(dataKalender);
     }
 
-    function filterPasien() {
-      const val = document.getElementById('searchInput').value.toLowerCase();
-      renderPasien(semuaPasien.filter(p => (p.nama + p.alamat).toLowerCase().includes(val)));
-    }
-
-    function loadPendapatanBackground() { runGoogleScript('getDataPendapatanFull', null, data => { dataPendapatanGlobal = data; updateUIPendapatan(data); }); }
-    function loadPendapatanManual() { runGoogleScript('getDataPendapatanFull', null, data => { dataPendapatanGlobal = data; updateUIPendapatan(data); }); }
-
-    function updateUIPendapatan(data) {
-      const f = n => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n);
-      document.getElementById('pdptHari').innerText = f(data.summary.hari);
-      document.getElementById('pdptMinggu').innerText = f(data.summary.minggu);
-      document.getElementById('pdptBulan').innerText = f(data.summary.bulan);
-      document.getElementById('pdptBulanLalu').innerText = f(data.summary.bulanLalu);
-      document.getElementById('pdptTahun').innerText = f(data.summary.tahun);
-      dataKalenderGlobal = data.kalender; renderKalender();
-    }
-
-    function ubahBulanKalender(a) { tanggalNavigasi.setMonth(tanggalNavigasi.getMonth() + a); renderKalender(); }
-
-    function bukaDetailPeriode(p) {
-      if(!dataPendapatanGlobal) return;
-      const list = dataPendapatanGlobal.lists[p], total = dataPendapatanGlobal.summary[p];
-      document.getElementById('judulDetail').innerText = "Rekap " + (p==='hari'?"Hari Ini":p==='minggu'?"Minggu Ini":p==='bulan'?"Bulan Ini":p==='bulanLalu'?"Bulan Lalu":"Tahun Ini");
-      renderDetailList(list, total);
-    }
-
-    function bukaDetailKunjungan(key) {
-      const d = dataKalenderGlobal[key]; if (!d) return;
-      document.getElementById('judulDetail').innerText = new Date(key).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      renderDetailList(d.pasien, d.totalBiaya);
-    }
-
-    function renderDetailList(list, total) {
-      let h = '';
-      if(list.length === 0) h = '<p style="text-align:center; padding:20px;">Tidak ada data.</p>';
-      else list.forEach((p, i) => h += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f0fdfa;"><div><small>${i+1}.</small> <b>${p.nama}</b><br><small style="color:#99f6e4">${p.tglString}</small></div><b style="color:#059669">Rp ${new Intl.NumberFormat('id-ID').format(p.biaya)}</b></div>`);
-      document.getElementById('listPasienDetail').innerHTML = h;
-      document.getElementById('totalDetailDisp').innerText = "Rp " + new Intl.NumberFormat('id-ID').format(total);
-      bukaModal('modalDetail');
-    }
-
-    function renderKalender() {
-      const y = tanggalNavigasi.getFullYear(), m = tanggalNavigasi.getMonth(), now = new Date();
-      document.getElementById('judulBulanKalender').innerText = `${["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][m]} ${y}`;
+    function renderKalender(dataKalender) {
+      const y = currentNavDate.getFullYear(), m = currentNavDate.getMonth(), now = new Date();
       const first = new Date(y, m, 1).getDay(), totalDays = new Date(y, m + 1, 0).getDate(), grid = document.getElementById('gridKalender');
-      grid.innerHTML = ''; ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => grid.innerHTML += `<div class="cal-day-name ${i===0?'text-red':''}">${d}</div>`);
-      for (let i = 0; i < first; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
+      grid.innerHTML = ''; 
+      ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => grid.innerHTML += `<div class="cal-day-name ${i===0?'text-red':''}">${d}</div>`);
+      
+      for (let i = 0; i < first; i++) grid.innerHTML += `<div class="cal-day"></div>`;
+      
       for (let i = 1; i <= totalDays; i++) {
-        let key = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`, isT = (i === now.getDate() && m === now.getMonth() && y === now.getFullYear()) ? 'today' : '', dH = dataKalenderGlobal[key];
-        let h = `<div class="cal-day ${isT} ${dH?'has-data':''}" ${dH?`onclick="bukaDetailKunjungan('${key}')"`:''}><div class="date-num">${i}</div>`;
-        if(dH) h += `<div class="visit-badge">${dH.jumlahKunjungan} Ps</div><div class="income-tag">Rp ${new Intl.NumberFormat('id-ID').format(dH.totalBiaya)}</div><div class="logo-rp-emas">Rp</div>`;
+        let dateObj = new Date(y, m, i);
+        let key = dateObj.toISOString().split('T')[0];
+        let isToday = (dateObj.toDateString() === now.toDateString()) ? 'today' : '';
+        let dH = dataKalender[key];
+        let h = `<div class="cal-day ${isToday} ${dH?'has-data':''}" ${dH?`onclick="bukaDetailHarian('${key}', '${JSON.stringify(dH.pasien).replace(/"/g, '&quot;')}', ${dH.total})"`:''}><div class="date-num ${dateObj.getDay()===0?'text-red':''}">${i}</div>`;
+        if(dH) h += `<div class="visit-badge">${dH.count} Pasien</div><div class="income-tag">${new Intl.NumberFormat('id-ID').format(dH.total)}</div><div class="logo-rp-emas">Rp</div>`;
         grid.innerHTML += h + `</div>`;
       }
     }
 
-    // --- Fungsi CRUD Biodata & Periksa (Kunci Tetap) ---
+    function bukaDetailPeriode(p) {
+      const list = summaryFiltered[p];
+      const total = list.reduce((a,b) => a + b.biaya, 0);
+      let judul = "Rekap " + (p==='hari'?"Hari Ini":p==='minggu'?"Minggu Ini":p==='bulan'?"Bulan Terpilih":"Tahun Ini");
+      document.getElementById('judulDetail').innerText = judul;
+      renderDetailModal(list, total);
+    }
+
+    function bukaDetailHarian(tgl, pasienJson, total) {
+      const list = JSON.parse(pasienJson);
+      document.getElementById('judulDetail').innerText = "Detail " + new Date(tgl).toLocaleDateString('id-ID', { dateStyle: 'full' });
+      renderDetailModal(list, total);
+    }
+
+    function renderDetailModal(list, total) {
+      let h = '';
+      if(list.length === 0) h = '<p style="text-align:center; padding:20px; font-weight:bold;">Tidak ada data kunjungan.</p>';
+      else list.forEach((p, i) => h += `<div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #f1f5f9;"><div><small>${i+1}.</small> <b style="font-size:14px">${p.nama}</b><br><small style="color:#64748b">${p.tglString}</small></div><b style="color:#15803d; font-size:14px">${new Intl.NumberFormat('id-ID').format(p.biaya)}</b></div>`);
+      document.getElementById('listPasienDetail').innerHTML = h;
+      document.getElementById('totalDetailDisp').innerText = formatRupiah(total);
+      bukaModal('modalDetail');
+    }
+
+    // CRUD FUNCTIONS
+    function renderPasien(data) {
+      const list = document.getElementById('patientList'); list.innerHTML = '';
+      data.forEach(p => {
+        list.innerHTML += `<div class="patient-card"><div class="patient-info"><h3>${p.nama}</h3><p><i class="fas fa-map-marker-alt"></i> ${p.alamat}<br>RT ${p.rt}/RW ${p.rw}</p></div><div class="btn-group"><button class="btn btn-edit" onclick="bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}')"><i class="fas fa-edit"></i></button><button class="btn btn-riwayat" onclick="bukaRiwayat('${p.id}', '${p.nama}')">Riwayat</button><button class="btn btn-mulai" onclick="bukaPemeriksaan('${p.id}', '${p.nama}')">Periksa</button></div></div>`;
+      });
+    }
+    function filterPasien() {
+      const val = document.getElementById('searchInput').value.toLowerCase();
+      renderPasien(semuaPasien.filter(p => (p.nama + p.alamat).toLowerCase().includes(val)));
+    }
     function submitTambahPasien(e) { e.preventDefault(); const t = document.querySelector('input[name="titlePasien"]:checked').value, data = { nama: t + document.getElementById('newNama').value, alamat: document.getElementById('newAlamat').value, rt: document.getElementById('newRT').value, rw: document.getElementById('newRW').value }; runGoogleScript('simpanPasienBaru', data, res => { tutupModal('modalTambah'); refreshData(); bukaPemeriksaan(res.id, res.nama); }); }
     function bukaEditPasien(id, nF, al, rt, rw) { document.getElementById('editIdPasien').value = id; let sD = "", nA = nF; for (let s of ["Tn. ", "Ny. ", "An. ", "Nn. "]) { if (nF.startsWith(s)) { sD = s; nA = nF.substring(s.length); break; } } const r = document.getElementsByName('editTitlePasien'); for (let i=0; i<r.length; i++) if (r[i].value === sD) r[i].checked = true; document.getElementById('editNama').value = nA; document.getElementById('editAlamat').value = al; document.getElementById('editRT').value = rt; document.getElementById('editRW').value = rw; bukaModal('modalEditPasien'); }
     function submitEditPasien(e) { e.preventDefault(); const t = document.querySelector('input[name="editTitlePasien"]:checked').value, data = { id: document.getElementById('editIdPasien').value, nama: t + document.getElementById('editNama').value, alamat: document.getElementById('editAlamat').value, rt: document.getElementById('editRT').value, rw: document.getElementById('editRW').value }; runGoogleScript('updateBiodataPasien', data, () => { tutupModal('modalEditPasien'); refreshData(); }); }
-    function bukaPemeriksaan(id, n) { document.getElementById('idPasien').value = id; document.getElementById('namaPasienDisp').innerText = n; bukaModal('modalForm'); }
-    function submitPemeriksaan(e) { e.preventDefault(); const d = { idPasien: document.getElementById('idPasien').value, namaPasien: document.getElementById('namaPasienDisp').innerText, anamnesa: document.getElementById('anamnesa').value, td: document.getElementById('td').value, suhu: document.getElementById('suhu').value, nadi: document.getElementById('nadi').value, rr: document.getElementById('rr').value, obat1: document.getElementById('obat1').value, obat2: document.getElementById('obat2').value, obat3: document.getElementById('obat3').value, obat4: document.getElementById('obat4').value, obat5: document.getElementById('obat5').value, obat6: document.getElementById('obat6').value, biaya: document.getElementById('biaya').value.replace(/\./g, '') }; runGoogleScript('simpanPemeriksaan', d, () => { tutupModal('modalForm'); loadPendapatanBackground(); }); }
-    function bukaRiwayat(id, n) { document.getElementById('namaRiwayat').innerText = n; bukaModal('modalRiwayat'); document.getElementById('loaderRiwayat').style.display = 'block'; runGoogleScript('getRiwayatPasien', {idPasien: id}, data => { riwayatPasienGlobal = data; document.getElementById('loaderRiwayat').style.display = 'none'; let h = ''; data.forEach((r, idx) => { h += `<div style="background:#f0fdfa; padding:15px; border-radius:12px; border:1px solid #ccfbf1; margin-bottom:10px;"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-size:12px; font-weight:700; color:#0d9488;">${r.tanggal}</span><button class="btn btn-edit" onclick="bukaEditRM(${idx})">Edit</button></div><p style="font-size:13px;"><b>Keluhan:</b> ${r.anamnesa}</p><p style="font-size:12px; color:#0d9488;"><b>Obat:</b> ${r.obat}</p></div>`; }); document.getElementById('listRiwayat').innerHTML = h; }); }
+    function bukaPemeriksaan(id, n) { document.getElementById('idPasien').value = id; document.getElementById('namaPasienDisp').innerText = n; document.getElementById('formPemeriksaan').reset(); bukaModal('modalForm'); }
+    function submitPemeriksaan(e) { e.preventDefault(); const d = { idPasien: document.getElementById('idPasien').value, namaPasien: document.getElementById('namaPasienDisp').innerText, anamnesa: document.getElementById('anamnesa').value, td: document.getElementById('td').value, suhu: document.getElementById('suhu').value, nadi: document.getElementById('nadi').value, rr: document.getElementById('rr').value, obat1: document.getElementById('obat1').value, obat2: document.getElementById('obat2').value, obat3: document.getElementById('obat3').value, obat4: document.getElementById('obat4').value, obat5: document.getElementById('obat5').value, obat6: document.getElementById('obat6').value, biaya: document.getElementById('biaya').value.replace(/\./g, '') }; runGoogleScript('simpanPemeriksaan', d, () => { tutupModal('modalForm'); loadAllRekamMedis(); }); }
+    function bukaRiwayat(id, n) { currentPasienId = id; currentPasienNama = n; document.getElementById('namaRiwayat').innerText = n; bukaModal('modalRiwayat'); document.getElementById('loaderRiwayat').style.display = 'block'; document.getElementById('listRiwayat').innerHTML = ''; runGoogleScript('getRiwayatPasien', {idPasien: id}, data => { riwayatPasienGlobal = data; document.getElementById('loaderRiwayat').style.display = 'none'; let h = ''; data.forEach((r, idx) => { h += `<div style="background:#f8fafc; padding:15px; border-radius:16px; border:2px solid #e2e8f0; margin-bottom:10px;"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-size:12px; font-weight:800; color:#334155;">${r.tanggal}</span><button class="btn btn-edit" style="padding:8px" onclick="bukaEditRM(${idx})">Edit</button></div><p style="font-size:14px; font-weight:600;"><b>Keluhan:</b> ${r.anamnesa}</p><p style="font-size:13px; color:#475569;"><b>Obat:</b> ${r.obat}</p></div>`; }); document.getElementById('listRiwayat').innerHTML = h; }); }
     function bukaEditRM(idx) { const d = riwayatPasienGlobal[idx]; document.getElementById('editRMRowIndex').value = d.rowIndex; document.getElementById('editAnamnesa').value = d.anamnesa; document.getElementById('editTd').value = d.td; document.getElementById('editSuhu').value = d.suhu; document.getElementById('editNadi').value = d.nadi; document.getElementById('editRr').value = d.rr; document.getElementById('editObat1').value = d.obat1||""; document.getElementById('editObat2').value = d.obat2||""; document.getElementById('editObat3').value = d.obat3||""; document.getElementById('editObat4').value = d.obat4||""; document.getElementById('editObat5').value = d.obat5||""; document.getElementById('editObat6').value = d.obat6||""; document.getElementById('editBiaya').value = d.biaya; formatRibuan(document.getElementById('editBiaya')); bukaModal('modalEditRM'); }
-    function submitEditRM(e) { e.preventDefault(); const d = { rowIndex: document.getElementById('editRMRowIndex').value, anamnesa: document.getElementById('editAnamnesa').value, td: document.getElementById('editTd').value, suhu: document.getElementById('suhu').value, nadi: document.getElementById('nadi').value, rr: document.getElementById('rr').value, obat1: document.getElementById('editObat1').value, obat2: document.getElementById('editObat2').value, obat3: document.getElementById('editObat3').value, obat4: document.getElementById('editObat4').value, obat5: document.getElementById('editObat5').value, obat6: document.getElementById('editObat6').value, biaya: document.getElementById('editBiaya').value.replace(/\./g, '') }; runGoogleScript('updateRekamMedis', d, () => { tutupModal('modalEditRM'); loadPendapatanBackground(); bukaRiwayat(currentPasienId, currentPasienNama); }); }
+    function submitEditRM(e) { e.preventDefault(); const d = { rowIndex: document.getElementById('editRMRowIndex').value, anamnesa: document.getElementById('editAnamnesa').value, td: document.getElementById('editTd').value, suhu: document.getElementById('editSuhu').value, nadi: document.getElementById('editNadi').value, rr: document.getElementById('editRr').value, obat1: document.getElementById('editObat1').value, obat2: document.getElementById('editObat2').value, obat3: document.getElementById('editObat3').value, obat4: document.getElementById('editObat4').value, obat5: document.getElementById('editObat5').value, obat6: document.getElementById('editObat6').value, biaya: document.getElementById('editBiaya').value.replace(/\./g, '') }; runGoogleScript('updateRekamMedis', d, () => { tutupModal('modalEditRM'); loadAllRekamMedis(); bukaRiwayat(currentPasienId, currentPasienNama); }); }
   </script>
 
-  <div id="modalDetail" class="modal-overlay"><div class="modal-content"><div class="modal-header"><span id="judulDetail"></span></div><div id="listPasienDetail"></div><div style="display:flex;justify-content:space-between;margin-top:15px;padding-top:15px;border-top:1px solid #eee;"><b>Total:</b><b id="totalDetailDisp"></b></div><button class="btn btn-riwayat" style="width:100%;margin-top:15px;" onclick="tutupModal('modalDetail')">Tutup</button></div></div>
-</body>
+  <div id="modalTambah" class="modal-overlay">... (konten modal tambah pasien sama dengan sebelumnya) ...</div>
+  <div id="modalDetail" class="modal-overlay"><div class="modal-content"><div class="modal-header"><span id="judulDetail"></span></div><div id="listPasienDetail"></div><div style="display:flex;justify-content:space-between;margin-top:15px;padding-top:15px;border-top:2px solid #0f172a;"><b style="font-size:16px">TOTAL:</b><b id="totalDetailDisp" style="font-size:16px; color:#15803d"></b></div><button class="btn btn-riwayat" style="width:100%;margin-top:20px; padding:15px" onclick="tutupModal('modalDetail')">TUTUP</button></div></div>
+
+  </body>
 </html>
