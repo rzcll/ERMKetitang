@@ -7,62 +7,59 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-    
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     
-    body { background: #e5e7eb; color: #1f2937; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+    /* WARNA TEMA SEGAR (Mint & Teal) */
+    body { background: #f0fdfa; color: #134e4a; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-    /* --- NAVIGASI --- */
-    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 8px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.9); border: 1px solid #9ca3af; box-shadow: 0 4px 20px rgba(0,0,0,0.08); backdrop-filter: blur(10px); }
-    .nav-btn { flex: 1; padding: 14px 10px; border: none; border-radius: 40px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.2s; color: #4b5563; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .nav-erm.active { background: #374151; color: #fff; } .nav-pendapatan.active { background: #4b5563; color: #fff; }
+    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 8px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.9); border: 1px solid #99f6e4; box-shadow: 0 4px 15px rgba(20, 184, 166, 0.1); backdrop-filter: blur(10px); }
+    .nav-btn { flex: 1; padding: 14px 10px; border: none; border-radius: 40px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.2s; color: #5eead4; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .nav-erm.active { background: #0d9488; color: #fff; } .nav-pendapatan.active { background: #0f766e; color: #fff; }
 
     .container { padding: 0 20px 40px 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
     .page { display: none; } .page.active { display: block; }
 
-    /* --- BANNER --- */
-    .welcome-banner { padding: 20px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: #fff; border-radius: 20px; border: 1px solid #d1d5db; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-    .welcome-banner h1 { color: #111827; font-size: 20px; font-weight: 800; } .welcome-banner p { color: #6b7280; font-size: 13px; margin: 0; }
+    .welcome-banner { padding: 20px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: #fff; border-radius: 20px; border: 1px solid #ccfbf1; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+    .welcome-banner h1 { color: #0f766e; font-size: 20px; font-weight: 800; } .welcome-banner p { color: #5eead4; font-size: 13px; margin: 0; }
 
-    /* --- ACTION BAR --- */
     .action-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
-    .search-box { flex: 1; padding: 12px 20px; font-size: 14px; border: 1px solid #d1d5db; border-radius: 12px; outline: none; background: #fff; min-width: 250px; max-width: 600px; }
-    .search-box:focus { border-color: #4b5563; box-shadow: 0 0 0 3px rgba(75, 85, 99, 0.1); }
-    .btn-super { background: #111827; color: white; border: none; border-radius: 12px; padding: 0 25px; height: 48px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+    .search-box { flex: 1; padding: 12px 20px; font-size: 14px; border: 1px solid #ccfbf1; border-radius: 12px; outline: none; background: #fff; min-width: 250px; max-width: 600px; }
+    .search-box:focus { border-color: #2dd4bf; box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
+    .btn-super { background: #0f766e; color: white; border: none; border-radius: 12px; padding: 0 25px; height: 48px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
 
     #patientList { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
-    .patient-card { padding: 18px; background: #fff; border: 1px solid #d1d5db; border-radius: 16px; transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between;}
-    .patient-card:hover { border-color: #9ca3af; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .patient-info h3 { font-size: 16px; color: #111827; font-weight: 700; margin-bottom: 4px; } .patient-info p { font-size: 12px; color: #6b7280; line-height: 1.4; }
+    .patient-card { padding: 18px; background: #fff; border: 1px solid #ccfbf1; border-radius: 16px; transition: 0.2s; display: flex; flex-direction: column; justify-content: space-between;}
+    .patient-card:hover { border-color: #2dd4bf; box-shadow: 0 4px 12px rgba(20, 184, 166, 0.08); }
+    .patient-info h3 { font-size: 16px; color: #134e4a; font-weight: 700; margin-bottom: 4px; } .patient-info p { font-size: 12px; color: #5eead4; line-height: 1.4; }
     
     .btn-group { display: flex; gap: 8px; margin-top: 15px; }
     .btn { flex: 1; padding: 10px; border: none; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-    .btn-mulai { background: #f3f4f6; color: #111827; border: 1px solid #d1d5db; } .btn-riwayat { background: #4b5563; color: white; } .btn-edit { background: #fff; color: #111827; border: 1px solid #d1d5db; flex: 0; padding: 10px 15px; }
+    .btn-mulai { background: #f0fdfa; color: #0d9488; } .btn-riwayat { background: #0d9488; color: white; } .btn-edit { background: #fff; color: #0d9488; border: 1px solid #ccfbf1; flex: 0; padding: 10px 15px; }
 
-    /* --- DASHBOARD REKAP (SANGAT MENARIK) --- */
     .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 20px; }
-    .stat-card { padding: 15px 8px; text-align: center; background: #fff; border: 1px solid #d1d5db; border-radius: 16px; cursor: pointer; transition: 0.3s; }
-    .stat-card:hover { background: #ff7e00; border-color: #ff7e00; transform: scale(1.03); }
-    .stat-card i { font-size: 20px; margin-bottom: 5px; color: #4b5563; transition: 0.3s; }
-    .stat-card h4 { font-size: 9px; color: #6b7280; text-transform: uppercase; transition: 0.3s; }
-    .stat-card h2 { font-size: 15px; color: #111827; font-weight: 800; transition: 0.3s; }
+    .stat-card { padding: 15px 8px; text-align: center; background: #fff; border: 1px solid #ccfbf1; border-radius: 16px; cursor: pointer; transition: 0.3s; }
+    .stat-card:hover { background: #f59e0b; border-color: #f59e0b; transform: translateY(-3px); }
+    .stat-card i { font-size: 20px; margin-bottom: 5px; color: #0d9488; transition: 0.3s; }
+    .stat-card h4 { font-size: 9px; color: #2dd4bf; text-transform: uppercase; transition: 0.3s; }
+    .stat-card h2 { font-size: 15px; color: #134e4a; font-weight: 800; transition: 0.3s; }
     .stat-card:hover i, .stat-card:hover h4, .stat-card:hover h2 { color: #fff; }
 
-    .calendar-container { background: #fff; border-radius: 20px; padding: 20px; border: 1px solid #d1d5db; }
+    .calendar-container { background: #fff; border-radius: 20px; padding: 20px; border: 1px solid #ccfbf1; }
     .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-    .cal-day-name { font-weight: 700; color: #374151; font-size: 12px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-    .cal-day { padding: 8px 4px; min-height: 75px; border: 1px solid #f3f4f6; border-radius: 8px; display: flex; flex-direction: column; align-items: center; position: relative; font-size: 12px;}
-    .cal-day.has-data { cursor: pointer; background: #f9fafb; border-color: #d1d5db; } .cal-day.today { border: 2px solid #374151; } .text-red { color: #ef4444 !important; }
-    
-    .visit-badge { font-size: 8px; background: #374151; color: #fff; padding: 1px 4px; border-radius: 4px; margin-top: 2px; }
+    .cal-day-name { font-weight: 700; color: #0f766e; font-size: 12px; padding-bottom: 10px; border-bottom: 1px solid #ccfbf1; }
+    .cal-day { padding: 8px 4px; min-height: 75px; border: 1px solid #f0fdfa; border-radius: 8px; display: flex; flex-direction: column; align-items: center; position: relative; font-size: 12px;}
+    .cal-day.has-data { cursor: pointer; background: #f0fdfa; border-color: #5eead4; } .cal-day.today { border: 2px solid #0d9488; } .text-red { color: #ef4444 !important; }
+    .visit-badge { font-size: 8px; background: #0d9488; color: #fff; padding: 1px 4px; border-radius: 4px; margin-top: 2px; }
     .income-tag { font-size: 9px; color: #059669; font-weight: 700; margin-top: 2px; }
     .logo-rp-emas { position: absolute; top: 4px; right: 4px; color: #f59e0b; font-size: 9px; font-weight: 900; }
 
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-    .modal-content { width: 95%; max-width: 650px; padding: 25px; max-height: 90vh; overflow-y: auto; background: #fff; border-radius: 20px; border: 2px solid #374151; }
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(19, 78, 74, 0.4); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-content { width: 95%; max-width: 600px; padding: 25px; max-height: 90vh; overflow-y: auto; background: #fff; border-radius: 20px; border: 2px solid #0d9488; }
+    .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 20px; border-bottom: 1px solid #f0fdfa; padding-bottom: 10px; color: #0f766e;}
+    .form-control { width: 100%; padding: 12px; border: 1px solid #ccfbf1; border-radius: 10px; outline: none; font-size: 14px; }
     
     @media screen and (max-width: 768px) {
-      .navbar { position: fixed; bottom: 0; top: auto; width: 100%; border-radius: 20px 20px 0 0; margin: 0; left: 0; max-width: 100%; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); }
+      .navbar { position: fixed; bottom: 0; top: auto; width: 100%; border-radius: 20px 20px 0 0; margin: 0; left: 0; max-width: 100%; }
       .container { padding: 10px 10px 100px 10px; }
       .dashboard-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
     }
@@ -71,16 +68,16 @@
 <body>
 
   <div class="navbar">
-    <button class="nav-btn nav-erm active" onclick="switchTab('erm')"><i class="fas fa-file-medical"></i> E-RM</button>
-    <button class="nav-btn nav-pendapatan" onclick="switchTab('pendapatan')"><i class="fas fa-coins"></i> REKAP</button>
+    <button class="nav-btn nav-erm active" onclick="switchTab('erm')"><i class="fas fa-stethoscope"></i> E-RM</button>
+    <button class="nav-btn nav-pendapatan" onclick="switchTab('pendapatan')"><i class="fas fa-chart-line"></i> REKAP</button>
   </div>
 
   <div class="container">
     <div id="erm" class="page active">
-      <div class="welcome-banner"><h1>E-RM KETITANG MEDIKA</h1><p>Pencatatan rekam medis digital klinik.</p></div>
+      <div class="welcome-banner"><h1>E-RM KETITANG MEDIKA</h1><p>Pelayanan Pasien Lebih Cepat & Akurat.</p></div>
       <div class="action-bar">
-        <input type="text" id="searchInput" class="search-box" placeholder="Cari Pasien..." onkeyup="filterPasien()">
-        <button class="btn-super" onclick="bukaModal('modalTambah')"><i class="fas fa-plus"></i> Pasien</button>
+        <input type="text" id="searchInput" class="search-box" placeholder="Cari Nama / Alamat..." onkeyup="filterPasien()">
+        <button class="btn-super" onclick="bukaModal('modalTambah')"><i class="fas fa-user-plus"></i> Pasien</button>
       </div>
       <div id="loaderData" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>
       <div id="patientList"></div>
@@ -97,9 +94,9 @@
       </div>
       <div class="calendar-container">
         <div class="calendar-header" style="display:flex; justify-content:space-between; margin-bottom:15px; align-items:center;">
-            <button class="btn btn-edit" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left"></i></button>
-            <h3 id="judulBulanKalender">Memuat...</h3>
-            <button class="btn btn-edit" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right"></i></button>
+            <button class="btn" style="color:#0d9488" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left"></i></button>
+            <h3 id="judulBulanKalender" style="color:#0d9488">Memuat...</h3>
+            <button class="btn" style="color:#0d9488" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div id="gridKalender" class="calendar-grid"></div>
       </div>
@@ -107,7 +104,9 @@
   </div>
 
   <script>
-    // MASUKKAN URL GOOGLE SCRIPT ANDA DI SINI
+    // ==============================================================================
+    // WAJIB DIGANTI: Masukkan URL Web App dari Google Apps Script (berakhiran /exec)
+    // ==============================================================================
     const API_URL = "https://script.google.com/macros/s/AKfycbzwafL-XIfqazsl1rufQamYU2Gvs4cHUjct5TC-xxnDBbZ63VoFAuRzsIUVQ6tjSM4uOA/exec"; 
 
     function runGoogleScript(action, data, onSuccess) {
@@ -115,9 +114,16 @@
       .then(r => r.json()).then(res => { if(res.status === 'success') onSuccess(res.data); }).catch(e => console.error(e));
     }
 
-    let semuaPasien = []; let dataPendapatanGlobal = null; let dataKalenderGlobal = {}; let tanggalNavigasi = new Date(); let riwayatPasienGlobal = []; let currentPasienId = ""; let currentPasienNama = "";
+    let semuaPasien = [], dataPendapatanGlobal = null, dataKalenderGlobal = {}, tanggalNavigasi = new Date(), riwayatPasienGlobal = [], currentPasienId = "", currentPasienNama = "";
 
     window.onload = () => { refreshData(); loadPendapatanBackground(); };
+
+    function formatRibuan(input) {
+      let value = input.value.replace(/[^,\d]/g, '').toString(); let split = value.split(',');
+      let sisa = split[0].length % 3; let rupiah = split[0].substr(0, sisa); let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+      if (ribuan) { let separator = sisa ? '.' : ''; rupiah += separator + ribuan.join('.'); }
+      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah; input.value = rupiah;
+    }
 
     function switchTab(tabId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -160,22 +166,53 @@
 
     function ubahBulanKalender(a) { tanggalNavigasi.setMonth(tanggalNavigasi.getMonth() + a); renderKalender(); }
 
+    function bukaDetailPeriode(p) {
+      if(!dataPendapatanGlobal) return;
+      const list = dataPendapatanGlobal.lists[p], total = dataPendapatanGlobal.summary[p];
+      document.getElementById('judulDetail').innerText = "Rekap " + (p==='hari'?"Hari Ini":p==='minggu'?"Minggu Ini":p==='bulan'?"Bulan Ini":p==='bulanLalu'?"Bulan Lalu":"Tahun Ini");
+      renderDetailList(list, total);
+    }
+
+    function bukaDetailKunjungan(key) {
+      const d = dataKalenderGlobal[key]; if (!d) return;
+      document.getElementById('judulDetail').innerText = new Date(key).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      renderDetailList(d.pasien, d.totalBiaya);
+    }
+
+    function renderDetailList(list, total) {
+      let h = '';
+      if(list.length === 0) h = '<p style="text-align:center; padding:20px;">Tidak ada data.</p>';
+      else list.forEach((p, i) => h += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #f0fdfa;"><div><small>${i+1}.</small> <b>${p.nama}</b><br><small style="color:#99f6e4">${p.tglString}</small></div><b style="color:#059669">Rp ${new Intl.NumberFormat('id-ID').format(p.biaya)}</b></div>`);
+      document.getElementById('listPasienDetail').innerHTML = h;
+      document.getElementById('totalDetailDisp').innerText = "Rp " + new Intl.NumberFormat('id-ID').format(total);
+      bukaModal('modalDetail');
+    }
+
     function renderKalender() {
       const y = tanggalNavigasi.getFullYear(), m = tanggalNavigasi.getMonth(), now = new Date();
       document.getElementById('judulBulanKalender').innerText = `${["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][m]} ${y}`;
-      const first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate(), grid = document.getElementById('gridKalender');
+      const first = new Date(y, m, 1).getDay(), totalDays = new Date(y, m + 1, 0).getDate(), grid = document.getElementById('gridKalender');
       grid.innerHTML = ''; ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => grid.innerHTML += `<div class="cal-day-name ${i===0?'text-red':''}">${d}</div>`);
       for (let i = 0; i < first; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
-      for (let i = 1; i <= total; i++) {
-        let key = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`, isToday = (i === now.getDate() && m === now.getMonth() && y === now.getFullYear()) ? 'today' : '', dH = dataKalenderGlobal[key];
-        let h = `<div class="cal-day ${isToday} ${dH?'has-data':''}" ${dH?`onclick="bukaDetailKunjungan('${key}')"`:''}><div class="date-num">${i}</div>`;
+      for (let i = 1; i <= totalDays; i++) {
+        let key = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`, isT = (i === now.getDate() && m === now.getMonth() && y === now.getFullYear()) ? 'today' : '', dH = dataKalenderGlobal[key];
+        let h = `<div class="cal-day ${isT} ${dH?'has-data':''}" ${dH?`onclick="bukaDetailKunjungan('${key}')"`:''}><div class="date-num">${i}</div>`;
         if(dH) h += `<div class="visit-badge">${dH.jumlahKunjungan} Ps</div><div class="income-tag">Rp ${new Intl.NumberFormat('id-ID').format(dH.totalBiaya)}</div><div class="logo-rp-emas">Rp</div>`;
         grid.innerHTML += h + `</div>`;
       }
     }
-    // ... Fungsi sisanya (CRUD Pasien/RM) tetap terintegrasi ...
+
+    // --- Fungsi CRUD Biodata & Periksa (Kunci Tetap) ---
+    function submitTambahPasien(e) { e.preventDefault(); const t = document.querySelector('input[name="titlePasien"]:checked').value, data = { nama: t + document.getElementById('newNama').value, alamat: document.getElementById('newAlamat').value, rt: document.getElementById('newRT').value, rw: document.getElementById('newRW').value }; runGoogleScript('simpanPasienBaru', data, res => { tutupModal('modalTambah'); refreshData(); bukaPemeriksaan(res.id, res.nama); }); }
+    function bukaEditPasien(id, nF, al, rt, rw) { document.getElementById('editIdPasien').value = id; let sD = "", nA = nF; for (let s of ["Tn. ", "Ny. ", "An. ", "Nn. "]) { if (nF.startsWith(s)) { sD = s; nA = nF.substring(s.length); break; } } const r = document.getElementsByName('editTitlePasien'); for (let i=0; i<r.length; i++) if (r[i].value === sD) r[i].checked = true; document.getElementById('editNama').value = nA; document.getElementById('editAlamat').value = al; document.getElementById('editRT').value = rt; document.getElementById('editRW').value = rw; bukaModal('modalEditPasien'); }
+    function submitEditPasien(e) { e.preventDefault(); const t = document.querySelector('input[name="editTitlePasien"]:checked').value, data = { id: document.getElementById('editIdPasien').value, nama: t + document.getElementById('editNama').value, alamat: document.getElementById('editAlamat').value, rt: document.getElementById('editRT').value, rw: document.getElementById('editRW').value }; runGoogleScript('updateBiodataPasien', data, () => { tutupModal('modalEditPasien'); refreshData(); }); }
+    function bukaPemeriksaan(id, n) { document.getElementById('idPasien').value = id; document.getElementById('namaPasienDisp').innerText = n; bukaModal('modalForm'); }
+    function submitPemeriksaan(e) { e.preventDefault(); const d = { idPasien: document.getElementById('idPasien').value, namaPasien: document.getElementById('namaPasienDisp').innerText, anamnesa: document.getElementById('anamnesa').value, td: document.getElementById('td').value, suhu: document.getElementById('suhu').value, nadi: document.getElementById('nadi').value, rr: document.getElementById('rr').value, obat1: document.getElementById('obat1').value, obat2: document.getElementById('obat2').value, obat3: document.getElementById('obat3').value, obat4: document.getElementById('obat4').value, obat5: document.getElementById('obat5').value, obat6: document.getElementById('obat6').value, biaya: document.getElementById('biaya').value.replace(/\./g, '') }; runGoogleScript('simpanPemeriksaan', d, () => { tutupModal('modalForm'); loadPendapatanBackground(); }); }
+    function bukaRiwayat(id, n) { document.getElementById('namaRiwayat').innerText = n; bukaModal('modalRiwayat'); document.getElementById('loaderRiwayat').style.display = 'block'; runGoogleScript('getRiwayatPasien', {idPasien: id}, data => { riwayatPasienGlobal = data; document.getElementById('loaderRiwayat').style.display = 'none'; let h = ''; data.forEach((r, idx) => { h += `<div style="background:#f0fdfa; padding:15px; border-radius:12px; border:1px solid #ccfbf1; margin-bottom:10px;"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-size:12px; font-weight:700; color:#0d9488;">${r.tanggal}</span><button class="btn btn-edit" onclick="bukaEditRM(${idx})">Edit</button></div><p style="font-size:13px;"><b>Keluhan:</b> ${r.anamnesa}</p><p style="font-size:12px; color:#0d9488;"><b>Obat:</b> ${r.obat}</p></div>`; }); document.getElementById('listRiwayat').innerHTML = h; }); }
+    function bukaEditRM(idx) { const d = riwayatPasienGlobal[idx]; document.getElementById('editRMRowIndex').value = d.rowIndex; document.getElementById('editAnamnesa').value = d.anamnesa; document.getElementById('editTd').value = d.td; document.getElementById('editSuhu').value = d.suhu; document.getElementById('editNadi').value = d.nadi; document.getElementById('editRr').value = d.rr; document.getElementById('editObat1').value = d.obat1||""; document.getElementById('editObat2').value = d.obat2||""; document.getElementById('editObat3').value = d.obat3||""; document.getElementById('editObat4').value = d.obat4||""; document.getElementById('editObat5').value = d.obat5||""; document.getElementById('editObat6').value = d.obat6||""; document.getElementById('editBiaya').value = d.biaya; formatRibuan(document.getElementById('editBiaya')); bukaModal('modalEditRM'); }
+    function submitEditRM(e) { e.preventDefault(); const d = { rowIndex: document.getElementById('editRMRowIndex').value, anamnesa: document.getElementById('editAnamnesa').value, td: document.getElementById('editTd').value, suhu: document.getElementById('suhu').value, nadi: document.getElementById('nadi').value, rr: document.getElementById('rr').value, obat1: document.getElementById('editObat1').value, obat2: document.getElementById('editObat2').value, obat3: document.getElementById('editObat3').value, obat4: document.getElementById('editObat4').value, obat5: document.getElementById('editObat5').value, obat6: document.getElementById('editObat6').value, biaya: document.getElementById('editBiaya').value.replace(/\./g, '') }; runGoogleScript('updateRekamMedis', d, () => { tutupModal('modalEditRM'); loadPendapatanBackground(); bukaRiwayat(currentPasienId, currentPasienNama); }); }
   </script>
 
-  <div id="modalDetail" class="modal-overlay"><div class="modal-content"><div class="modal-header"><span id="judulDetail"></span></div><div id="listPasienDetail"></div><div style="display:flex;justify-content:space-between;margin-top:15px;padding-top:15px;border-top:1px solid #eee;"><b>Total:</b><b id="totalDetailDisp"></b></div><button class="btn btn-edit" style="width:100%;margin-top:15px;" onclick="tutupModal('modalDetail')">Tutup</button></div></div>
+  <div id="modalDetail" class="modal-overlay"><div class="modal-content"><div class="modal-header"><span id="judulDetail"></span></div><div id="listPasienDetail"></div><div style="display:flex;justify-content:space-between;margin-top:15px;padding-top:15px;border-top:1px solid #eee;"><b>Total:</b><b id="totalDetailDisp"></b></div><button class="btn btn-riwayat" style="width:100%;margin-top:15px;" onclick="tutupModal('modalDetail')">Tutup</button></div></div>
 </body>
 </html>
