@@ -9,21 +9,18 @@
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
     
-    /* WARNA TEMA SEGAR: Mint to Soft Pink */
     body { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); background-attachment: fixed; color: #333; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     .glass { background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); }
     
-    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 10px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.45); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 10px 25px rgba(13, 148, 136, 0.2); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); animation: floatMenu 4s ease-in-out infinite; }
-    @keyframes floatMenu { 0% { transform: translateY(0px); box-shadow: 0 10px 25px rgba(13, 148, 136, 0.2); } 50% { transform: translateY(-8px); box-shadow: 0 20px 30px rgba(13, 148, 136, 0.1); } 100% { transform: translateY(0px); box-shadow: 0 10px 25px rgba(13, 148, 136, 0.2); } }
-    .nav-btn { flex: 1; padding: 14px 10px; border: none; border-radius: 40px; font-weight: 800; font-size: 14px; text-transform: uppercase; cursor: pointer; transition: 0.3s; color: #4a5568; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 10px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.45); border: 1px solid rgba(255, 255, 255, 0.8); box-shadow: 0 10px 25px rgba(13, 148, 136, 0.2); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
+    .nav-btn { flex: 1; padding: 14px 10px; border: none; border-radius: 40px; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: 0.3s; color: #4a5568; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .nav-btn:hover:not(.active) { background: rgba(255,255,255,0.7); } 
     .nav-erm.active { background: #0d9488; color: #fff; box-shadow: 0 4px 15px rgba(13, 148, 136, 0.4); } .nav-pendapatan.active { background: #e11d48; color: #fff; box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4); }
 
     .container { padding: 0 20px 40px 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
     .page { display: none; animation: fadeIn 0.3s ease-out; } .page.active { display: block; } @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .welcome-banner { padding: 15px 25px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: rgba(255, 255, 255, 0.45); border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); box-shadow: 0 8px 25px rgba(13, 148, 136, 0.15); animation: floatBanner 4s ease-in-out infinite; }
-    @keyframes floatBanner { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
+    .welcome-banner { padding: 15px 25px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: rgba(255, 255, 255, 0.45); border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); box-shadow: 0 8px 25px rgba(13, 148, 136, 0.15); }
     .welcome-banner h1 { color: #0f766e; font-size: 20px; font-weight: 800; margin-bottom: 2px; } .welcome-banner p { color: #4a5568; font-size: 13px; font-weight: 600; margin: 0; } .welcome-banner.pendapatan-banner h1 { color: #be123c; margin-bottom: 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
     .action-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
@@ -33,16 +30,15 @@
     .btn-super:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(13, 148, 136, 0.4); }
 
     #patientList { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
-    .patient-card { padding: 20px; margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; height: 100%; }
+    .patient-card { padding: 20px; margin-bottom: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; transition: 0.3s; height: 100%; }
     .patient-card:hover { transform: translateY(-3px) scale(1.01); background: rgba(255, 255, 255, 0.9); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
     .patient-info { width: 100%; margin-bottom: 15px; } .patient-info h3 { margin-bottom: 5px; font-size: 16px; color: #0f766e; font-weight: 800; display: flex; align-items: center; gap: 8px;} .patient-info p { font-size: 13px; color: #4a5568; margin:0; line-height: 1.4;}
     
-    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;}
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; width: 100%; justify-content: flex-end;}
     .btn { padding: 8px 14px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px;}
     .btn-mulai { background: #14b8a6; color: white; flex: 1;} .btn-riwayat { background: #f59e0b; color: white; flex: 1;} .btn-edit { background: #fef08a; color: #b45309; } .btn-batal { background: #cbd5e0; color: #4a5568; }
     .btn:hover { filter: brightness(1.1); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15);}
 
-    /* FITUR NAVIGASI KARTU GESER */
     .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 20px; }
     .stat-card { padding: 12px 5px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.3s; background: rgba(255,255,255,0.6); border-radius: 18px; border: 1px solid rgba(255,255,255,0.9); position: relative; overflow: hidden; user-select: none;}
     .stat-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 20px rgba(225, 29, 72, 0.2); background: linear-gradient(135deg, #fb7185 0%, #e11d48 100%); border-color: #be123c; }
@@ -52,8 +48,7 @@
     .btn-arrow:hover { background: rgba(255,255,255,0.5); transform: scale(1.2); }
     
     .stat-card h4 { font-size: 10px; color: #be123c; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; transition: 0.3s; flex:1; cursor: pointer;}
-    .stat-card h2 { font-size: 18px; color: #0f766e; font-weight: 800; transition: 0.3s; cursor: pointer; padding: 5px; width: 100%;}
-    
+    .stat-card h2 { font-size: 18px; color: #2d3748; font-weight: 800; transition: 0.3s; cursor: pointer; padding: 5px; width: 100%;}
     .stat-card:hover h4, .stat-card:hover h2, .stat-card:hover .btn-arrow { color: #ffffff; }
 
     .calendar-container { background: rgba(255, 255, 255, 0.65); border-radius: 20px; padding: 20px; border: 1px solid #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
@@ -65,20 +60,17 @@
     .cal-day.empty { background: transparent; border: none; box-shadow: none;} .cal-day.today { border: 2px solid #e11d48; background: rgba(225, 29, 72, 0.05); } .cal-day .date-num { font-weight: 800; color: #0f766e; font-size: 14px; margin-bottom: 4px; }
     
     .logo-rp-emas { position: absolute; top: 4px; right: 5px; color: #f59e0b; font-size: 11px; font-weight: 900; animation: pulseGlow 1.2s infinite alternate; } @keyframes pulseGlow { 0% { transform: scale(0.9); text-shadow: 0 0 5px rgba(245, 158, 11, 0.5); } 100% { transform: scale(1.2); text-shadow: 0 0 10px rgba(245, 158, 11, 1); } }
-    .visit-badge { font-size: 9px; font-weight: 800; color: #fff; background: #14b8a6; padding: 2px 6px; border-radius: 10px; margin-bottom: 2px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
+    .visit-badge { font-size: 9px; font-weight: 700; color: #fff; background: #14b8a6; padding: 2px 6px; border-radius: 10px; margin-bottom: 2px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
     .text-red { color: #e11d48 !important; } .holiday-tag { font-size: 9px; font-weight: 800; color: #e11d48; background: rgba(225, 29, 72, 0.1); padding: 2px 4px; border-radius: 4px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px;} .cal-day .income-tag { font-size: 10px; font-weight: 800; color: #be123c; background: rgba(225, 29, 72, 0.1); padding: 2px 4px; border-radius: 4px; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}
 
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; }
     .modal-content { width: 95%; max-width: 650px; padding: 25px; max-height: 90vh; overflow-y: auto; background: rgba(255, 255, 255, 0.95); border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
     .modal-header { font-size: 18px; font-weight: 800; color: #0f766e; margin-bottom: 20px; border-bottom: 2px solid rgba(13, 148, 136, 0.1); padding-bottom: 10px;}
     .form-group { margin-bottom: 12px; } .form-group label { display: block; margin-bottom: 5px; font-weight: 700; font-size: 13px; color: #4a5568;} .form-control { width: 100%; padding: 12px; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; outline: none; transition: 0.3s; font-size: 14px; background: rgba(255,255,255,0.7); } .form-control:focus { background:#fff; border-color:#14b8a6; box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);}
-    .radio-group { display: flex; gap: 15px; margin-top: 8px; flex-wrap: wrap; background: rgba(255,255,255,0.5); padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(0,0,0,0.05); } .radio-group label { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 13px; color: #4a5568; cursor: pointer; margin:0;}
     
     @media screen and (max-width: 768px) {
-      .navbar { position: fixed; bottom: 0; top: auto; width: 100%; border-radius: 24px 24px 0 0; margin: 0; left: 0; max-width: 100%; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); border-bottom: none;}
-      .container { padding: 10px 10px 100px 10px; }
-      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-      #patientList { grid-template-columns: 1fr; }
+      .navbar { position: fixed; bottom: 0; top: auto; width: 100%; border-radius: 24px 24px 0 0; margin: 0; left: 0; max-width: 100%; box-shadow: 0 -5px 25px rgba(72, 187, 120, 0.2); border: none; border-top: 1px solid rgba(255,255,255,0.6); }
+      .container { padding: 10px 10px 100px 10px; } .dashboard-grid { grid-template-columns: repeat(2, 1fr); } #patientList { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -93,7 +85,7 @@
     <div id="erm" class="page active">
       <div class="welcome-banner"><h1><i class="fas fa-hospital"></i> E-RM KETITANG MEDIKA</h1><p>Pencatatan Rekam Medis Segar & Cepat.</p></div>
       <div class="action-bar">
-        <input type="text" id="searchInput" class="search-box glass" placeholder="🔍 Cari Nama / Alamat..." onkeyup="filterPasien()">
+        <input type="text" id="searchInput" class="search-box glass" placeholder="🔍 Cari Nama / Alamat Pasien..." onkeyup="filterPasien()">
         <button class="btn-super" onclick="bukaModal('modalTambah')"><i class="fas fa-user-plus"></i> Pasien Baru</button>
       </div>
       <div id="loaderData" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin" style="font-size:30px; color:#0f766e"></i></div>
@@ -102,237 +94,197 @@
 
     <div id="pendapatan" class="page">
       <div class="welcome-banner pendapatan-banner"><h1><i class="fas fa-chart-line"></i> REKAPITULASI PENDAPATAN</h1></div>
-      
-      <div class="dashboard-grid glass">
-        <div class="stat-card" id="swipeHari">
-          <div class="card-nav">
-            <button class="btn-arrow" onclick="ubahOffset('hari', -1, event)"><i class="fas fa-chevron-left"></i></button>
-            <h4 id="labelHari" onclick="bukaDetail('hari')">Hari Ini</h4>
-            <button class="btn-arrow" onclick="ubahOffset('hari', 1, event)"><i class="fas fa-chevron-right"></i></button>
+      <div style="text-align: right; margin-bottom: 15px;">
+        <button class="btn btn-mulai" style="background:#2f855a; display:inline-flex;" onclick="loadPendapatanManual()"><i class="fas fa-sync-alt"></i> Refresh Data</button>
+      </div>
+      <div id="loaderPendapatan" style="text-align:center; padding:20px; display:none;"><i class="fas fa-spinner fa-spin" style="font-size:30px; color:#e11d48"></i></div>
+      <div id="kontenPendapatan" style="display:none;">
+        
+        <div class="dashboard-grid">
+          <div class="stat-card" id="swipeHari">
+            <div class="card-nav">
+              <button class="btn-arrow" onclick="ubahOffset('hari', -1, event)"><i class="fas fa-chevron-left"></i></button>
+              <h4 id="labelHari" onclick="bukaDetail('hari')">Hari Ini</h4>
+              <button class="btn-arrow" onclick="ubahOffset('hari', 1, event)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <h2 id="pdptHari" onclick="bukaDetail('hari')">Rp 0</h2>
           </div>
-          <h2 id="pdptHari" onclick="bukaDetail('hari')">Rp 0</h2>
+          
+          <div class="stat-card" id="swipeMinggu">
+            <div class="card-nav">
+              <button class="btn-arrow" onclick="ubahOffset('minggu', -1, event)"><i class="fas fa-chevron-left"></i></button>
+              <h4 id="labelMinggu" onclick="bukaDetail('minggu')">Minggu Ini</h4>
+              <button class="btn-arrow" onclick="ubahOffset('minggu', 1, event)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <h2 id="pdptMinggu" onclick="bukaDetail('minggu')">Rp 0</h2>
+          </div>
+
+          <div class="stat-card" id="swipeBulan">
+            <div class="card-nav">
+              <button class="btn-arrow" onclick="ubahOffset('bulan', -1, event)"><i class="fas fa-chevron-left"></i></button>
+              <h4 id="labelBulan" onclick="bukaDetail('bulan')">Bulan Ini</h4>
+              <button class="btn-arrow" onclick="ubahOffset('bulan', 1, event)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <h2 id="pdptBulan" onclick="bukaDetail('bulan')">Rp 0</h2>
+          </div>
+
+          <div class="stat-card" id="swipeTahun">
+            <div class="card-nav">
+              <button class="btn-arrow" onclick="ubahOffset('tahun', -1, event)"><i class="fas fa-chevron-left"></i></button>
+              <h4 id="labelTahun" onclick="bukaDetail('tahun')">Tahun Ini</h4>
+              <button class="btn-arrow" onclick="ubahOffset('tahun', 1, event)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <h2 id="pdptTahun" onclick="bukaDetail('tahun')">Rp 0</h2>
+          </div>
         </div>
         
-        <div class="stat-card" id="swipeMinggu">
-          <div class="card-nav">
-            <button class="btn-arrow" onclick="ubahOffset('minggu', -1, event)"><i class="fas fa-chevron-left"></i></button>
-            <h4 id="labelMinggu" onclick="bukaDetail('minggu')">Minggu Ini</h4>
-            <button class="btn-arrow" onclick="ubahOffset('minggu', 1, event)"><i class="fas fa-chevron-right"></i></button>
+        <div class="calendar-container glass">
+          <div class="calendar-header">
+              <button class="btn btn-batal" onclick="ubahBulanKalender(-1)" style="padding:5px 12px"><i class="fas fa-chevron-left"></i></button>
+              <h3 id="judulBulanKalender">Memuat...</h3>
+              <button class="btn btn-batal" onclick="ubahBulanKalender(1)" style="padding:5px 12px"><i class="fas fa-chevron-right"></i></button>
           </div>
-          <h2 id="pdptMinggu" onclick="bukaDetail('minggu')">Rp 0</h2>
-        </div>
-
-        <div class="stat-card" id="swipeBulan">
-          <div class="card-nav">
-            <button class="btn-arrow" onclick="ubahOffset('bulan', -1, event)"><i class="fas fa-chevron-left"></i></button>
-            <h4 id="labelBulan" onclick="bukaDetail('bulan')">Bulan Ini</h4>
-            <button class="btn-arrow" onclick="ubahOffset('bulan', 1, event)"><i class="fas fa-chevron-right"></i></button>
-          </div>
-          <h2 id="pdptBulan" onclick="bukaDetail('bulan')">Rp 0</h2>
-        </div>
-
-        <div class="stat-card" id="swipeTahun">
-          <div class="card-nav">
-            <button class="btn-arrow" onclick="ubahOffset('tahun', -1, event)"><i class="fas fa-chevron-left"></i></button>
-            <h4 id="labelTahun" onclick="bukaDetail('tahun')">Tahun Ini</h4>
-            <button class="btn-arrow" onclick="ubahOffset('tahun', 1, event)"><i class="fas fa-chevron-right"></i></button>
-          </div>
-          <h2 id="pdptTahun" onclick="bukaDetail('tahun')">Rp 0</h2>
+          <div id="gridKalender" class="calendar-grid"></div>
         </div>
       </div>
-      
-      <div class="calendar-container glass">
-        <div class="calendar-header">
-            <button class="btn btn-batal" onclick="ubahBulanKalender(-1)" style="padding:5px 12px"><i class="fas fa-chevron-left"></i></button>
-            <h3 id="judulBulanKalender">Memuat...</h3>
-            <button class="btn btn-batal" onclick="ubahBulanKalender(1)" style="padding:5px 12px"><i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+
+  <div id="modalTambah" class="modal-overlay">
+    <div class="modal-content glass">
+      <div class="modal-header"><i class="fas fa-user-plus"></i> Input Pasien Baru</div>
+      <form id="formTambahPasien" onsubmit="submitTambahPasien(event)">
+        <div class="form-group">
+          <label>Sapaan Gelar</label>
+          <div class="radio-group">
+            <label><input type="radio" name="titlePasien" value="Tn. " checked> Tn.</label>
+            <label><input type="radio" name="titlePasien" value="Ny. "> Ny.</label>
+            <label><input type="radio" name="titlePasien" value="An. "> An.</label>
+            <label><input type="radio" name="titlePasien" value="Nn. "> Nn.</label>
+          </div>
         </div>
-        <div id="gridKalender" class="calendar-grid"></div>
+        <div class="form-group"><label>Nama Lengkap</label><input type="text" id="newNama" class="form-control" required placeholder="Nama Pasien"></div>
+        <div class="form-group"><label>Alamat Rumah</label><textarea id="newAlamat" class="form-control" rows="2" required placeholder="Desa, Jalan, dsb..."></textarea></div>
+        <div class="grid-2">
+          <div class="form-group"><label>RT</label><input type="number" id="newRT" class="form-control" required></div>
+          <div class="form-group"><label>RW</label><input type="number" id="newRW" class="form-control" required></div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-batal" onclick="tutupModal('modalTambah')">Batal</button>
+          <button type="submit" class="btn btn-super" id="btnSavePasien"><i class="fas fa-save"></i> Simpan & Periksa</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalEditPasien" class="modal-overlay">
+    <div class="modal-content glass">
+      <div class="modal-header"><i class="fas fa-user-edit"></i> Edit Biodata Pasien</div>
+      <form id="formEditPasien" onsubmit="submitEditPasien(event)">
+        <input type="hidden" id="editIdPasien">
+        <div class="form-group">
+          <div class="radio-group">
+            <label><input type="radio" name="editTitlePasien" value="Tn. "> Tn.</label>
+            <label><input type="radio" name="editTitlePasien" value="Ny. "> Ny.</label>
+            <label><input type="radio" name="editTitlePasien" value="An. "> An.</label>
+            <label><input type="radio" name="editTitlePasien" value="Nn. "> Nn.</label>
+          </div>
+        </div>
+        <div class="form-group"><label>Nama Pasien</label><input type="text" id="editNama" class="form-control" required></div>
+        <div class="form-group"><label>Alamat</label><textarea id="editAlamat" class="form-control" rows="2" required></textarea></div>
+        <div class="grid-2">
+          <div class="form-group"><label>RT</label><input type="number" id="editRT" class="form-control" required></div>
+          <div class="form-group"><label>RW</label><input type="number" id="editRW" class="form-control" required></div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-batal" onclick="tutupModal('modalEditPasien')">Batal</button>
+          <button type="submit" class="btn btn-super" id="btnUpdatePasien">Update Biodata</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalForm" class="modal-overlay">
+    <div class="modal-content glass">
+      <div class="modal-header"><i class="fas fa-stethoscope"></i> Pemeriksaan: <span id="namaPasienDisp" style="color:#0d9488"></span></div>
+      <form id="formPemeriksaan" onsubmit="submitPemeriksaan(event)">
+        <input type="hidden" id="idPasien">
+        <div class="form-group"><label>Anamnesa / Keluhan</label><textarea id="anamnesa" class="form-control" rows="2" required placeholder="Keluhan Pasien..."></textarea></div>
+        <div class="vitals-grid">
+          <div class="form-group"><label>Tensi (TD)</label><input type="text" id="td" class="form-control input-vitals" placeholder="120/80"></div>
+          <div class="form-group"><label>Suhu (°C)</label><input type="text" id="suhu" class="form-control input-vitals"></div>
+          <div class="form-group"><label>Nadi</label><input type="text" id="nadi" class="form-control input-vitals"></div>
+          <div class="form-group"><label>RR</label><input type="text" id="rr" class="form-control input-vitals"></div>
+        </div>
+        <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 10px;">
+          <label style="font-weight:700; color:#2d3748; margin-bottom:8px; display:block;"><i class="fas fa-capsules"></i> Resep Obat (6 Baris)</label>
+          <input type="text" id="obat1" class="form-control" style="margin-bottom:6px" placeholder="Obat 1">
+          <input type="text" id="obat2" class="form-control" style="margin-bottom:6px" placeholder="Obat 2">
+          <input type="text" id="obat3" class="form-control" style="margin-bottom:6px" placeholder="Obat 3">
+          <input type="text" id="obat4" class="form-control" style="margin-bottom:6px" placeholder="Obat 4">
+          <input type="text" id="obat5" class="form-control" style="margin-bottom:6px" placeholder="Obat 5">
+          <input type="text" id="obat6" class="form-control" placeholder="Obat 6">
+        </div>
+        <div class="form-group" style="margin-top:10px;"><label>Total Biaya (Rp)</label><input type="text" id="biaya" class="form-control input-biaya" required oninput="formatRibuan(this)"></div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-batal" onclick="tutupModal('modalForm')">Batal</button>
+          <button type="submit" class="btn btn-mulai" id="btnSimpanRM">Simpan Data RM</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalEditRM" class="modal-overlay">
+    <div class="modal-content glass">
+      <div class="modal-header"><i class="fas fa-edit"></i> Edit Hasil Pemeriksaan</div>
+      <form id="formEditRM" onsubmit="submitEditRM(event)">
+        <input type="hidden" id="editRMRowIndex">
+        <div class="form-group"><label>Anamnesa / Keluhan</label><textarea id="editAnamnesa" class="form-control" rows="2" required></textarea></div>
+        <div class="vitals-grid">
+          <div class="form-group"><label>Tensi</label><input type="text" id="editTd" class="form-control"></div>
+          <div class="form-group"><label>Suhu</label><input type="text" id="editSuhu" class="form-control"></div>
+          <div class="form-group"><label>Nadi</label><input type="text" id="editNadi" class="form-control"></div>
+          <div class="form-group"><label>RR</label><input type="text" id="editRr" class="form-control"></div>
+        </div>
+        <div style="background: rgba(255,255,255,0.6); padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 10px;">
+          <input type="text" id="editObat1" class="form-control" style="margin-bottom:6px">
+          <input type="text" id="editObat2" class="form-control" style="margin-bottom:6px">
+          <input type="text" id="editObat3" class="form-control" style="margin-bottom:6px">
+          <input type="text" id="editObat4" class="form-control" style="margin-bottom:6px">
+          <input type="text" id="editObat5" class="form-control" style="margin-bottom:6px">
+          <input type="text" id="editObat6" class="form-control">
+        </div>
+        <div class="form-group" style="margin-top:10px;"><label>Total Biaya</label><input type="text" id="editBiaya" class="form-control input-biaya" required oninput="formatRibuan(this)"></div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
+          <button type="button" class="btn btn-batal" onclick="tutupModal('modalEditRM')">Batal</button>
+          <button type="submit" class="btn btn-super" id="btnUpdateRM">Update RM</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="modalRiwayat" class="modal-overlay">
+    <div class="modal-content glass">
+      <div class="modal-header"><i class="fas fa-history"></i> Riwayat Pasien: <span id="namaRiwayat" style="color:#0d9488"></span></div>
+      <div id="loaderRiwayat" style="text-align:center; padding:10px;"><i class="fas fa-spinner fa-spin" style="font-size:24px;"></i></div>
+      <div id="listRiwayat" style="max-height: 400px; overflow-y:auto;"></div>
+      <div style="text-align:right; margin-top:15px;"><button class="btn btn-batal" onclick="tutupModal('modalRiwayat')">Tutup</button></div>
+    </div>
+  </div>
+
+  <div id="modalDetail" class="modal-overlay">
+    <div class="modal-content glass" style="max-width: 450px;">
+      <div class="modal-header" id="judulDetail">Detail Kunjungan</div>
+      <div id="listPasienDetail" style="max-height: 350px; overflow-y:auto; margin-bottom: 15px;"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:15px;padding-top:15px;border-top:2px dashed rgba(13,148,136,0.3);">
+        <b style="font-size:16px; color:#0f766e">TOTAL:</b><b id="totalDetailDisp" style="font-size:18px; color:#be123c"></b>
       </div>
+      <button class="btn btn-riwayat" style="width:100%;margin-top:20px; padding:15px" onclick="tutupModal('modalDetail')">TUTUP</button>
     </div>
   </div>
 
   <script>
     // ==============================================================================
-    // WAJIB DIGANTI: Masukkan URL Web App dari Google Apps Script (berakhiran /exec)
+    // TEMPELKAN URL WEB APP GOOGLE SCRIPT (/exec) ANDA DI BAWAH INI:
     // ==============================================================================
-    const API_URL = "https://script.google.com/macros/s/AKfycbzwafL-XIfqazsl1rufQamYU2Gvs4cHUjct5TC-xxnDBbZ63VoFAuRzsIUVQ6tjSM4uOA/exec"; 
-
-    function runGoogleScript(action, data, onSuccess) {
-      fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: action, data: data }) })
-      .then(r => r.json()).then(res => { if(res.status === 'success') onSuccess(res.data); }).catch(e => console.error(e));
-    }
-
-    let semuaPasien = [], allTransactions = [];
-    let riwayatPasienGlobal = [], currentPasienId = "", currentPasienNama = "";
-    
-    // State untuk Navigasi Waktu
-    let offset = { hari: 0, minggu: 0, bulan: 0, tahun: 0 };
-    let summaryFiltered = { hari: [], minggu: [], bulan: [], tahun: [] };
-    let tanggalKalender = new Date();
-
-    const liburNasional = { "01-01": "Tahun Baru", "05-01": "Hari Buruh", "06-01": "Pancasila", "08-17": "Kemerdekaan RI", "12-25": "Natal" };
-
-    window.onload = () => { 
-      refreshData(); 
-      loadPendapatanBackground(); 
-      setupSwipeListeners();
-    };
-
-    function formatRibuan(n) { return new Intl.NumberFormat('id-ID').format(n); }
-    function formatRp(n) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n); }
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active'); event.currentTarget.classList.add('active');
-    }
-
-    function bukaModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function tutupModal(id) { document.getElementById(id).style.display = 'none'; }
-
-    // --- LOGIKA MESIN WAKTU (GESER & KLIK) ---
-    function loadPendapatanBackground() {
-      runGoogleScript('getDataPendapatanFull', null, data => {
-        allTransactions = data;
-        updateDashboards();
-      });
-    }
-
-    function ubahOffset(tipe, arah, event) {
-      if(event) event.stopPropagation(); // Mencegah modal terbuka saat klik panah
-      offset[tipe] += arah;
-      updateDashboards();
-    }
-
-    // Fungsi deteksi geser (Swipe) untuk HP
-    function setupSwipeListeners() {
-      ['hari', 'minggu', 'bulan', 'tahun'].forEach(tipe => {
-        let el = document.getElementById('swipe' + tipe.charAt(0).toUpperCase() + tipe.slice(1));
-        let touchstartX = 0; let touchendX = 0;
-        el.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; }, {passive: true});
-        el.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            if (touchendX > touchstartX + 40) ubahOffset(tipe, -1); // Geser Kanan = Masa Lalu
-            else if (touchendX < touchstartX - 40) ubahOffset(tipe, 1); // Geser Kiri = Masa Depan
-        }, {passive: true});
-      });
-    }
-
-    function updateDashboards() {
-      summaryFiltered = { hari: [], minggu: [], bulan: [], tahun: [] };
-      let dataKalender = {};
-      const now = new Date();
-
-      // Hitungan Batas Waktu
-      let targetHari = new Date(); targetHari.setDate(now.getDate() + offset.hari);
-      let tHariStr = targetHari.toDateString();
-
-      let targetMinggu = new Date();
-      let day = targetMinggu.getDay(), diff = targetMinggu.getDate() - day + (day == 0 ? -6:1);
-      let mon = new Date(targetMinggu.setDate(diff + (offset.minggu * 7))); mon.setHours(0,0,0,0);
-      let sun = new Date(mon); sun.setDate(mon.getDate() + 6); sun.setHours(23,59,59,999);
-
-      let targetBulan = new Date(); targetBulan.setMonth(now.getMonth() + offset.bulan);
-      let bBln = targetBulan.getMonth(), bThn = targetBulan.getFullYear();
-
-      let targetTahun = new Date(); targetTahun.setFullYear(now.getFullYear() + offset.tahun);
-      let tThn = targetTahun.getFullYear();
-
-      // Memasukkan data ke keranjang yang sesuai
-      allTransactions.forEach(r => {
-        let tgl = new Date(r.tglStr);
-        let info = { nama: r.nama, biaya: r.biaya, tglString: tgl.toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) };
-
-        if (tgl.toDateString() === tHariStr) summaryFiltered.hari.push(info);
-        if (tgl >= mon && tgl <= sun) summaryFiltered.minggu.push(info);
-        if (tgl.getMonth() === bBln && tgl.getFullYear() === bThn) {
-          summaryFiltered.bulan.push(info);
-          // Sekalian rekap untuk kalender jika yang dilihat adalah bulan ini
-          if (offset.bulan === 0) {
-            let key = `${tgl.getFullYear()}-${String(tgl.getMonth()+1).padStart(2,'0')}-${String(tgl.getDate()).padStart(2,'0')}`;
-            if (!dataKalender[key]) dataKalender[key] = { total: 0, count: 0, pasien: [] };
-            dataKalender[key].total += r.biaya; dataKalender[key].count += 1; dataKalender[key].pasien.push(info);
-          }
-        }
-        if (tgl.getFullYear() === tThn) summaryFiltered.tahun.push(info);
-      });
-
-      // Update Teks Label & Uang
-      document.getElementById('labelHari').innerText = offset.hari === 0 ? "HARI INI" : targetHari.toLocaleDateString('id-ID', {day:'numeric', month:'short'});
-      document.getElementById('pdptHari').innerText = formatRp(summaryFiltered.hari.reduce((a,b) => a+b.biaya, 0));
-
-      document.getElementById('labelMinggu').innerText = offset.minggu === 0 ? "MINGGU INI" : `${mon.getDate()} - ${sun.getDate()} ${sun.toLocaleDateString('id-ID',{month:'short'})}`;
-      document.getElementById('pdptMinggu').innerText = formatRp(summaryFiltered.minggu.reduce((a,b) => a+b.biaya, 0));
-
-      const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-      document.getElementById('labelBulan').innerText = offset.bulan === 0 ? "BULAN INI" : `${monthNames[bBln]} ${bThn}`;
-      document.getElementById('pdptBulan').innerText = formatRp(summaryFiltered.bulan.reduce((a,b) => a+b.biaya, 0));
-
-      document.getElementById('labelTahun').innerText = offset.tahun === 0 ? "TAHUN INI" : `TAHUN ${tThn}`;
-      document.getElementById('pdptTahun').innerText = formatRp(summaryFiltered.tahun.reduce((a,b) => a+b.biaya, 0));
-
-      if(offset.bulan === 0) renderKalender(dataKalender);
-    }
-
-    function bukaDetail(tipe) {
-      const list = summaryFiltered[tipe];
-      const total = list.reduce((a,b) => a + b.biaya, 0);
-      document.getElementById('judulDetail').innerText = document.getElementById('label'+tipe.charAt(0).toUpperCase() + tipe.slice(1)).innerText;
-      
-      let h = '';
-      if(list.length === 0) h = '<p style="text-align:center; padding:20px; font-weight:600; color:#4a5568;">Tidak ada riwayat pendapatan.</p>';
-      else list.forEach((p, i) => h += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px dashed #e2e8f0;"><div><span style="font-size:11px; background:#0d9488; color:#fff; padding:2px 6px; border-radius:5px; margin-right:8px;">${i+1}</span><b style="color:#0f766e; font-size:14px;">${p.nama}</b><br><small style="color:#4a5568; margin-left:30px;">${p.tglString}</small></div><b style="color:#be123c; font-size:14px;">Rp ${formatRibuan(p.biaya)}</b></div>`);
-      
-      document.getElementById('listPasienDetail').innerHTML = h;
-      document.getElementById('totalDetailDisp').innerText = formatRp(total);
-      bukaModal('modalDetail');
-    }
-
-    // --- KALENDER ---
-    function ubahBulanKalender(arah) {
-      tanggalKalender.setMonth(tanggalKalender.getMonth() + arah);
-      
-      // Ambil data untuk kalender yang di-navigasi manual
-      let dataKalender = {};
-      let bBln = tanggalKalender.getMonth(), bThn = tanggalKalender.getFullYear();
-      allTransactions.forEach(r => {
-        let tgl = new Date(r.tglStr);
-        if (tgl.getMonth() === bBln && tgl.getFullYear() === bThn) {
-          let key = `${tgl.getFullYear()}-${String(tgl.getMonth()+1).padStart(2,'0')}-${String(tgl.getDate()).padStart(2,'0')}`;
-          if (!dataKalender[key]) dataKalender[key] = { total: 0, count: 0, pasien: [] };
-          dataKalender[key].total += r.biaya; dataKalender[key].count += 1; 
-          dataKalender[key].pasien.push({ nama: r.nama, biaya: r.biaya, tglString: tgl.toLocaleDateString('id-ID') });
-        }
-      });
-      renderKalender(dataKalender);
-    }
-
-    function renderKalender(dataKalender) {
-      const y = tanggalKalender.getFullYear(), m = tanggalKalender.getMonth(), now = new Date();
-      const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-      document.getElementById('judulBulanKalender').innerText = `${monthNames[m]} ${y}`;
-      const first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate(), grid = document.getElementById('gridKalender');
-      grid.innerHTML = ''; ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => grid.innerHTML += `<div class="cal-day-name ${i===0?'text-red':''}">${d}</div>`);
-      for (let i = 0; i < first; i++) grid.innerHTML += `<div class="cal-day empty"></div>`;
-      for (let i = 1; i <= total; i++) {
-        let key = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
-        let isToday = (i === now.getDate() && m === now.getMonth() && y === now.getFullYear()) ? 'today' : '';
-        let libur = liburNasional[key.substring(5)]; let dH = dataKalender[key];
-        
-        let h = `<div class="cal-day ${isToday} ${dH?'has-data':''}" ${dH?`onclick="bukaDetailKunjungan('${key}', '${JSON.stringify(dH.pasien).replace(/"/g, '&quot;')}', ${dH.total})"`:''}><div class="date-num ${(new Date(y,m,i).getDay()===0 || libur)?'text-red':''}">${i}</div>`;
-        if(libur) h += `<div class="holiday-tag">${libur}</div>`;
-        if(dH) h += `<div class="visit-badge">${dH.count} Ps</div><div class="income-tag">Rp ${formatRibuan(dH.total)}</div><div class="logo-rp-emas">Rp</div>`;
-        grid.innerHTML += h + `</div>`;
-      }
-    }
-
-    function bukaDetailKunjungan(tgl, json, total) {
-      const list = JSON.parse(json);
-      document.getElementById('judulDetail').innerText = new Date(tgl).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      let h = '';
-      list.forEach((p, i) => h += `<div style="display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px dashed #e2e8f0;"><div><span style="font-size:11px; background:#0d9488; color:#fff; padding:2px 6px; border-radius:5px; margin-right:8px;">${i+1}</span><b style="color:#0f766e; font-size:14px;">${p.nama}</b></div><b style="color:#be123c; font-size:14px;">Rp ${formatRibuan(p.biaya)}</b></div>`);
-      document.getElementById('listPasienDetail').innerHTML = h; document.getElementById('totalDetailDisp').innerText = formatRp(total); bukaModal('modalDetail');
-    }
-
-    // --- FUNGSI CRUD PASIEN & RM (SAMA PERSIS SEPERTI SEBELUMNYA)
+    const API_URL = "https://script.google.com/macros/s/AKfycbzwafL-XIfqazsl1rufQamYU2Gvs4cHUjct5TC-xxnDBbZ63VoFAuRzsIUVQ6tjSM4uOA/exec"
