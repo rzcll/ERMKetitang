@@ -13,16 +13,16 @@
     body { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); background-attachment: fixed; color: #333; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
     .glass { background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.6); border-radius: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); }
     
-    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 10px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.35); border: 1px solid rgba(255, 255, 255, 0.7); box-shadow: 0 10px 25px rgba(72, 187, 120, 0.3); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); animation: floatMenu 4s ease-in-out infinite; }
-    @keyframes floatMenu { 0% { transform: translateY(0px); box-shadow: 0 10px 25px rgba(72, 187, 120, 0.3); } 50% { transform: translateY(-8px); box-shadow: 0 20px 30px rgba(72, 187, 120, 0.15); } 100% { transform: translateY(0px); box-shadow: 0 10px 25px rgba(72, 187, 120, 0.3); } }
+    /* Animasi bergerak (floatMenu) pada navbar dihapus agar stabil */
+    .navbar { display: flex; justify-content: space-between; gap: 10px; padding: 10px; margin: 15px auto 25px auto; width: 92%; max-width: 450px; border-radius: 50px; position: sticky; top: 15px; z-index: 100; background: rgba(255, 255, 255, 0.35); border: 1px solid rgba(255, 255, 255, 0.7); box-shadow: 0 10px 25px rgba(72, 187, 120, 0.3); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
     .nav-btn { flex: 1; padding: 14px 10px; border: none; border-radius: 40px; font-weight: 800; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); color: #4a5568; background: transparent; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .nav-btn:hover:not(.active) { background: rgba(255,255,255,0.6); color: #2d3748; } .nav-erm.active { background: #2b6cb0; color: #fff; box-shadow: 0 4px 15px rgba(43, 108, 176, 0.35); } .nav-pendapatan.active { background: #2f855a; color: #fff; box-shadow: 0 4px 15px rgba(47, 133, 90, 0.35); }
 
     .container { padding: 0 20px 40px 20px; max-width: 1400px; margin: 0 auto; width: 100%; }
     .page { display: none; animation: fadeIn 0.3s ease-out; } .page.active { display: block; } @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .welcome-banner { padding: 15px 25px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: rgba(255, 255, 255, 0.35); border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 8px 25px rgba(72, 187, 120, 0.25); animation: floatBanner 4s ease-in-out infinite; }
-    @keyframes floatBanner { 0% { transform: translateY(0px); box-shadow: 0 8px 25px rgba(72, 187, 120, 0.25); } 50% { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(72, 187, 120, 0.15); } 100% { transform: translateY(0px); box-shadow: 0 8px 25px rgba(72, 187, 120, 0.25); } }
+    /* Animasi bergerak (floatBanner) pada banner dihapus agar stabil */
+    .welcome-banner { padding: 15px 25px; text-align: center; margin: 0 auto 25px auto; max-width: 600px; background: rgba(255, 255, 255, 0.35); border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 8px 25px rgba(72, 187, 120, 0.25); }
     .welcome-banner h1 { color: #2b6cb0; font-size: 20px; margin-bottom: 2px; font-weight: 800; letter-spacing: 0.5px; } .welcome-banner p { color: #4a5568; font-size: 13px; font-weight: 600; margin: 0; } .welcome-banner.pendapatan-banner h1 { color: #2f855a; margin-bottom: 0; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
     .action-bar { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; justify-content: center; }
@@ -31,7 +31,6 @@
     .btn-super { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 30px; padding: 0 30px; height: 50px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; white-space: nowrap; }
     .btn-super:hover:not(:disabled) { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); }
 
-    /* Efek untuk tombol yang sedang disable (Loading) */
     button:disabled { cursor: not-allowed; opacity: 0.7; transform: none !important; box-shadow: none !important; }
 
     #patientList { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
@@ -88,10 +87,15 @@
     .loader { display: none; text-align: center; padding: 40px; } .loader i { font-size: 40px; color: #fff; animation: spin 1s linear infinite; } @keyframes spin { 100% { transform: rotate(360deg); } }
 
     @media screen and (max-width: 768px) {
-      .navbar { position: fixed; bottom: 0; top: auto; width: 100%; border-radius: 24px 24px 0 0; margin: 0; left: 0; max-width: 100%; box-shadow: 0 -5px 25px rgba(72, 187, 120, 0.2); border: none; border-top: 1px solid rgba(255,255,255,0.6); }
-      .container { padding: 10px 10px 100px 10px; }
-      .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
-      #patientList { grid-template-columns: 1fr; }
+      .container { padding: 0 15px 90px 15px; max-width: 100%; } 
+      .navbar { position: fixed; top: auto; bottom: 0; left: 0; width: 100%; max-width: 100%; margin: 0; padding: 10px 15px 15px 15px; border-radius: 30px 30px 0 0; animation: none; flex-direction: row; justify-content: space-around; background: rgba(255, 255, 255, 0.85); box-shadow: 0 -5px 25px rgba(72, 187, 120, 0.2); border: none; border-top: 1px solid rgba(255,255,255,0.6); }
+      .nav-btn { flex-direction: column; padding: 8px; font-size: 10px; gap: 4px; border-radius: 15px; } .nav-btn i { font-size: 20px !important; }
+      .welcome-banner { margin: 15px 0 20px 0; max-width: 100%; padding: 20px 15px; border-radius: 25px; } .welcome-banner h1 { font-size: 18px; }
+      .action-bar { flex-direction: column; gap: 10px; margin-bottom: 15px; } .search-box { width: 100%; min-width: 100%; max-width: 100%; padding: 14px 20px; font-size: 13px; border-radius: 20px;} .btn-super { width: 100%; height: 45px; border-radius: 20px;}
+      #patientList { grid-template-columns: 1fr; gap: 12px; } .patient-card { padding: 15px; border-radius: 15px;} .btn-group { grid-template-columns: 1fr 1fr; display: grid; gap: 8px; width: 100%; } .btn-group .btn-edit { grid-column: span 2; } 
+      .dashboard-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .stat-card { padding: 15px 5px; border-radius: 15px; } .stat-card i { font-size: 22px; margin-bottom: 5px; } .stat-card h4 { font-size: 10px; } .stat-card h2 { font-size: 16px; }
+      .calendar-container { padding: 15px 10px; border-radius: 20px; } .calendar-grid { gap: 4px; } .cal-day-name { font-size: 10px; padding-bottom: 4px; } .cal-day { padding: 6px 2px; min-height: 55px; border-radius: 8px; } .cal-day .date-num { font-size: 12px; margin-bottom: 2px; } .logo-rp-emas { font-size: 8px; top: 2px; right: 2px; } .visit-badge { font-size: 8px; padding: 2px; border-radius: 4px;} .income-tag { font-size: 8px; padding: 2px; border-radius: 4px;} .holiday-tag { font-size: 8px; padding: 2px; border-radius: 4px;}
+      .modal-content { padding: 20px; width: 95%; max-height: 85vh; border-radius: 25px; } .grid-2 { grid-template-columns: 1fr; gap: 10px; } .vitals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .radio-group label { font-size: 11px; }
     }
   </style>
 </head>
@@ -283,11 +287,10 @@
 
   <script>
     // ==============================================================================
-    // WAJIB DIGANTI: Masukkan URL Web App Google Apps Script Anda di sini
+    // WAJIB DIGANTI: Masukkan URL API Web App Google Apps Script Anda di sini!
     // ==============================================================================
     const API_URL = "https://script.google.com/macros/s/AKfycbzwafL-XIfqazsl1rufQamYU2Gvs4cHUjct5TC-xxnDBbZ63VoFAuRzsIUVQ6tjSM4uOA/exec"; 
 
-    // Modifikasi runGoogleScript untuk memproses animasi loading pada tombol
     function runGoogleScript(action, data, onSuccess, btnElement) {
       let originalText = "";
       if (btnElement) {
@@ -308,10 +311,7 @@
       })
       .catch(err => { console.error("Koneksi gagal", err); alert("Gagal terhubung ke Database."); })
       .finally(() => {
-        if (btnElement) {
-          btnElement.innerHTML = originalText;
-          btnElement.disabled = false;
-        }
+        if (btnElement) { btnElement.innerHTML = originalText; btnElement.disabled = false; }
       });
     }
 
@@ -344,7 +344,6 @@
     function bukaModal(id) { document.getElementById(id).style.display = 'flex'; }
     function tutupModal(id) { document.getElementById(id).style.display = 'none'; }
 
-    // --- LOGIKA MESIN WAKTU (GESER & KLIK) ---
     function loadPendapatanBackground() {
       runGoogleScript('getDataPendapatanFull', null, data => {
         allTransactions = data; document.getElementById('loaderPendapatan').style.display = 'none'; document.getElementById('kontenPendapatan').style.display = 'block'; updateDashboards();
@@ -429,7 +428,7 @@
       const list = summaryFiltered[tipe]; const total = list.reduce((a,b) => a + b.biaya, 0);
       document.getElementById('judulPeriodeDisp').innerText = document.getElementById('label'+tipe.charAt(0).toUpperCase() + tipe.slice(1)).innerText;
       let h = '';
-      if(list.length === 0) h = '<p style="text-align:center; color:#718096; font-size:13px; margin:20px 0;">Belum ada kunjungan.</p>';
+      if(list.length === 0) h = '<p style="text-align:center; color:#718096; font-size:13px; margin:20px 0;">Belum ada kunjungan pasien.</p>';
       else list.forEach((p, i) => h += `<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px dashed #e2e8f0;"><div style="display:flex; flex-direction:column;"><div style="display:flex; align-items:center; gap:8px;"><span style="font-size:10px; color:#fff; background:#a0aec0; padding:2px 6px; border-radius:5px;">${i+1}</span><span style="font-size:13px; font-weight:600; color:#2d3748;">${p.nama}</span></div><span style="font-size:10px; color:#718096; margin-left:28px; margin-top:2px;">${p.tglString}</span></div><span style="font-size:11px; color:#2f855a; font-weight:700; background:rgba(47,133,90,0.1); padding:4px 8px; border-radius:6px;">${formatRp(p.biaya)}</span></div>`);
       document.getElementById('listPasienPeriode').innerHTML = h; document.getElementById('totalPeriodeDisp').innerText = formatRp(total); bukaModal('modalDetailPeriode');
     }
@@ -459,7 +458,7 @@
         let libur = liburNasional[key.substring(5)]; let dH = dataKalender[key];
         let h = `<div class="cal-day ${isToday} ${dH?'has-data':''}" ${dH?`onclick="bukaDetailKunjungan('${key}', '${JSON.stringify(dH.pasien).replace(/"/g, '&quot;')}', ${dH.totalBiaya})"`:''}><div class="date-num ${(new Date(y,m,i).getDay()===0 || libur)?'text-red':''}">${i}</div>`;
         if(libur) h += `<div class="holiday-tag">${libur}</div>`;
-        if(dH) h += `<div class="visit-badge">${dH.jumlahKunjungan} Ps</div><div class="income-tag">${formatRp(dH.totalBiaya)}</div><div class="logo-rp-emas">Rp</div>`;
+        if(dH) h += `<div class="visit-badge">${dH.jumlahKunjungan} Ps</div><div class="income-tag">Rp ${new Intl.NumberFormat('id-ID').format(dH.totalBiaya)}</div><div class="logo-rp-emas">Rp</div>`;
         grid.innerHTML += h + `</div>`;
       }
     }
@@ -470,7 +469,6 @@
       document.getElementById('listPasienKunjungan').innerHTML = h; document.getElementById('totalDetailDisp').innerText = formatRp(total); bukaModal('modalDetailKunjungan');
     }
 
-    // --- FUNGSI CRUD PASIEN & RM DENGAN PERLINDUNGAN DOUBLE CLICK ---
     function refreshData() { 
       document.getElementById('loaderData').style.display = 'block'; 
       runGoogleScript('getDataPasien', null, data => { semuaPasien = data; document.getElementById('loaderData').style.display = 'none'; renderPasien(semuaPasien); }); 
@@ -486,10 +484,8 @@
       renderPasien(semuaPasien.filter(p => (p.nama + p.alamat).toLowerCase().includes(val))); 
     }
 
-    // UPDATE: Membawa btnElement ke dalam runGoogleScript untuk efek Loading
     function submitTambahPasien(e) { 
-      e.preventDefault(); 
-      const btn = document.getElementById('btnSavePasien');
+      e.preventDefault(); const btn = document.getElementById('btnSavePasien');
       const t = document.querySelector('input[name="titlePasien"]:checked').value; 
       const data = { nama: t + document.getElementById('newNama').value, alamat: document.getElementById('newAlamat').value, rt: document.getElementById('newRT').value, rw: document.getElementById('newRW').value }; 
       runGoogleScript('simpanPasienBaru', data, res => { 
@@ -505,10 +501,8 @@
       bukaModal('modalEditPasien'); 
     }
     
-    // UPDATE: Membawa btnElement
     function submitEditPasien(e) { 
-      e.preventDefault(); 
-      const btn = document.getElementById('btnUpdatePasien');
+      e.preventDefault(); const btn = document.getElementById('btnUpdatePasien');
       const t = document.querySelector('input[name="editTitlePasien"]:checked').value; 
       const data = { id: document.getElementById('editIdPasien').value, nama: t + document.getElementById('editNama').value, alamat: document.getElementById('editAlamat').value, rt: document.getElementById('editRT').value, rw: document.getElementById('editRW').value }; 
       runGoogleScript('updateBiodataPasien', data, () => { 
@@ -520,10 +514,8 @@
       document.getElementById('idPasien').value = id; document.getElementById('namaPasienDisp').innerText = n; document.getElementById('formPemeriksaan').reset(); bukaModal('modalForm'); 
     }
     
-    // UPDATE: Membawa btnElement
     function submitPemeriksaan(e) { 
-      e.preventDefault(); 
-      const btn = document.getElementById('btnSimpanRM');
+      e.preventDefault(); const btn = document.getElementById('btnSimpanRM');
       let rawBiaya = document.getElementById('biaya').value; let cleanBiaya = rawBiaya.replace(/\./g, '');
       const d = { 
         idPasien: document.getElementById('idPasien').value, namaPasien: document.getElementById('namaPasienDisp').innerText, anamnesa: document.getElementById('anamnesa').value, 
@@ -541,6 +533,7 @@
       runGoogleScript('getRiwayatPasien', {idPasien: id}, data => { 
         riwayatPasienGlobal = data; document.getElementById('loaderRiwayat').style.display = 'none'; 
         let h = ''; 
+        if(data.length === 0) h = '<p style="text-align:center;">Belum ada riwayat pasien.</p>';
         data.forEach((r, idx) => { h += `<div style="background:rgba(255,255,255,0.7); padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid rgba(255,255,255,0.9);"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><span style="font-size:12px; font-weight:700; color:#2b6cb0;">${r.tanggal}</span><button class="btn btn-edit" style="padding:4px 10px" onclick="bukaEditRM(${idx})"><i class="fas fa-pencil-alt"></i> Edit</button></div><p style="font-size:13px; font-weight:600;">Keluhan: ${r.anamnesa}</p><p style="font-size:12px; color:#4a5568;">Obat: ${r.obat}</p></div>`; }); 
         document.getElementById('listRiwayat').innerHTML = h; 
       }); 
@@ -551,10 +544,8 @@
       document.getElementById('editBiaya').value = d.biaya; formatRibuan(document.getElementById('editBiaya')); bukaModal('modalEditRM'); 
     }
     
-    // UPDATE: Membawa btnElement
     function submitEditRM(e) { 
-      e.preventDefault(); 
-      const btn = document.getElementById('btnUpdateRM');
+      e.preventDefault(); const btn = document.getElementById('btnUpdateRM');
       let rawBiaya = document.getElementById('editBiaya').value; let cleanBiaya = rawBiaya.replace(/\./g, '');
       const d = { 
         rowIndex: document.getElementById('editRMRowIndex').value, anamnesa: document.getElementById('editAnamnesa').value, 
