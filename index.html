@@ -2,11 +2,10 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <!-- Optimalisasi Viewport untuk Fullscreen & Safe Area -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#f8fafc">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   <title>E-RM KETITANG MEDIKA</title>
   
@@ -23,523 +22,458 @@
   <style>
     :root {
       --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-area-top: env(safe-area-inset-top, 0px);
     }
     
     body { 
       font-family: 'Inter', sans-serif; 
-      background-color: #f8fafc; 
+      /* Background luar untuk versi desktop */
+      background-color: #cbd5e1; 
       color: #334155;
-      /* Mencegah overscroll bounce (efek karet) layaknya aplikasi native */
       overscroll-behavior-y: none;
     }
-    
-    /* Scrollbar Styling (Desktop) */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-    /* Mencegah Zoom di iOS saat fokus input */
+    /* Menyembunyikan scrollbar agar terasa seperti App Asli */
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Mencegah Zoom di iOS */
     input, textarea, select { font-size: 16px !important; }
 
-    /* Efek Glassmorphism Premium (Light Grey) */
-    .glass-card {
-      background: rgba(248, 250, 252, 0.85) !important;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 15px 35px -5px rgba(15, 23, 42, 0.2), 0 8px 15px -5px rgba(15, 23, 42, 0.1) !important;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .glass-card:hover {
-      box-shadow: 0 25px 50px -10px rgba(15, 23, 42, 0.3), 0 15px 25px -10px rgba(15, 23, 42, 0.2) !important;
-      transform: translateY(-4px);
-    }
-
-    .page { display: none; animation: fadeIn 0.3s ease-out; }
+    /* Animasi Halaman */
+    .page { display: none; animation: fadeScale 0.25s ease-out; }
     .page.active { display: block; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeScale { 
+      from { opacity: 0; transform: scale(0.98); } 
+      to { opacity: 1; transform: scale(1); } 
+    }
 
+    /* Bottom Sheet Modal Styling */
     .modal-overlay { 
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); 
-      display: none; justify-content: center; align-items: center; z-index: 1000; 
-      opacity: 0; transition: opacity 0.3s ease;
-      padding: 1rem;
+      position: absolute; /* Terkunci di dalam wrapper HP */
+      top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(15, 23, 42, 0.6); 
+      backdrop-filter: blur(4px); 
+      display: none; justify-content: center; align-items: flex-end; /* Nempel bawah */
+      z-index: 1000; opacity: 0; transition: opacity 0.3s ease;
     }
     .modal-overlay.show { opacity: 1; }
     
     .modal-content { 
-      max-height: 85dvh; overflow-y: auto; 
-      background: rgba(248, 250, 252, 0.98) !important; 
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 35px 60px -15px rgba(15, 23, 42, 0.45) !important;
-      transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%;
+      max-height: 85%; overflow-y: auto; 
+      background: #ffffff;
+      border-radius: 1.5rem 1.5rem 0 0; /* Melengkung di atas saja */
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+      transform: translateY(100%); 
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      padding-bottom: calc(1rem + var(--safe-area-bottom)); /* Safe area padding */
     }
-    .modal-overlay.show .modal-content { transform: scale(1); }
+    .modal-overlay.show .modal-content { transform: translateY(0); }
 
-    .desktop-nav { box-shadow: 0 15px 30px -10px rgba(15, 23, 42, 0.15) !important; }
-    
-    /* Navigasi Bawah Mobile dengan Safe Area */
-    .mobile-nav { 
-      box-shadow: 0 -10px 40px -5px rgba(15, 23, 42, 0.15) !important; 
-      padding-bottom: calc(0.75rem + var(--safe-area-bottom));
-    }
-
+    /* Loader */
     .loader-spin { animation: spin 1s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
-
     .radio-group input[type="radio"] { accent-color: #3b82f6; width: 1.2rem; height: 1.2rem; cursor: pointer; }
     
-    /* Mobile Layout Tweaks */
-    @media (max-width: 768px) {
-      ::-webkit-scrollbar { display: none; } /* Hilangkan scrollbar di HP agar lebih native */
-      .desktop-nav { display: none; }
-      .mobile-nav { display: flex; }
-      /* Tambah padding bawah agar konten tidak tertutup nav menu (termasuk safe area) */
-      .main-content { padding-bottom: calc(90px + var(--safe-area-bottom)); }
-      .glass-card:hover { transform: none; /* Disable hover float on mobile */ }
-    }
-    @media (min-width: 769px) {
-      .desktop-nav { display: flex; }
-      .mobile-nav { display: none; }
+    /* Navigasi Bawah */
+    .nav-bottom-safe {
+      padding-bottom: calc(0.5rem + var(--safe-area-bottom));
     }
   </style>
 </head>
-<body class="min-h-[100dvh] flex flex-col antialiased relative">
 
-  <!-- Desktop Navigation -->
-  <div class="desktop-nav sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center w-full">
-    <div class="flex items-center gap-3 text-slate-800 font-bold text-xl">
-      <i class="fas fa-hospital-user text-2xl text-blue-600"></i>
-      Ketitang Medika
-    </div>
-    <div class="flex gap-4">
-      <button class="nav-btn nav-erm active px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 flex items-center gap-2 bg-slate-800 text-white shadow-lg hover:bg-slate-700" onclick="switchTab('erm', this)">
-        <i class="fas fa-notes-medical"></i> E-RM Pasien
-      </button>
-      <button class="nav-btn nav-pendapatan px-6 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 flex items-center gap-2 text-slate-600 hover:bg-slate-100" onclick="switchTab('pendapatan', this)">
-        <i class="fas fa-chart-pie"></i> Rekapitulasi
-      </button>
-    </div>
-  </div>
+<body class="min-h-[100dvh] flex justify-center items-center md:py-4">
 
-  <!-- Mobile Navigation (Bottom) -->
-  <div class="mobile-nav fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-200 justify-around items-center pt-3 px-2 z-50">
-    <button class="nav-btn-mobile nav-erm active flex flex-col items-center gap-1.5 text-slate-800 w-1/2 transition-colors" onclick="switchTabMobile('erm', this)">
-      <div class="p-2 rounded-xl transition-all duration-300 icon-container"><i class="fas fa-notes-medical text-xl"></i></div>
-      <span class="text-[11px] font-bold uppercase tracking-wider">E-RM</span>
-    </button>
-    <button class="nav-btn-mobile nav-pendapatan flex flex-col items-center gap-1.5 text-slate-400 hover:text-slate-600 w-1/2 transition-colors" onclick="switchTabMobile('pendapatan', this)">
-      <div class="p-2 rounded-xl transition-all duration-300 icon-container"><i class="fas fa-chart-pie text-xl"></i></div>
-      <span class="text-[11px] font-bold uppercase tracking-wider">Rekap</span>
-    </button>
-  </div>
-
-  <!-- Main Container -->
-  <div class="main-content container mx-auto px-4 md:px-6 pt-6 md:pt-8 w-full max-w-7xl flex-grow flex flex-col">
+  <!-- FRAME SMARTPHONE: Membatasi ukuran aplikasi max lebar 400px -->
+  <div class="w-full max-w-[400px] h-[100dvh] md:h-[850px] bg-[#f8fafc] md:rounded-[2.5rem] relative shadow-2xl overflow-hidden flex flex-col md:border-[8px] border-slate-800">
     
-    <!-- PAGE 1: E-RM PASIEN -->
-    <div id="erm" class="page active flex-grow">
-      <div class="flex flex-col md:flex-row gap-4 mb-8 items-center justify-center">
-        <div class="relative w-full max-w-lg">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <i class="fas fa-search text-slate-400"></i>
-          </div>
-          <input type="text" id="searchInput" class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-shadow shadow-sm" placeholder="Cari Nama atau Alamat Pasien..." onkeyup="filterPasien()">
+    <!-- Header Aplikasi -->
+    <header class="bg-white/90 backdrop-blur-md px-5 pt-[calc(1rem+var(--safe-area-top))] pb-4 border-b border-slate-200 flex justify-between items-center z-40 relative shadow-sm shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
+          <i class="fas fa-hospital-user text-xl"></i>
         </div>
-        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl font-bold text-sm shadow-xl shadow-slate-300/50 transition-transform transform md:hover:-translate-y-0.5 flex items-center justify-center gap-2 active:scale-95" onclick="bukaModal('modalTambah')">
-          <i class="fas fa-user-plus"></i> Pasien Baru
-        </button>
+        <h1 class="text-slate-800 font-extrabold text-lg tracking-tight">Ketitang Medika</h1>
       </div>
+    </header>
 
-      <div id="loaderData" class="flex flex-col items-center justify-center py-20 text-slate-500">
-        <i class="fas fa-circle-notch loader-spin text-4xl mb-4 text-blue-500"></i>
-        <span class="text-sm font-semibold animate-pulse tracking-wide">Memuat Data Pasien...</span>
-      </div>
-
-      <div id="patientList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pb-6">
-        <!-- List Pasien Masuk Sini -->
-      </div>
-    </div>
-
-    <!-- PAGE 2: REKAP PENDAPATAN -->
-    <div id="pendapatan" class="page flex-grow">
-      <div class="glass-card rounded-3xl p-6 md:p-8 mb-6 text-center max-w-2xl mx-auto border-emerald-100 relative overflow-hidden">
-        <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-200 rounded-full blur-3xl opacity-50"></div>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-emerald-800 flex justify-center items-center gap-3 relative z-10">
-          <i class="fas fa-chart-line text-emerald-600"></i> Rekapitulasi Pendapatan
-        </h1>
-      </div>
-
-      <div class="text-right mb-6">
-        <button class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-semibold text-sm shadow-lg shadow-slate-300/50 transition-colors inline-flex items-center gap-2 active:scale-95" onclick="loadPendapatanManual()">
-          <i class="fas fa-sync-alt"></i> Refresh Data
-        </button>
-      </div>
+    <!-- AREA KONTEN SCROLLABLE -->
+    <main class="flex-grow overflow-y-auto hide-scrollbar relative z-10 bg-[#f8fafc]">
       
-      <div id="loaderPendapatan" class="flex flex-col items-center justify-center py-20 text-slate-500">
-        <i class="fas fa-circle-notch loader-spin text-4xl mb-4 text-emerald-500"></i>
-        <span class="text-sm font-semibold animate-pulse tracking-wide">Menghitung Rekapitulasi...</span>
+      <!-- PAGE 1: E-RM PASIEN -->
+      <div id="erm" class="page active px-4 py-5 pb-28">
+        
+        <!-- Search & Add -->
+        <div class="flex gap-2 mb-6">
+          <div class="relative w-full">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-search text-slate-400"></i>
+            </div>
+            <input type="text" id="searchInput" class="w-full pl-10 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-blue-400 outline-none shadow-sm" placeholder="Cari nama/alamat..." onkeyup="filterPasien()">
+          </div>
+          <button class="w-[52px] h-[52px] shrink-0 bg-slate-800 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-slate-300 active:scale-95 transition-transform" onclick="bukaModal('modalTambah')">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+
+        <div id="loaderData" class="flex flex-col items-center justify-center py-16 text-slate-400">
+          <i class="fas fa-circle-notch loader-spin text-3xl mb-3 text-blue-500"></i>
+          <span class="text-xs font-semibold animate-pulse uppercase tracking-wider">Memuat Data...</span>
+        </div>
+
+        <div id="patientList" class="flex flex-col gap-3">
+          <!-- List Pasien Masuk Sini -->
+        </div>
       </div>
-      
-      <div id="kontenPendapatan" style="display:none;" class="pb-6">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <!-- HARI -->
-          <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center transition-all group cursor-pointer" id="swipeHari">
-            <div class="flex justify-between w-full items-center mb-2 px-1">
-              <button class="text-slate-400 hover:text-orange-500 p-2 -ml-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('hari', -1, event)"><i class="fas fa-chevron-left"></i></button>
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-orange-600 transition-colors" id="labelHari" onclick="bukaDetailPeriode('hari')">Hari Ini</h4>
-              <button class="text-slate-400 hover:text-orange-500 p-2 -mr-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('hari', 1, event)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 w-full text-center group-hover:text-orange-600 transition-colors" id="pdptHari" onclick="bukaDetailPeriode('hari')">Rp 0</h2>
-          </div>
-          <!-- MINGGU -->
-          <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center transition-all group cursor-pointer" id="swipeMinggu">
-            <div class="flex justify-between w-full items-center mb-2 px-1">
-              <button class="text-slate-400 hover:text-blue-500 p-2 -ml-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('minggu', -1, event)"><i class="fas fa-chevron-left"></i></button>
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-blue-600 transition-colors" id="labelMinggu" onclick="bukaDetailPeriode('minggu')">Minggu Ini</h4>
-              <button class="text-slate-400 hover:text-blue-500 p-2 -mr-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('minggu', 1, event)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 w-full text-center group-hover:text-blue-600 transition-colors" id="pdptMinggu" onclick="bukaDetailPeriode('minggu')">Rp 0</h2>
-          </div>
-          <!-- BULAN -->
-          <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center transition-all group cursor-pointer" id="swipeBulan">
-            <div class="flex justify-between w-full items-center mb-2 px-1">
-              <button class="text-slate-400 hover:text-emerald-500 p-2 -ml-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('bulan', -1, event)"><i class="fas fa-chevron-left"></i></button>
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-emerald-600 transition-colors" id="labelBulan" onclick="bukaDetailPeriode('bulan')">Bulan Ini</h4>
-              <button class="text-slate-400 hover:text-emerald-500 p-2 -mr-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('bulan', 1, event)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 w-full text-center group-hover:text-emerald-600 transition-colors" id="pdptBulan" onclick="bukaDetailPeriode('bulan')">Rp 0</h2>
-          </div>
-          <!-- TAHUN -->
-          <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center transition-all group cursor-pointer" id="swipeTahun">
-            <div class="flex justify-between w-full items-center mb-2 px-1">
-              <button class="text-slate-400 hover:text-purple-500 p-2 -ml-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('tahun', -1, event)"><i class="fas fa-chevron-left"></i></button>
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-purple-600 transition-colors" id="labelTahun" onclick="bukaDetailPeriode('tahun')">Tahun Ini</h4>
-              <button class="text-slate-400 hover:text-purple-500 p-2 -mr-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('tahun', 1, event)"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 w-full text-center group-hover:text-purple-600 transition-colors" id="pdptTahun" onclick="bukaDetailPeriode('tahun')">Rp 0</h2>
-          </div>
+
+      <!-- PAGE 2: REKAP PENDAPATAN -->
+      <div id="pendapatan" class="page px-4 py-5 pb-28">
+        <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 mb-5 text-white shadow-lg shadow-emerald-200 relative overflow-hidden">
+          <i class="fas fa-chart-pie absolute -right-4 -bottom-4 text-white/20 text-7xl"></i>
+          <h2 class="text-sm font-semibold opacity-90 mb-1">Total Pemasukan</h2>
+          <h1 class="text-2xl font-black mb-4 relative z-10">Rekapitulasi E-RM</h1>
+          <button class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl font-semibold text-xs transition-colors flex items-center gap-2 relative z-10" onclick="loadPendapatanManual()">
+            <i class="fas fa-sync-alt"></i> Segarkan Data
+          </button>
+        </div>
+
+        <div id="loaderPendapatan" class="flex flex-col items-center justify-center py-12 text-slate-400">
+          <i class="fas fa-circle-notch loader-spin text-3xl mb-3 text-emerald-500"></i>
+          <span class="text-xs font-semibold animate-pulse uppercase tracking-wider">Menghitung...</span>
         </div>
         
-        <div class="glass-card rounded-3xl p-5 md:p-8">
-          <div class="flex justify-between items-center mb-6">
-              <button class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 active:bg-slate-200 transition-colors flex items-center justify-center" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left"></i></button>
-              <h3 id="judulBulanKalender" class="text-lg md:text-xl font-bold text-slate-800 uppercase tracking-wide">Memuat...</h3>
-              <button class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 active:bg-slate-200 transition-colors flex items-center justify-center" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right"></i></button>
-          </div>
-          <div id="gridKalender" class="grid grid-cols-7 gap-1.5 md:gap-3 text-center"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODALS -->
-
-  <!-- Modal Konfirmasi Hapus Pasien -->
-  <div id="modalHapus" class="modal-overlay">
-    <div class="modal-content w-full max-w-sm rounded-3xl p-6 text-center relative">
-      <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
-        <i class="fas fa-exclamation-triangle"></i>
-      </div>
-      <h2 class="text-xl font-bold text-slate-800 mb-2">Hapus Pasien?</h2>
-      <p class="text-sm text-slate-500 mb-6">Data <b id="hapusNamaPasienDisp" class="text-slate-700"></b> beserta seluruh rekam medisnya akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.</p>
-      <div class="flex gap-3">
-        <button class="w-1/2 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors active:scale-95" onclick="tutupModal('modalHapus')">Batal</button>
-        <button class="w-1/2 py-3.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold transition-colors shadow-lg shadow-rose-200 flex items-center justify-center gap-2 active:scale-95" id="btnEksekusiHapus" onclick="eksekusiHapusPasien()"><i class="fas fa-trash"></i> Hapus</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Detail Periode -->
-  <div id="modalDetailPeriode" class="modal-overlay">
-    <div class="modal-content w-full max-w-md rounded-3xl p-6 flex flex-col">
-      <div class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-200 flex flex-col shrink-0">
-        <div class="flex items-center gap-2"><i class="fas fa-list-alt text-slate-600"></i> Rekap Kunjungan</div>
-        <span id="judulPeriodeDisp" class="text-sm font-normal text-slate-500 mt-1"></span>
-      </div>
-      <div id="listPasienPeriode" class="overflow-y-auto mb-4 pr-2 space-y-2 flex-grow"></div>
-      <div class="flex justify-between items-center border-t border-dashed border-slate-300 pt-4 mt-2 shrink-0">
-        <h4 class="m-0 text-slate-700 font-bold text-sm">Total Pendapatan:</h4>
-        <h3 id="totalPeriodeDisp" class="m-0 text-slate-800 font-extrabold text-xl"></h3>
-      </div>
-      <div class="text-right mt-6 shrink-0">
-        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalDetailPeriode')">Tutup</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Detail Kunjungan (Harian) -->
-  <div id="modalDetailKunjungan" class="modal-overlay">
-    <div class="modal-content w-full max-w-md rounded-3xl p-6 flex flex-col">
-      <div class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-200 flex flex-col shrink-0">
-        <div class="flex items-center gap-2"><i class="fas fa-users text-blue-600"></i> Detail Kunjungan Harian</div>
-        <span id="tglDetailDisp" class="text-sm font-normal text-slate-500 mt-1"></span>
-      </div>
-      <div id="listPasienKunjungan" class="overflow-y-auto mb-4 pr-2 space-y-2 flex-grow"></div>
-      <div class="flex justify-between items-center border-t border-dashed border-slate-300 pt-4 mt-2 shrink-0">
-        <h4 class="m-0 text-slate-700 font-bold text-sm">Total Biaya Hari Ini:</h4>
-        <h3 id="totalDetailDisp" class="m-0 text-blue-700 font-extrabold text-xl"></h3>
-      </div>
-      <div class="text-right mt-6 shrink-0">
-        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalDetailKunjungan')">Tutup</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Tambah Pasien -->
-  <div id="modalTambah" class="modal-overlay">
-    <div class="modal-content w-full max-w-lg rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3">
-        <div class="bg-slate-800 text-white w-10 h-10 flex items-center justify-center rounded-xl shadow-md"><i class="fas fa-user-plus"></i></div> 
-        Registrasi Pasien
-      </div>
-      <form id="formTambahPasien" onsubmit="submitTambahPasien(event)">
-        <div class="mb-4">
-          <label class="block text-sm font-bold text-slate-700 mb-2">Sapaan (Gelar)</label>
-          <div class="radio-group flex flex-wrap gap-3 bg-slate-50/50 p-3 rounded-xl border border-slate-200">
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value="Tn. " checked> Tn.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value="Ny. "> Ny.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value="An. "> An.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value="Nn. "> Nn.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value=""> Kosong</label>
-          </div>
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap</label>
-          <input type="text" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none transition-shadow" id="newNama" required placeholder="Contoh: Budi Santoso">
-        </div>
-        
-        <div class="mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div class="col-span-1">
-            <label class="block text-sm font-bold text-slate-700 mb-2">Usia (Th)</label>
-            <input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none transition-shadow" id="newUsia" required>
-          </div>
-          <div class="col-span-1 md:col-span-2">
-            <label class="block text-sm font-bold text-slate-700 mb-2">Jenis Kelamin</label>
-            <div class="radio-group flex flex-col md:flex-row gap-2 md:gap-4 bg-slate-50/50 p-2.5 rounded-xl border border-slate-200 h-full justify-center">
-              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="newJk" value="L" checked> Laki-laki</label>
-              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="newJk" value="P"> Perempuan</label>
+        <div id="kontenPendapatan" style="display:none;">
+          <div class="grid grid-cols-2 gap-3 mb-6">
+            <!-- HARI -->
+            <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-100 flex flex-col items-center justify-center cursor-pointer" id="swipeHari">
+              <div class="flex justify-between w-full items-center mb-1">
+                <button class="text-slate-300 hover:text-orange-500 p-1" onclick="ubahOffset('hari', -1, event)"><i class="fas fa-chevron-left text-xs"></i></button>
+                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wide" id="labelHari" onclick="bukaDetailPeriode('hari')">Hari Ini</h4>
+                <button class="text-slate-300 hover:text-orange-500 p-1" onclick="ubahOffset('hari', 1, event)"><i class="fas fa-chevron-right text-xs"></i></button>
+              </div>
+              <h2 class="text-lg font-black text-slate-800" id="pdptHari" onclick="bukaDetailPeriode('hari')">Rp 0</h2>
+            </div>
+            <!-- MINGGU -->
+            <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-100 flex flex-col items-center justify-center cursor-pointer" id="swipeMinggu">
+              <div class="flex justify-between w-full items-center mb-1">
+                <button class="text-slate-300 hover:text-blue-500 p-1" onclick="ubahOffset('minggu', -1, event)"><i class="fas fa-chevron-left text-xs"></i></button>
+                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wide" id="labelMinggu" onclick="bukaDetailPeriode('minggu')">Minggu</h4>
+                <button class="text-slate-300 hover:text-blue-500 p-1" onclick="ubahOffset('minggu', 1, event)"><i class="fas fa-chevron-right text-xs"></i></button>
+              </div>
+              <h2 class="text-lg font-black text-slate-800" id="pdptMinggu" onclick="bukaDetailPeriode('minggu')">Rp 0</h2>
+            </div>
+            <!-- BULAN -->
+            <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-100 flex flex-col items-center justify-center cursor-pointer" id="swipeBulan">
+              <div class="flex justify-between w-full items-center mb-1">
+                <button class="text-slate-300 hover:text-emerald-500 p-1" onclick="ubahOffset('bulan', -1, event)"><i class="fas fa-chevron-left text-xs"></i></button>
+                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wide" id="labelBulan" onclick="bukaDetailPeriode('bulan')">Bulan</h4>
+                <button class="text-slate-300 hover:text-emerald-500 p-1" onclick="ubahOffset('bulan', 1, event)"><i class="fas fa-chevron-right text-xs"></i></button>
+              </div>
+              <h2 class="text-lg font-black text-slate-800" id="pdptBulan" onclick="bukaDetailPeriode('bulan')">Rp 0</h2>
+            </div>
+            <!-- TAHUN -->
+            <div class="bg-white rounded-2xl p-3.5 shadow-sm border border-slate-100 flex flex-col items-center justify-center cursor-pointer" id="swipeTahun">
+              <div class="flex justify-between w-full items-center mb-1">
+                <button class="text-slate-300 hover:text-purple-500 p-1" onclick="ubahOffset('tahun', -1, event)"><i class="fas fa-chevron-left text-xs"></i></button>
+                <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wide" id="labelTahun" onclick="bukaDetailPeriode('tahun')">Tahun</h4>
+                <button class="text-slate-300 hover:text-purple-500 p-1" onclick="ubahOffset('tahun', 1, event)"><i class="fas fa-chevron-right text-xs"></i></button>
+              </div>
+              <h2 class="text-lg font-black text-slate-800" id="pdptTahun" onclick="bukaDetailPeriode('tahun')">Rp 0</h2>
             </div>
           </div>
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-sm font-bold text-slate-700 mb-2">Alamat Lengkap</label>
-          <textarea class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none transition-shadow" id="newAlamat" rows="2" required placeholder="Nama dusun, desa..."></textarea>
-        </div>
-        <div class="grid grid-cols-2 gap-4 mb-6">
-          <div><label class="block text-sm font-bold text-slate-700 mb-2">RT</label><input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none transition-shadow" id="newRT" required></div>
-          <div><label class="block text-sm font-bold text-slate-700 mb-2">RW</label><input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none transition-shadow" id="newRW" required></div>
-        </div>
-        <div class="flex flex-col-reverse md:flex-row justify-end gap-3 pt-4 border-t border-slate-200">
-          <button type="button" class="w-full md:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalTambah')">Batal</button>
-          <button type="submit" class="w-full md:w-auto px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-slate-300/50 active:scale-95" id="btnSavePasien"><i class="fas fa-save"></i> Simpan & Periksa</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Edit Pasien -->
-  <div id="modalEditPasien" class="modal-overlay">
-    <div class="modal-content w-full max-w-lg rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3">
-        <div class="bg-red-100 text-red-600 w-10 h-10 flex items-center justify-center rounded-xl shadow-sm"><i class="fas fa-user-edit"></i></div> 
-        Edit Biodata Pasien
-      </div>
-      <form id="formEditPasien" onsubmit="submitEditPasien(event)">
-        <input type="hidden" id="editIdPasien">
-        <div class="mb-4">
-          <label class="block text-sm font-bold text-slate-700 mb-2">Sapaan (Gelar)</label>
-          <div class="radio-group flex flex-wrap gap-3 bg-slate-50/50 p-3 rounded-xl border border-slate-200">
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value="Tn. "> Tn.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value="Ny. "> Ny.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value="An. "> An.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value="Nn. "> Nn.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value=""> Kosong</label>
-          </div>
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap</label>
-          <input type="text" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editNama" required>
-        </div>
-
-        <div class="mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div class="col-span-1">
-            <label class="block text-sm font-bold text-slate-700 mb-2">Usia (Th)</label>
-            <input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editUsia" required>
-          </div>
-          <div class="col-span-1 md:col-span-2">
-            <label class="block text-sm font-bold text-slate-700 mb-2">Jenis Kelamin</label>
-            <div class="radio-group flex flex-col md:flex-row gap-2 md:gap-4 bg-slate-50/50 p-2.5 rounded-xl border border-slate-200 h-full justify-center">
-              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editJk" value="L" checked> Laki-laki</label>
-              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editJk" value="P"> Perempuan</label>
+          
+          <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <button class="w-8 h-8 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center active:bg-slate-200" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left text-xs"></i></button>
+                <h3 id="judulBulanKalender" class="text-sm font-bold text-slate-800 uppercase tracking-wide">Memuat...</h3>
+                <button class="w-8 h-8 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center active:bg-slate-200" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right text-xs"></i></button>
             </div>
+            <div id="gridKalender" class="grid grid-cols-7 gap-1 text-center"></div>
           </div>
         </div>
-
-        <div class="mb-4">
-          <label class="block text-sm font-bold text-slate-700 mb-2">Alamat Lengkap</label>
-          <textarea class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editAlamat" rows="2" required></textarea>
-        </div>
-        <div class="grid grid-cols-2 gap-4 mb-6">
-          <div><label class="block text-sm font-bold text-slate-700 mb-2">RT</label><input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editRT" required></div>
-          <div><label class="block text-sm font-bold text-slate-700 mb-2">RW</label><input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editRW" required></div>
-        </div>
-        <div class="flex flex-col-reverse md:flex-row justify-end gap-3 pt-4 border-t border-slate-200">
-          <button type="button" class="w-full md:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalEditPasien')">Batal</button>
-          <button type="submit" class="w-full md:w-auto px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-red-200 active:scale-95" id="btnUpdatePasien"><i class="fas fa-save"></i> Update Biodata</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Pemeriksaan (RM) -->
-  <div id="modalForm" class="modal-overlay">
-    <div class="modal-content w-full max-w-xl rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3">
-        <div class="bg-slate-800 text-white w-10 h-10 flex items-center justify-center rounded-xl shadow-md"><i class="fas fa-stethoscope"></i></div> 
-        Pemeriksaan: <span id="namaPasienDisp" class="text-slate-800 ml-1 truncate max-w-[200px] md:max-w-xs"></span>
       </div>
-      <form id="formPemeriksaan" onsubmit="submitPemeriksaan(event)">
-        <input type="hidden" id="idPasien">
-        <div class="mb-5">
-          <label class="block text-sm font-bold text-slate-700 mb-2"><i class="fas fa-comment-medical text-rose-500 mr-1"></i> Anamnesa / Keluhan</label>
-          <textarea id="anamnesa" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none transition-shadow" rows="2" required></textarea>
+    </main>
+
+    <!-- Navigasi Bawah Mobile Modern -->
+    <nav class="absolute bottom-0 w-full bg-white/95 backdrop-blur-lg border-t border-slate-200 flex justify-around items-center pt-2 nav-bottom-safe z-40 rounded-b-[2rem]">
+      <button class="nav-btn-mobile nav-erm w-1/2 flex flex-col items-center gap-1 group" onclick="switchTab('erm', this)">
+        <div class="px-5 py-1.5 rounded-full transition-all duration-300 bg-blue-50 text-blue-600 icon-bg">
+          <i class="fas fa-notes-medical text-lg"></i>
+        </div>
+        <span class="text-[10px] font-bold text-blue-600 tracking-wide tab-text">Pasien</span>
+      </button>
+      <button class="nav-btn-mobile nav-pendapatan w-1/2 flex flex-col items-center gap-1 group" onclick="switchTab('pendapatan', this)">
+        <div class="px-5 py-1.5 rounded-full transition-all duration-300 bg-transparent text-slate-400 icon-bg group-active:bg-slate-100">
+          <i class="fas fa-chart-pie text-lg"></i>
+        </div>
+        <span class="text-[10px] font-bold text-slate-400 tracking-wide tab-text">Dashboard</span>
+      </button>
+    </nav>
+
+    <!-- MODALS (Akan meluncur dari bawah) -->
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div id="modalHapus" class="modal-overlay">
+      <div class="modal-content p-6 text-center">
+        <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+          <i class="fas fa-trash-alt"></i>
+        </div>
+        <h2 class="text-lg font-bold text-slate-800 mb-2">Hapus Pasien?</h2>
+        <p class="text-sm text-slate-500 mb-6">Data <b id="hapusNamaPasienDisp" class="text-slate-700"></b> akan dihapus permanen.</p>
+        <div class="flex gap-3">
+          <button class="flex-1 py-3.5 bg-slate-100 text-slate-700 rounded-2xl font-bold active:scale-95" onclick="tutupModal('modalHapus')">Batal</button>
+          <button class="flex-1 py-3.5 bg-rose-500 text-white rounded-2xl font-bold active:scale-95 shadow-lg shadow-rose-200 flex justify-center items-center gap-2" id="btnEksekusiHapus" onclick="eksekusiHapusPasien()">Hapus</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Pasien -->
+    <div id="modalTambah" class="modal-overlay">
+      <div class="modal-content p-6">
+        <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
+          <div class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center"><i class="fas fa-user-plus text-sm"></i></div>
+          <h2 class="text-lg font-bold text-slate-800">Pasien Baru</h2>
+          <button class="ml-auto text-slate-400 p-2" onclick="tutupModal('modalTambah')"><i class="fas fa-times text-lg"></i></button>
         </div>
         
-        <div class="mb-5">
-          <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-heartbeat text-sky-500 mr-1"></i> Tanda Vital</label>
+        <form id="formTambahPasien" onsubmit="submitTambahPasien(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Gelar & Nama</label>
+            <div class="flex gap-2">
+              <select name="titlePasien" class="w-1/3 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 font-semibold text-slate-700 text-sm">
+                <option value="Tn. ">Tn.</option><option value="Ny. ">Ny.</option><option value="An. ">An.</option><option value="Nn. ">Nn.</option><option value="">-</option>
+              </select>
+              <input type="text" id="newNama" class="w-2/3 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required placeholder="Nama Lengkap">
+            </div>
+          </div>
+          
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" id="td" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-400 outline-none" placeholder="120/80"></div>
-            <div><label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" id="suhu" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-400 outline-none" placeholder="36.5"></div>
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Usia</label>
+              <input type="number" id="newUsia" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required placeholder="Tahun">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Kelamin</label>
+              <select name="newJk" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 font-semibold text-slate-700 text-sm">
+                <option value="L">Laki-laki</option><option value="P">Perempuan</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-5 bg-purple-50/70 p-4 border border-purple-100 rounded-2xl">
-          <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-flask text-purple-500 mr-1"></i> Laboratorium Sederhana</label>
-          <div class="grid grid-cols-3 gap-3">
-            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">GDA</label><input type="text" id="gda" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none" placeholder="mg/dL"></div>
-            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">Chol</label><input type="text" id="chol" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none" placeholder="mg/dL"></div>
-            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">UA</label><input type="text" id="ua" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none" placeholder="mg/dL"></div>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Alamat (Desa/Jalan)</label>
+            <textarea id="newAlamat" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" rows="2" required></textarea>
           </div>
-        </div>
-
-        <div class="mb-5 bg-teal-50/70 p-4 border border-teal-100 rounded-2xl">
-          <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-capsules text-teal-500 mr-1"></i> Resep Obat (Maks 4)</label>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <input type="text" id="obat1" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none" placeholder="Obat 1 & Dosis">
-            <input type="text" id="obat2" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none" placeholder="Obat 2 & Dosis">
-            <input type="text" id="obat3" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none" placeholder="Obat 3 & Dosis">
-            <input type="text" id="obat4" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none" placeholder="Obat 4 & Dosis">
+          
+          <div class="grid grid-cols-2 gap-3 mb-2">
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RT</label><input type="number" id="newRT" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required></div>
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RW</label><input type="number" id="newRW" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required></div>
           </div>
-        </div>
 
-        <div class="mb-6">
-          <label class="block text-sm font-bold text-slate-700 mb-2"><i class="fas fa-money-bill-wave text-amber-500 mr-1"></i> Total Biaya (Rp)</label>
-          <input type="text" id="biaya" class="w-full p-4 bg-amber-50/70 border-2 border-amber-300 rounded-2xl focus:ring-2 focus:ring-amber-500 outline-none text-xl font-bold text-amber-700 placeholder-amber-300" required placeholder="Contoh: 50.000" oninput="formatRibuan(this)">
-        </div>
-
-        <div class="flex flex-col-reverse md:flex-row justify-end gap-3 pt-4 border-t border-slate-200">
-          <button type="button" class="w-full md:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalForm')">Batal</button>
-          <button type="submit" class="w-full md:w-auto px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-slate-300/50 active:scale-95" id="btnSimpanRM"><i class="fas fa-save"></i> Simpan Data</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Edit Pemeriksaan (RM) -->
-  <div id="modalEditRM" class="modal-overlay">
-    <div class="modal-content w-full max-w-xl rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3">
-        <div class="bg-red-100 text-red-600 w-10 h-10 flex items-center justify-center rounded-xl shadow-sm"><i class="fas fa-edit"></i></div> 
-        Edit Hasil Pemeriksaan
+          <button type="submit" class="w-full py-4 mt-2 bg-slate-800 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-slate-300" id="btnSavePasien">
+            <i class="fas fa-save"></i> Simpan Pasien
+          </button>
+        </form>
       </div>
-      <form id="formEditRM" onsubmit="submitEditRM(event)">
-        <input type="hidden" id="editRMRowIndex">
-        <div class="mb-5">
-          <label class="block text-sm font-bold text-slate-700 mb-2"><i class="fas fa-comment-medical text-rose-500 mr-1"></i> Anamnesa / Keluhan</label>
-          <textarea id="editAnamnesa" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none" rows="2" required></textarea>
+    </div>
+
+    <!-- Modal Edit Pasien -->
+    <div id="modalEditPasien" class="modal-overlay">
+      <div class="modal-content p-6">
+        <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
+          <div class="bg-amber-100 text-amber-600 w-8 h-8 rounded-full flex items-center justify-center"><i class="fas fa-user-edit text-sm"></i></div>
+          <h2 class="text-lg font-bold text-slate-800">Edit Biodata</h2>
+          <button class="ml-auto text-slate-400 p-2" onclick="tutupModal('modalEditPasien')"><i class="fas fa-times text-lg"></i></button>
         </div>
         
-        <div class="mb-5">
-          <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-heartbeat text-sky-500 mr-1"></i> Tanda Vital</label>
+        <form id="formEditPasien" onsubmit="submitEditPasien(event)" class="space-y-4">
+          <input type="hidden" id="editIdPasien">
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Gelar & Nama</label>
+            <div class="flex gap-2">
+              <select name="editTitlePasien" class="w-1/3 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 font-semibold text-slate-700 text-sm">
+                <option value="Tn. ">Tn.</option><option value="Ny. ">Ny.</option><option value="An. ">An.</option><option value="Nn. ">Nn.</option><option value="">-</option>
+              </select>
+              <input type="text" id="editNama" class="w-2/3 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required>
+            </div>
+          </div>
+          
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" id="editTd" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-400 outline-none"></div>
-            <div><label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" id="editSuhu" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-400 outline-none"></div>
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Usia</label><input type="number" id="editUsia" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
+            <div>
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Kelamin</label>
+              <select name="editJk" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 font-semibold text-slate-700 text-sm">
+                <option value="L">Laki-laki</option><option value="P">Perempuan</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        <div class="mb-5 bg-purple-50/70 p-4 border border-purple-100 rounded-2xl">
-          <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-flask text-purple-500 mr-1"></i> Laboratorium Sederhana</label>
-          <div class="grid grid-cols-3 gap-3">
-            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">GDA</label><input type="text" id="editGda" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none"></div>
-            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">Chol</label><input type="text" id="editChol" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none"></div>
-            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">UA</label><input type="text" id="editUa" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none"></div>
+          <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Alamat</label><textarea id="editAlamat" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" rows="2" required></textarea></div>
+          <div class="grid grid-cols-2 gap-3 mb-2">
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RT</label><input type="number" id="editRT" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RW</label><input type="number" id="editRW" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
           </div>
-        </div>
 
-        <div class="mb-5 bg-teal-50/70 p-4 border border-teal-100 rounded-2xl">
-          <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-capsules text-teal-500 mr-1"></i> Resep Obat (Maks 4)</label>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <input type="text" id="editObat1" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none">
-            <input type="text" id="editObat2" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none">
-            <input type="text" id="editObat3" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none">
-            <input type="text" id="editObat4" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none">
-          </div>
-        </div>
-
-        <div class="mb-6">
-          <label class="block text-sm font-bold text-slate-700 mb-2"><i class="fas fa-money-bill-wave text-amber-500 mr-1"></i> Total Biaya (Rp)</label>
-          <input type="text" id="editBiaya" class="w-full p-4 bg-amber-50/70 border-2 border-amber-300 rounded-2xl focus:ring-2 focus:ring-amber-500 outline-none text-xl font-bold text-amber-700" required oninput="formatRibuan(this)">
-        </div>
-
-        <div class="flex flex-col-reverse md:flex-row justify-end gap-3 pt-4 border-t border-slate-200">
-          <button type="button" class="w-full md:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalEditRM')">Batal</button>
-          <button type="submit" class="w-full md:w-auto px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-red-200 active:scale-95" id="btnUpdateRM"><i class="fas fa-save"></i> Update Data RM</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal Riwayat -->
-  <div id="modalRiwayat" class="modal-overlay">
-    <div class="modal-content w-full max-w-xl rounded-3xl p-6 flex flex-col">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3 shrink-0">
-        <div class="bg-blue-100 text-blue-600 w-10 h-10 flex items-center justify-center rounded-xl shadow-sm"><i class="fas fa-history"></i></div> 
-        <span class="truncate">Riwayat: <span id="namaRiwayat" class="text-blue-600 ml-1"></span></span>
-      </div>
-      
-      <div id="loaderRiwayat" class="flex flex-col items-center justify-center py-12 text-blue-500" style="display:block;">
-        <i class="fas fa-circle-notch loader-spin text-3xl mb-3"></i>
-      </div>
-      
-      <div id="listRiwayat" class="overflow-y-auto pr-2 space-y-4 flex-grow"></div>
-      
-      <div class="text-right mt-6 pt-4 border-t border-slate-200 shrink-0">
-        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalRiwayat')">Tutup</button>
+          <button type="submit" class="w-full py-4 mt-2 bg-amber-500 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-amber-200" id="btnUpdatePasien"><i class="fas fa-save"></i> Simpan Perubahan</button>
+        </form>
       </div>
     </div>
-  </div>
+
+    <!-- Modal Form Pemeriksaan (RM) -->
+    <div id="modalForm" class="modal-overlay">
+      <div class="modal-content p-6">
+        <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
+          <div class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-stethoscope text-sm"></i></div>
+          <div class="truncate">
+            <h2 class="text-sm font-bold text-slate-800 truncate" id="namaPasienDisp"></h2>
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest">Pemeriksaan Baru</p>
+          </div>
+          <button class="ml-auto text-slate-400 p-2 shrink-0" onclick="tutupModal('modalForm')"><i class="fas fa-times text-lg"></i></button>
+        </div>
+        
+        <form id="formPemeriksaan" onsubmit="submitPemeriksaan(event)" class="space-y-4">
+          <input type="hidden" id="idPasien">
+          
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2"><i class="fas fa-comment-medical text-rose-500 mr-1"></i> Anamnesa</label>
+            <textarea id="anamnesa" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm" rows="2" required placeholder="Keluhan utama..."></textarea>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" id="td" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm text-center" placeholder="120/80"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" id="suhu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm text-center" placeholder="36.5"></div>
+          </div>
+
+          <div class="bg-purple-50/50 p-3 rounded-2xl border border-purple-100">
+            <label class="block text-xs font-bold text-purple-600 uppercase tracking-wide mb-2"><i class="fas fa-vial mr-1"></i> Lab Sederhana</label>
+            <div class="grid grid-cols-3 gap-2">
+              <input type="text" id="gda" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="GDA">
+              <input type="text" id="chol" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="Chol">
+              <input type="text" id="ua" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="UA">
+            </div>
+          </div>
+
+          <div class="bg-teal-50/50 p-3 rounded-2xl border border-teal-100">
+            <label class="block text-xs font-bold text-teal-600 uppercase tracking-wide mb-2"><i class="fas fa-pills mr-1"></i> Resep (Maks 4)</label>
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" id="obat1" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl outline-none text-xs" placeholder="Obat 1">
+              <input type="text" id="obat2" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl outline-none text-xs" placeholder="Obat 2">
+              <input type="text" id="obat3" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl outline-none text-xs" placeholder="Obat 3">
+              <input type="text" id="obat4" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl outline-none text-xs" placeholder="Obat 4">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2"><i class="fas fa-wallet text-emerald-500 mr-1"></i> Biaya (Rp)</label>
+            <input type="text" id="biaya" class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-400 text-lg font-black text-emerald-700 text-center" required placeholder="0" oninput="formatRibuan(this)">
+          </div>
+
+          <button type="submit" class="w-full py-4 mt-2 bg-indigo-600 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-indigo-200" id="btnSimpanRM"><i class="fas fa-save"></i> Simpan Data</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Edit RM (Sama persis dengan input RM, beda id) -->
+    <div id="modalEditRM" class="modal-overlay">
+      <div class="modal-content p-6">
+        <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
+          <div class="bg-amber-100 text-amber-600 w-8 h-8 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-edit text-sm"></i></div>
+          <h2 class="text-lg font-bold text-slate-800">Edit Rekam Medis</h2>
+          <button class="ml-auto text-slate-400 p-2 shrink-0" onclick="tutupModal('modalEditRM')"><i class="fas fa-times text-lg"></i></button>
+        </div>
+        
+        <form id="formEditRM" onsubmit="submitEditRM(event)" class="space-y-4">
+          <input type="hidden" id="editRMRowIndex">
+          <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Anamnesa</label><textarea id="editAnamnesa" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none text-sm" rows="2" required></textarea></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" id="editTd" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm text-center"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" id="editSuhu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm text-center"></div>
+          </div>
+          <div class="bg-purple-50/50 p-3 rounded-2xl border border-purple-100">
+            <label class="block text-xs font-bold text-purple-600 uppercase tracking-wide mb-2">Lab Sederhana</label>
+            <div class="grid grid-cols-3 gap-2">
+              <input type="text" id="editGda" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
+              <input type="text" id="editChol" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
+              <input type="text" id="editUa" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
+            </div>
+          </div>
+          <div class="bg-teal-50/50 p-3 rounded-2xl border border-teal-100">
+            <label class="block text-xs font-bold text-teal-600 uppercase tracking-wide mb-2">Resep (Maks 4)</label>
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" id="editObat1" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat2" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat3" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat4" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs">
+            </div>
+          </div>
+          <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Biaya (Rp)</label><input type="text" id="editBiaya" class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl outline-none text-lg font-black text-emerald-700 text-center" required oninput="formatRibuan(this)"></div>
+          <button type="submit" class="w-full py-4 mt-2 bg-amber-500 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-amber-200" id="btnUpdateRM"><i class="fas fa-save"></i> Update Rekam Medis</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Riwayat Pasien -->
+    <div id="modalRiwayat" class="modal-overlay">
+      <div class="modal-content p-6 h-[85%] flex flex-col">
+        <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3 shrink-0">
+          <div class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-history text-sm"></i></div>
+          <div class="truncate">
+            <h2 class="text-sm font-bold text-slate-800 truncate" id="namaRiwayat"></h2>
+            <p class="text-[10px] text-slate-400 uppercase tracking-widest">Riwayat RM</p>
+          </div>
+          <button class="ml-auto text-slate-400 p-2 shrink-0 bg-slate-50 rounded-full" onclick="tutupModal('modalRiwayat')"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div id="loaderRiwayat" class="flex flex-col items-center justify-center py-12 text-blue-400" style="display:block;">
+          <i class="fas fa-circle-notch loader-spin text-3xl"></i>
+        </div>
+        
+        <div id="listRiwayat" class="overflow-y-auto space-y-3 flex-grow hide-scrollbar pb-6"></div>
+      </div>
+    </div>
+
+    <!-- Modal Detail List (Untuk Dashboard) -->
+    <div id="modalDetailPeriode" class="modal-overlay">
+      <div class="modal-content p-6 h-[70%] flex flex-col">
+        <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3 shrink-0">
+          <div><h2 class="text-lg font-bold text-slate-800">Detail Pasien</h2><p class="text-xs text-slate-500" id="judulPeriodeDisp"></p></div>
+          <button class="text-slate-400 p-2 bg-slate-50 rounded-full" onclick="tutupModal('modalDetailPeriode')"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="listPasienPeriode" class="overflow-y-auto space-y-2 flex-grow hide-scrollbar mb-4"></div>
+        <div class="flex justify-between items-center border-t border-slate-100 pt-4 shrink-0">
+          <h4 class="text-slate-500 font-bold text-xs uppercase">Total:</h4>
+          <h3 id="totalPeriodeDisp" class="text-slate-800 font-black text-xl"></h3>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalDetailKunjungan" class="modal-overlay">
+      <div class="modal-content p-6 h-[70%] flex flex-col">
+        <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3 shrink-0">
+          <div><h2 class="text-lg font-bold text-slate-800">Kunjungan Tgl</h2><p class="text-[11px] text-slate-500" id="tglDetailDisp"></p></div>
+          <button class="text-slate-400 p-2 bg-slate-50 rounded-full" onclick="tutupModal('modalDetailKunjungan')"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="listPasienKunjungan" class="overflow-y-auto space-y-2 flex-grow hide-scrollbar mb-4"></div>
+        <div class="flex justify-between items-center border-t border-slate-100 pt-4 shrink-0">
+          <h4 class="text-slate-500 font-bold text-xs uppercase">Total Harian:</h4>
+          <h3 id="totalDetailDisp" class="text-emerald-600 font-black text-xl"></h3>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- Penutup FRAME SMARTPHONE -->
 
   <script>
     // ==============================================================================
-    // KONFIGURASI SUPABASE (MASUKKAN URL DAN KEY ANDA DI SINI)
+    // KONFIGURASI SUPABASE 
     // ==============================================================================
     const SUPABASE_URL = 'https://sfyitwbdnhhjayhkraoi.supabase.co'; 
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmeWl0d2JkbmhoamF5aGtyYW9pIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5MjMyODMsImV4cCI6MjA5NzQ5OTI4M30.13mKam9izwUwFfLCgc029nE8etnPCQoiQMuILXy6aqU'; 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    
     const isSupabaseConfigured = !SUPABASE_URL.includes('XXXXXXXXXXXXXXXXX');
     // ==============================================================================
 
     let semuaPasien = [], allTransactions = [];
     let riwayatPasienGlobal = [], currentPasienId = "", currentPasienNama = "";
     let deleteTargetId = null; 
-    
     let offset = { hari: 0, minggu: 0, bulan: 0, tahun: 0 };
     let summaryFiltered = { hari: [], minggu: [], bulan: [], tahun: [] };
     let tanggalKalender = new Date();
@@ -560,108 +494,85 @@
     function setLoadingBtn(btn, isLoading, originalText = '') {
       if (!btn) return originalText;
       if (isLoading) {
-        let t = btn.innerHTML; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Proses...'; btn.disabled = true; return t;
+        let t = btn.innerHTML; btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i>'; btn.disabled = true; return t;
       } else { btn.innerHTML = originalText; btn.disabled = false; }
     }
 
-    // --- NAVIGATION & MODALS ---
+    // --- NAVIGATION (Mobile Tab Bar) ---
     function switchTab(tabId, btn) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.desktop-nav .nav-btn').forEach(b => {
-        b.classList.remove('bg-slate-800', 'text-white', 'shadow-lg', 'active');
-        b.classList.add('text-slate-600', 'hover:bg-slate-100');
+      document.querySelectorAll('.nav-btn-mobile').forEach(b => {
+        let iconBg = b.querySelector('.icon-bg'); let text = b.querySelector('.tab-text');
+        iconBg.classList.remove('bg-blue-50', 'text-blue-600', 'bg-emerald-50', 'text-emerald-600');
+        iconBg.classList.add('bg-transparent', 'text-slate-400');
+        text.classList.remove('text-blue-600', 'text-emerald-600'); text.classList.add('text-slate-400');
       });
+      
       document.getElementById(tabId).classList.add('active'); 
-      btn.classList.add('bg-slate-800', 'text-white', 'shadow-lg', 'active');
-      btn.classList.remove('text-slate-600', 'hover:bg-slate-100');
-      window.scrollTo({top:0, behavior:'smooth'});
+      let activeIconBg = btn.querySelector('.icon-bg'); let activeText = btn.querySelector('.tab-text');
+      activeIconBg.classList.remove('bg-transparent', 'text-slate-400');
+      activeText.classList.remove('text-slate-400');
+      
+      if(tabId === 'erm') {
+          activeIconBg.classList.add('bg-blue-50', 'text-blue-600'); activeText.classList.add('text-blue-600');
+      } else {
+          activeIconBg.classList.add('bg-emerald-50', 'text-emerald-600'); activeText.classList.add('text-emerald-600');
+      }
     }
+    // Alias untuk kompatibilitas code lama jika dipanggil dari luar
+    const switchTabMobile = switchTab; 
 
-    function switchTabMobile(tabId, btn) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.mobile-nav .nav-btn-mobile').forEach(b => {
-        b.classList.remove('text-slate-800', 'active'); b.classList.add('text-slate-400');
-        b.querySelector('.icon-container').classList.remove('bg-slate-100', 'text-slate-800');
-      });
-      document.getElementById(tabId).classList.add('active'); 
-      btn.classList.add('text-slate-800', 'active'); btn.classList.remove('text-slate-400');
-      btn.querySelector('.icon-container').classList.add('bg-slate-100', 'text-slate-800');
-      window.scrollTo({top:0, behavior:'smooth'});
-    }
-
+    // --- MODAL CONTROLS ---
     function bukaModal(id) { 
-      const overlay = document.getElementById(id);
-      overlay.style.display = 'flex'; 
+      const overlay = document.getElementById(id); overlay.style.display = 'flex'; 
       setTimeout(() => overlay.classList.add('show'), 10);
     }
     function tutupModal(id) { 
-      const overlay = document.getElementById(id);
-      overlay.classList.remove('show');
+      const overlay = document.getElementById(id); overlay.classList.remove('show');
       setTimeout(() => overlay.style.display = 'none', 300);
     }
 
-    // ============================================================================
-    // SUPABASE DATA FETCHING 
-    // ============================================================================
-
+    // --- CORE LOGIC DATA ---
     async function refreshData() { 
       document.getElementById('loaderData').style.display = 'flex'; document.getElementById('patientList').innerHTML = '';
-      
       if (!isSupabaseConfigured) {
         document.getElementById('loaderData').style.display = 'none';
-        document.getElementById('patientList').innerHTML = `
-          <div class="col-span-full flex flex-col items-center justify-center py-10 bg-amber-50 rounded-3xl border border-amber-200 shadow-sm mx-2">
-            <i class="fas fa-plug text-4xl text-amber-500 mb-3"></i>
-            <h3 class="font-bold text-amber-800 text-lg">Hubungkan ke Supabase</h3>
-            <p class="text-sm text-amber-700 mt-2 max-w-md text-center leading-relaxed px-4">Ganti nilai <b>SUPABASE_URL</b> dan <b>SUPABASE_KEY</b> di dalam kode HTML ini dengan kredensial dari project Supabase Anda untuk mulai mengambil dan menyimpan data.</p>
-          </div>
-        `;
-        return;
+        document.getElementById('patientList').innerHTML = `<div class="text-center p-6 bg-amber-50 rounded-2xl border border-amber-200 mt-4"><i class="fas fa-plug text-3xl text-amber-400 mb-2"></i><p class="text-xs text-amber-700 font-bold">Supabase belum terhubung.</p></div>`; return;
       }
-
       try {
         const { data, error } = await supabaseClient.from('pasien').select('*').order('created_at', { ascending: false });
         document.getElementById('loaderData').style.display = 'none';
-        if (error) throw error;
-        semuaPasien = data; renderPasien(semuaPasien); 
+        if (error) throw error; semuaPasien = data; renderPasien(semuaPasien); 
       } catch (err) {
-        document.getElementById('loaderData').style.display = 'none';
-        console.error("Gagal refreshData:", err);
-        alert("Gagal memuat data pasien. Pastikan konfigurasi URL/Key Supabase Anda benar.");
+        document.getElementById('loaderData').style.display = 'none'; console.error(err); alert("Gagal memuat pasien.");
       }
     }
 
     function renderPasien(data) { 
       const list = document.getElementById('patientList'); list.innerHTML = ''; 
-      if(data.length === 0) { list.innerHTML = `<div class="col-span-full text-center text-slate-400 py-12 font-semibold bg-white rounded-3xl border border-dashed border-slate-300">Belum ada data pasien.</div>`; return; }
+      if(data.length === 0) { list.innerHTML = `<div class="text-center text-slate-400 py-10 text-sm">Tidak ada data pasien.</div>`; return; }
       
       data.forEach(p => { 
-        let detailKlinis = '';
-        if(p.jk || p.usia) detailKlinis = `<span class="text-[11px] text-slate-500 font-bold ml-2 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 shrink-0">${p.jk || '-'}, ${p.usia || '-'} Th</span>`;
-
         list.innerHTML += `
-        <div class="glass-card rounded-[1.5rem] p-5 flex flex-col justify-between group cursor-pointer relative active:scale-[0.98]" onclick="bukaFormPemeriksaan('${p.id}', '${p.nama}')">
-          
-          <button class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 hover:bg-rose-100 text-slate-400 hover:text-rose-600 transition-colors z-10 active:bg-rose-200" onclick="event.stopPropagation(); konfirmasiHapusPasien('${p.id}', '${p.nama}')" title="Hapus Pasien">
-            <i class="fas fa-trash-alt text-sm"></i>
-          </button>
-
-          <div class="mb-5 pr-10">
-            <h3 class="font-black text-slate-800 text-lg mb-2.5 flex items-start gap-2">
-              <i class="fas fa-user-circle text-slate-400 mt-1 group-hover:text-blue-500 transition-colors"></i> 
-              <span class="flex items-center flex-wrap gap-y-2 group-hover:text-blue-700 transition-colors leading-tight">${p.nama} ${detailKlinis}</span>
-            </h3>
-            <p class="text-[13px] font-medium text-slate-500 leading-tight flex items-start gap-2 bg-white/60 p-3 rounded-xl border border-slate-200/60">
-              <i class="fas fa-map-marker-alt text-slate-400 mt-0.5"></i> <span>${p.alamat}, RT ${p.rt}/RW ${p.rw}</span>
-            </p>
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 relative active:scale-[0.98] transition-transform" onclick="bukaFormPemeriksaan('${p.id}', '${p.nama}')">
+          <div class="flex justify-between items-start mb-3">
+             <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center text-lg border border-slate-100">
+                   <i class="fas fa-user"></i>
+                </div>
+                <div>
+                   <h3 class="font-black text-slate-800 text-sm leading-tight">${p.nama}</h3>
+                   <p class="text-[11px] font-bold text-slate-400 mt-0.5">${p.jk || '-'}, ${p.usia || '-'} Th</p>
+                </div>
+             </div>
+             <button class="w-8 h-8 flex justify-center items-center rounded-full bg-slate-50 text-slate-300 hover:text-rose-500 active:bg-rose-50 transition-colors" onclick="event.stopPropagation(); konfirmasiHapusPasien('${p.id}', '${p.nama}')"><i class="fas fa-trash text-[11px]"></i></button>
           </div>
-          <div class="grid grid-cols-2 gap-3 mt-auto relative z-10">
-            <button class="py-3 bg-red-50 border border-red-200 hover:border-red-400 hover:bg-red-100 text-red-600 rounded-xl text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95" onclick="event.stopPropagation(); bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}', '${p.usia || ''}', '${p.jk || ''}')">
-              <i class="fas fa-edit"></i> Edit
-            </button>
-            <button class="py-3 bg-blue-50 border border-blue-200 hover:border-blue-400 hover:bg-blue-100 text-blue-600 rounded-xl text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95" onclick="event.stopPropagation(); bukaRiwayat('${p.id}', '${p.nama}')">
-              <i class="fas fa-history"></i> Riwayat
-            </button>
+          <div class="text-[11px] font-medium text-slate-500 bg-slate-50 p-2.5 rounded-xl mb-3 flex gap-2">
+            <i class="fas fa-map-marker-alt text-slate-400 mt-0.5 shrink-0"></i> <span class="leading-snug line-clamp-1">${p.alamat}, RT ${p.rt}/${p.rw}</span>
+          </div>
+          <div class="flex gap-2">
+            <button class="flex-1 py-2.5 bg-white border border-slate-200 text-slate-600 text-[11px] font-bold rounded-xl active:bg-slate-50 shadow-sm" onclick="event.stopPropagation(); bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}', '${p.usia || ''}', '${p.jk || ''}')">Edit Profil</button>
+            <button class="flex-1 py-2.5 bg-blue-50 text-blue-600 text-[11px] font-bold rounded-xl active:bg-blue-100 shadow-sm" onclick="event.stopPropagation(); bukaRiwayat('${p.id}', '${p.nama}')">Riwayat RM</button>
           </div>
         </div>`; 
       }); 
@@ -672,204 +583,82 @@
       renderPasien(semuaPasien.filter(p => (p.nama + p.alamat).toLowerCase().includes(val))); 
     }
 
-    // Modal Konfirmasi Hapus Pasien
-    function konfirmasiHapusPasien(id, nama) {
-      deleteTargetId = id;
-      document.getElementById('hapusNamaPasienDisp').innerText = nama;
-      bukaModal('modalHapus');
-    }
+    function konfirmasiHapusPasien(id, nama) { deleteTargetId = id; document.getElementById('hapusNamaPasienDisp').innerText = nama; bukaModal('modalHapus'); }
 
     async function eksekusiHapusPasien() {
       if(!deleteTargetId || !isSupabaseConfigured) return;
-      const btn = document.getElementById('btnEksekusiHapus');
-      let ori = setLoadingBtn(btn, true);
-
+      const btn = document.getElementById('btnEksekusiHapus'); let ori = setLoadingBtn(btn, true);
       try {
-        const { error: errRm } = await supabaseClient.from('rekam_medis').delete().eq('id_pasien', deleteTargetId);
-        if(errRm) throw errRm;
-        
-        const { error: errPasien } = await supabaseClient.from('pasien').delete().eq('id', deleteTargetId);
-        if(errPasien) throw errPasien;
-        
-        setLoadingBtn(btn, false, ori);
-        tutupModal('modalHapus');
-        refreshData();
-        loadPendapatanBackground(); 
-      } catch (err) {
-        setLoadingBtn(btn, false, "<i class='fas fa-times'></i> Gagal!");
-        console.error("Gagal hapus data:", err);
-        setTimeout(() => { setLoadingBtn(btn, false, ori); }, 2000);
-      }
+        await supabaseClient.from('rekam_medis').delete().eq('id_pasien', deleteTargetId);
+        await supabaseClient.from('pasien').delete().eq('id', deleteTargetId);
+        setLoadingBtn(btn, false, ori); tutupModal('modalHapus'); refreshData(); loadPendapatanBackground(); 
+      } catch (err) { setLoadingBtn(btn, false, "Gagal!"); setTimeout(() => { setLoadingBtn(btn, false, ori); }, 2000); }
     }
 
     async function submitTambahPasien(e) { 
-      e.preventDefault(); 
-      if (!isSupabaseConfigured) { alert("Konfigurasi Supabase belum diatur. Cek kode HTML Anda."); return; }
-
+      e.preventDefault(); if (!isSupabaseConfigured) return;
       const btn = document.getElementById('btnSavePasien'); let ori = setLoadingBtn(btn, true);
-      const t = document.querySelector('input[name="titlePasien"]:checked').value; 
-      
-      const newData = { 
-        id: generateIdPasien(),
-        nama: t + document.getElementById('newNama').value, 
-        alamat: document.getElementById('newAlamat').value, 
-        rt: document.getElementById('newRT').value, 
-        rw: document.getElementById('newRW').value,
-        usia: document.getElementById('newUsia').value,
-        jk: document.querySelector('input[name="newJk"]:checked').value
-      }; 
-
-      try {
-        const { error } = await supabaseClient.from('pasien').insert([newData]);
-        setLoadingBtn(btn, false, ori);
-        if (error) throw error;
-        
-        tutupModal('modalTambah'); document.getElementById('formTambahPasien').reset(); 
-        refreshData(); bukaFormPemeriksaan(newData.id, newData.nama); 
-      } catch (err) {
-        setLoadingBtn(btn, false, ori);
-        console.error(err); alert("Gagal menyimpan pasien.");
-      }
+      const t = document.querySelector('select[name="titlePasien"]').value; 
+      const newData = { id: generateIdPasien(), nama: t + document.getElementById('newNama').value, alamat: document.getElementById('newAlamat').value, rt: document.getElementById('newRT').value, rw: document.getElementById('newRW').value, usia: document.getElementById('newUsia').value, jk: document.querySelector('select[name="newJk"]').value }; 
+      try { await supabaseClient.from('pasien').insert([newData]); setLoadingBtn(btn, false, ori); tutupModal('modalTambah'); document.getElementById('formTambahPasien').reset(); refreshData(); bukaFormPemeriksaan(newData.id, newData.nama); } 
+      catch (err) { setLoadingBtn(btn, false, ori); alert("Gagal"); }
     }
 
     function bukaEditPasien(id, nF, al, rt, rw, usia, jk) { 
       document.getElementById('editIdPasien').value = id; let sD = "", nA = nF; 
       for (let s of ["Tn. ", "Ny. ", "An. ", "Nn. "]) { if (nF.startsWith(s)) { sD = s; nA = nF.substring(s.length); break; } } 
-      
-      const r = document.getElementsByName('editTitlePasien'); for (let i=0; i<r.length; i++) if (r[i].value === sD) r[i].checked = true; 
-      document.getElementById('editNama').value = nA; 
-      document.getElementById('editAlamat').value = al; 
-      document.getElementById('editRT').value = rt; 
-      document.getElementById('editRW').value = rw; 
-      document.getElementById('editUsia').value = usia || "";
-      
-      const radiosJk = document.getElementsByName('editJk');
-      for(let i=0; i<radiosJk.length; i++) {
-        if(radiosJk[i].value === jk) radiosJk[i].checked = true;
-      }
-      
+      document.querySelector('select[name="editTitlePasien"]').value = sD; 
+      document.getElementById('editNama').value = nA; document.getElementById('editAlamat').value = al; document.getElementById('editRT').value = rt; document.getElementById('editRW').value = rw; document.getElementById('editUsia').value = usia || "";
+      document.querySelector('select[name="editJk"]').value = jk || "L";
       bukaModal('modalEditPasien'); 
     }
     
     async function submitEditPasien(e) { 
-      e.preventDefault(); 
-      if (!isSupabaseConfigured) { alert("Konfigurasi Supabase belum diatur. Cek kode HTML Anda."); return; }
-
+      e.preventDefault(); if (!isSupabaseConfigured) return;
       const btn = document.getElementById('btnUpdatePasien'); let ori = setLoadingBtn(btn, true);
-      const t = document.querySelector('input[name="editTitlePasien"]:checked').value; 
-      const id = document.getElementById('editIdPasien').value;
-      
-      const updateData = { 
-        nama: t + document.getElementById('editNama').value, 
-        alamat: document.getElementById('editAlamat').value, 
-        rt: document.getElementById('editRT').value, 
-        rw: document.getElementById('editRW').value,
-        usia: document.getElementById('editUsia').value,
-        jk: document.querySelector('input[name="editJk"]:checked').value
-      }; 
-
-      try {
-        const { error } = await supabaseClient.from('pasien').update(updateData).eq('id', id);
-        setLoadingBtn(btn, false, ori);
-        if(error) throw error;
-
-        tutupModal('modalEditPasien'); refreshData(); 
-      } catch (err) {
-        setLoadingBtn(btn, false, ori);
-        console.error(err); alert("Gagal update biodata.");
-      }
+      const t = document.querySelector('select[name="editTitlePasien"]').value; const id = document.getElementById('editIdPasien').value;
+      const updateData = { nama: t + document.getElementById('editNama').value, alamat: document.getElementById('editAlamat').value, rt: document.getElementById('editRT').value, rw: document.getElementById('editRW').value, usia: document.getElementById('editUsia').value, jk: document.querySelector('select[name="editJk"]').value }; 
+      try { await supabaseClient.from('pasien').update(updateData).eq('id', id); setLoadingBtn(btn, false, ori); tutupModal('modalEditPasien'); refreshData(); } 
+      catch (err) { setLoadingBtn(btn, false, ori); alert("Gagal"); }
     }
 
-    function bukaFormPemeriksaan(id, n) { 
-      document.getElementById('idPasien').value = id; document.getElementById('namaPasienDisp').innerText = n; document.getElementById('formPemeriksaan').reset(); bukaModal('modalForm'); 
-    }
+    function bukaFormPemeriksaan(id, n) { document.getElementById('idPasien').value = id; document.getElementById('namaPasienDisp').innerText = n; document.getElementById('formPemeriksaan').reset(); bukaModal('modalForm'); }
     
     async function submitPemeriksaan(e) { 
-      e.preventDefault(); 
-      if (!isSupabaseConfigured) { alert("Konfigurasi Supabase belum diatur. Cek kode HTML Anda."); return; }
-
+      e.preventDefault(); if (!isSupabaseConfigured) return;
       const btn = document.getElementById('btnSimpanRM'); let ori = setLoadingBtn(btn, true);
-      let rawBiaya = document.getElementById('biaya').value; let cleanBiaya = Number(rawBiaya.replace(/\./g, ''));
-      
-      const d = { 
-        id_pasien: document.getElementById('idPasien').value, 
-        nama_pasien: document.getElementById('namaPasienDisp').innerText, 
-        anamnesa: document.getElementById('anamnesa').value, 
-        td: document.getElementById('td').value, 
-        suhu: document.getElementById('suhu').value, 
-        gda: document.getElementById('gda').value, 
-        chol: document.getElementById('chol').value, 
-        ua: document.getElementById('ua').value, 
-        obat1: document.getElementById('obat1').value, 
-        obat2: document.getElementById('obat2').value, 
-        obat3: document.getElementById('obat3').value, 
-        obat4: document.getElementById('obat4').value, 
-        biaya: cleanBiaya 
-      }; 
-      
-      try {
-        const { error } = await supabaseClient.from('rekam_medis').insert([d]);
-        setLoadingBtn(btn, false, ori);
-        if(error) throw error;
-
-        tutupModal('modalForm'); loadPendapatanBackground(); 
-      } catch (err) {
-        setLoadingBtn(btn, false, ori);
-        console.error(err); alert("Gagal simpan pemeriksaan.");
-      }
+      let cleanBiaya = Number(document.getElementById('biaya').value.replace(/\./g, ''));
+      const d = { id_pasien: document.getElementById('idPasien').value, nama_pasien: document.getElementById('namaPasienDisp').innerText, anamnesa: document.getElementById('anamnesa').value, td: document.getElementById('td').value, suhu: document.getElementById('suhu').value, gda: document.getElementById('gda').value, chol: document.getElementById('chol').value, ua: document.getElementById('ua').value, obat1: document.getElementById('obat1').value, obat2: document.getElementById('obat2').value, obat3: document.getElementById('obat3').value, obat4: document.getElementById('obat4').value, biaya: cleanBiaya }; 
+      try { await supabaseClient.from('rekam_medis').insert([d]); setLoadingBtn(btn, false, ori); tutupModal('modalForm'); loadPendapatanBackground(); } 
+      catch (err) { setLoadingBtn(btn, false, ori); alert("Gagal"); }
     }
 
     async function bukaRiwayat(id, n) { 
       currentPasienId = id; currentPasienNama = n; document.getElementById('namaRiwayat').innerText = n; bukaModal('modalRiwayat'); 
       document.getElementById('loaderRiwayat').style.display = 'flex'; document.getElementById('listRiwayat').innerHTML = ''; 
-      
-      if (!isSupabaseConfigured) {
-        document.getElementById('loaderRiwayat').style.display = 'none';
-        document.getElementById('listRiwayat').innerHTML = '<div class="text-center text-amber-600 bg-amber-50 p-4 rounded-xl border border-amber-200">Hubungkan ke Supabase terlebih dahulu untuk melihat riwayat.</div>';
-        return;
-      }
-
+      if (!isSupabaseConfigured) { document.getElementById('loaderRiwayat').style.display = 'none'; return; }
       try {
         const { data, error } = await supabaseClient.from('rekam_medis').select('*').eq('id_pasien', id).order('tanggal', {ascending: false});
-        document.getElementById('loaderRiwayat').style.display = 'none'; 
-        if(error) throw error;
+        document.getElementById('loaderRiwayat').style.display = 'none'; if(error) throw error;
         
-        riwayatPasienGlobal = data.map(row => ({
-           rowIndex: row.id, 
-           idPasien: row.id_pasien,
-           tanggal: new Date(row.tanggal).toLocaleString('id-ID', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}),
-           anamnesa: row.anamnesa, td: row.td, suhu: row.suhu, 
-           gda: row.gda, chol: row.chol, ua: row.ua,
-           obat1: row.obat1, obat2: row.obat2, obat3: row.obat3, obat4: row.obat4,
-           obat: [row.obat1, row.obat2, row.obat3, row.obat4].filter(String).join(", "),
-           biaya: row.biaya
-        }));
+        riwayatPasienGlobal = data.map(row => ({ rowIndex: row.id, idPasien: row.id_pasien, tanggal: new Date(row.tanggal).toLocaleString('id-ID', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'}), anamnesa: row.anamnesa, td: row.td, suhu: row.suhu, gda: row.gda, chol: row.chol, ua: row.ua, obat1: row.obat1, obat2: row.obat2, obat3: row.obat3, obat4: row.obat4, obat: [row.obat1, row.obat2, row.obat3, row.obat4].filter(String).join(", "), biaya: row.biaya }));
 
-        let h = ''; 
-        if(riwayatPasienGlobal.length === 0) h = '<p class="text-center text-slate-500 py-8 border border-dashed border-slate-300 rounded-2xl bg-slate-50">Belum ada riwayat pasien.</p>';
+        let h = ''; if(riwayatPasienGlobal.length === 0) h = '<p class="text-center text-slate-400 text-sm mt-4">Belum ada riwayat.</p>';
         riwayatPasienGlobal.forEach((r, idx) => { 
-          let labInfo = [];
-          if(r.gda) labInfo.push(`GDA: ${r.gda}`);
-          if(r.chol) labInfo.push(`Chol: ${r.chol}`);
-          if(r.ua) labInfo.push(`UA: ${r.ua}`);
-          let labDisplay = labInfo.length > 0 ? `<div class="mb-3"><span class="text-[10px] font-bold text-purple-400 block uppercase mb-1 tracking-wider">Lab:</span><p class="text-[13px] font-medium text-slate-700">${labInfo.join(', ')}</p></div>` : '';
-
-          h += `<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative group">
-                  <div class="flex justify-between items-center mb-4">
-                    <span class="text-[11px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full"><i class="far fa-calendar-alt text-blue-500 mr-1"></i> ${r.tanggal}</span>
-                    <button class="text-red-500 hover:text-red-600 active:bg-red-100 p-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1.5" onclick="bukaEditRM(${idx})"><i class="fas fa-edit"></i> Edit</button>
+          let labInfo = []; if(r.gda) labInfo.push(`GDA: ${r.gda}`); if(r.chol) labInfo.push(`Chol: ${r.chol}`); if(r.ua) labInfo.push(`UA: ${r.ua}`);
+          let labDisplay = labInfo.length > 0 ? `<div class="mb-2"><span class="text-[9px] font-bold text-purple-400 uppercase tracking-widest block">Lab</span><p class="text-[11px] font-semibold text-slate-700">${labInfo.join(', ')}</p></div>` : '';
+          h += `<div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
+                  <div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-200">
+                    <span class="text-[10px] font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-md">${r.tanggal}</span>
+                    <button class="text-amber-500 bg-amber-50 px-2 py-0.5 rounded-md text-[10px] font-bold" onclick="bukaEditRM(${idx})">Edit</button>
                   </div>
-                  <div class="mb-3"><span class="text-[10px] font-bold text-slate-400 block uppercase mb-1 tracking-wider">Keluhan & TV:</span><p class="text-[13px] font-medium text-slate-700">${r.anamnesa} (TD: ${r.td||'-'}, S: ${r.suhu||'-'}°C)</p></div>
+                  <div class="mb-2"><span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Keluhan & TV</span><p class="text-[11px] font-semibold text-slate-700">${r.anamnesa} <span class="text-slate-400">(TD: ${r.td||'-'}, S: ${r.suhu||'-'})</span></p></div>
                   ${labDisplay}
-                  <div><span class="text-[10px] font-bold text-slate-400 block uppercase mb-1 tracking-wider">Terapi / Obat:</span><p class="text-[13px] text-slate-600">${r.obat || '-'}</p></div>
+                  <div><span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Terapi</span><p class="text-[11px] font-semibold text-slate-700">${r.obat || '-'}</p></div>
                 </div>`; 
         }); 
         document.getElementById('listRiwayat').innerHTML = h; 
-
-      } catch (err) {
-        document.getElementById('loaderRiwayat').style.display = 'none';
-        console.error(err); alert("Gagal memuat riwayat pasien.");
-      }
+      } catch (err) { document.getElementById('loaderRiwayat').style.display = 'none'; alert("Gagal"); }
     }
 
     function bukaEditRM(idx) { 
@@ -881,111 +670,48 @@
     }
     
     async function submitEditRM(e) { 
-      e.preventDefault(); 
-      if (!isSupabaseConfigured) { alert("Konfigurasi Supabase belum diatur. Cek kode HTML Anda."); return; }
-
+      e.preventDefault(); if (!isSupabaseConfigured) return;
       const btn = document.getElementById('btnUpdateRM'); let ori = setLoadingBtn(btn, true);
-      let rawBiaya = document.getElementById('editBiaya').value; let cleanBiaya = Number(rawBiaya.replace(/\./g, ''));
-      const id = document.getElementById('editRMRowIndex').value;
-
-      const d = { 
-        anamnesa: document.getElementById('editAnamnesa').value, 
-        td: document.getElementById('editTd').value, 
-        suhu: document.getElementById('editSuhu').value, 
-        gda: document.getElementById('editGda').value, 
-        chol: document.getElementById('editChol').value, 
-        ua: document.getElementById('editUa').value, 
-        obat1: document.getElementById('editObat1').value, 
-        obat2: document.getElementById('editObat2').value, 
-        obat3: document.getElementById('editObat3').value, 
-        obat4: document.getElementById('editObat4').value, 
-        biaya: cleanBiaya 
-      }; 
-      
-      try {
-        const { error } = await supabaseClient.from('rekam_medis').update(d).eq('id', id);
-        setLoadingBtn(btn, false, ori);
-        if(error) throw error;
-
-        tutupModal('modalEditRM'); loadPendapatanBackground(); bukaRiwayat(currentPasienId, currentPasienNama); 
-      } catch(err) {
-        setLoadingBtn(btn, false, ori);
-        console.error(err); alert("Gagal update rekam medis.");
-      }
+      let cleanBiaya = Number(document.getElementById('editBiaya').value.replace(/\./g, '')); const id = document.getElementById('editRMRowIndex').value;
+      const d = { anamnesa: document.getElementById('editAnamnesa').value, td: document.getElementById('editTd').value, suhu: document.getElementById('editSuhu').value, gda: document.getElementById('editGda').value, chol: document.getElementById('editChol').value, ua: document.getElementById('editUa').value, obat1: document.getElementById('editObat1').value, obat2: document.getElementById('editObat2').value, obat3: document.getElementById('editObat3').value, obat4: document.getElementById('editObat4').value, biaya: cleanBiaya }; 
+      try { await supabaseClient.from('rekam_medis').update(d).eq('id', id); setLoadingBtn(btn, false, ori); tutupModal('modalEditRM'); loadPendapatanBackground(); bukaRiwayat(currentPasienId, currentPasienNama); } 
+      catch(err) { setLoadingBtn(btn, false, ori); alert("Gagal"); }
     }
 
     async function loadPendapatanBackground() {
-      if (!isSupabaseConfigured) {
-        document.getElementById('loaderPendapatan').style.display = 'none'; 
-        document.getElementById('kontenPendapatan').style.display = 'block'; 
-        updateDashboards();
-        return;
-      }
-
+      if (!isSupabaseConfigured) { document.getElementById('loaderPendapatan').style.display = 'none'; document.getElementById('kontenPendapatan').style.display = 'block'; updateDashboards(); return; }
       try {
         const { data, error } = await supabaseClient.from('rekam_medis').select('tanggal, nama_pasien, biaya');
-        document.getElementById('loaderPendapatan').style.display = 'none'; 
-        document.getElementById('kontenPendapatan').style.display = 'block'; 
-        if(error) throw error;
-
-        allTransactions = data.map(row => ({
-          tglStr: row.tanggal, 
-          nama: row.nama_pasien,
-          biaya: Number(row.biaya) || 0
-        }));
-        
+        document.getElementById('loaderPendapatan').style.display = 'none'; document.getElementById('kontenPendapatan').style.display = 'block'; if(error) throw error;
+        allTransactions = data.map(row => ({ tglStr: row.tanggal, nama: row.nama_pasien, biaya: Number(row.biaya) || 0 }));
         updateDashboards();
-      } catch (err) {
-        document.getElementById('loaderPendapatan').style.display = 'none'; 
-        console.error("Error get rekap", err);
-      }
+      } catch (err) {}
     }
     
-    function loadPendapatanManual() {
-      document.getElementById('kontenPendapatan').style.display = 'none'; document.getElementById('loaderPendapatan').style.display = 'flex';
-      loadPendapatanBackground();
-    }
+    function loadPendapatanManual() { document.getElementById('kontenPendapatan').style.display = 'none'; document.getElementById('loaderPendapatan').style.display = 'flex'; loadPendapatanBackground(); }
 
-    function ubahOffset(tipe, arah, event) {
-      if(event) event.stopPropagation();
-      offset[tipe] += arah; updateDashboards();
-    }
+    function ubahOffset(tipe, arah, event) { if(event) event.stopPropagation(); offset[tipe] += arah; updateDashboards(); }
 
     function setupSwipeListeners() {
       ['hari', 'minggu', 'bulan', 'tahun'].forEach(tipe => {
         let el = document.getElementById('swipe' + tipe.charAt(0).toUpperCase() + tipe.slice(1));
         if(!el) return; let touchstartX = 0; let touchendX = 0;
         el.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; }, {passive: true});
-        el.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            if (touchendX > touchstartX + 40) ubahOffset(tipe, -1);
-            else if (touchendX < touchstartX - 40) ubahOffset(tipe, 1);
-        }, {passive: true});
+        el.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; if (touchendX > touchstartX + 40) ubahOffset(tipe, -1); else if (touchendX < touchstartX - 40) ubahOffset(tipe, 1); }, {passive: true});
       });
     }
 
     function updateDashboards() {
       summaryFiltered = { hari: [], minggu: [], bulan: [], tahun: [] };
       let dataKalender = {}; const now = new Date();
-
-      let targetHari = new Date(); targetHari.setDate(now.getDate() + offset.hari);
-      let tHariStr = targetHari.toDateString();
-
-      let targetMinggu = new Date(); targetMinggu.setDate(now.getDate() + (offset.minggu * 7));
-      let day = targetMinggu.getDay(), diff = targetMinggu.getDate() - day + (day == 0 ? -6:1);
-      let mon = new Date(targetMinggu.setDate(diff)); mon.setHours(0,0,0,0);
-      let sun = new Date(new Date(mon).setDate(mon.getDate() + 6)); sun.setHours(23,59,59,999);
-
-      let targetBulan = new Date(); targetBulan.setMonth(now.getMonth() + offset.bulan);
-      let bBln = targetBulan.getMonth(), bThn = targetBulan.getFullYear();
-
-      let targetTahun = new Date(); targetTahun.setFullYear(now.getFullYear() + offset.tahun);
-      let tThn = targetTahun.getFullYear();
+      let targetHari = new Date(); targetHari.setDate(now.getDate() + offset.hari); let tHariStr = targetHari.toDateString();
+      let targetMinggu = new Date(); targetMinggu.setDate(now.getDate() + (offset.minggu * 7)); let day = targetMinggu.getDay(), diff = targetMinggu.getDate() - day + (day == 0 ? -6:1);
+      let mon = new Date(targetMinggu.setDate(diff)); mon.setHours(0,0,0,0); let sun = new Date(new Date(mon).setDate(mon.getDate() + 6)); sun.setHours(23,59,59,999);
+      let targetBulan = new Date(); targetBulan.setMonth(now.getMonth() + offset.bulan); let bBln = targetBulan.getMonth(), bThn = targetBulan.getFullYear();
+      let targetTahun = new Date(); targetTahun.setFullYear(now.getFullYear() + offset.tahun); let tThn = targetTahun.getFullYear();
 
       allTransactions.forEach(r => {
-        let tgl = new Date(r.tglStr);
-        let info = { nama: r.nama, biaya: r.biaya, tglString: tgl.toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) };
-
+        let tgl = new Date(r.tglStr); let info = { nama: r.nama, biaya: r.biaya, tglString: tgl.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) };
         if (tgl.toDateString() === tHariStr) summaryFiltered.hari.push(info);
         if (tgl >= mon && tgl <= sun) summaryFiltered.minggu.push(info);
         if (tgl.getMonth() === bBln && tgl.getFullYear() === bThn) {
@@ -999,17 +725,14 @@
         if (tgl.getFullYear() === tThn) summaryFiltered.tahun.push(info);
       });
 
-      document.getElementById('labelHari').innerText = offset.hari === 0 ? "HARI INI" : targetHari.toLocaleDateString('id-ID', {day:'numeric', month:'short'});
+      document.getElementById('labelHari').innerText = offset.hari === 0 ? "Hari Ini" : targetHari.toLocaleDateString('id-ID', {day:'numeric', month:'short'});
       document.getElementById('pdptHari').innerText = formatRp(summaryFiltered.hari.reduce((a,b) => a+b.biaya, 0));
-
-      document.getElementById('labelMinggu').innerText = offset.minggu === 0 ? "MINGGU INI" : `${mon.getDate()} - ${sun.getDate()} ${sun.toLocaleDateString('id-ID',{month:'short'})}`;
+      document.getElementById('labelMinggu').innerText = offset.minggu === 0 ? "Minggu Ini" : `${mon.getDate()} - ${sun.getDate()} ${sun.toLocaleDateString('id-ID',{month:'short'})}`;
       document.getElementById('pdptMinggu').innerText = formatRp(summaryFiltered.minggu.reduce((a,b) => a+b.biaya, 0));
-
-      const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-      document.getElementById('labelBulan').innerText = offset.bulan === 0 ? "BULAN INI" : `${monthNames[bBln]} ${bThn}`;
+      const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"];
+      document.getElementById('labelBulan').innerText = offset.bulan === 0 ? "Bulan Ini" : `${monthNames[bBln]} ${bThn}`;
       document.getElementById('pdptBulan').innerText = formatRp(summaryFiltered.bulan.reduce((a,b) => a+b.biaya, 0));
-
-      document.getElementById('labelTahun').innerText = offset.tahun === 0 ? "TAHUN INI" : `TAHUN ${tThn}`;
+      document.getElementById('labelTahun').innerText = offset.tahun === 0 ? "Tahun Ini" : `${tThn}`;
       document.getElementById('pdptTahun').innerText = formatRp(summaryFiltered.tahun.reduce((a,b) => a+b.biaya, 0));
 
       if(offset.bulan === 0) renderKalender(dataKalender);
@@ -1019,8 +742,8 @@
       const list = summaryFiltered[tipe]; const total = list.reduce((a,b) => a + b.biaya, 0);
       document.getElementById('judulPeriodeDisp').innerText = document.getElementById('label'+tipe.charAt(0).toUpperCase() + tipe.slice(1)).innerText;
       let h = '';
-      if(list.length === 0) h = '<p class="text-center text-slate-500 py-6 text-sm bg-slate-50 rounded-xl">Belum ada kunjungan pasien.</p>';
-      else list.forEach((p, i) => h += `<div class="flex justify-between items-center py-3 border-b border-dashed border-slate-200"><div class="flex flex-col"><div class="flex items-center gap-2.5"><span class="text-[10px] text-white bg-slate-400 px-2 py-0.5 rounded">${i+1}</span><span class="text-[13px] font-bold text-slate-800 leading-tight">${p.nama}</span></div><span class="text-xs text-slate-400 ml-8 mt-1">${p.tglString}</span></div><span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-100">${formatRp(p.biaya)}</span></div>`);
+      if(list.length === 0) h = '<div class="text-center text-slate-400 py-8 text-xs">Kosong</div>';
+      else list.forEach((p, i) => h += `<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex justify-between items-center"><div class="flex items-center gap-2"><span class="w-5 h-5 flex items-center justify-center bg-slate-200 text-slate-500 rounded-md text-[9px] font-bold">${i+1}</span><div><p class="text-xs font-bold text-slate-700">${p.nama}</p><p class="text-[9px] text-slate-400">${p.tglString}</p></div></div><span class="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded-lg">${formatRp(p.biaya)}</span></div>`);
       document.getElementById('listPasienPeriode').innerHTML = h; document.getElementById('totalPeriodeDisp').innerText = formatRp(total); bukaModal('modalDetailPeriode');
     }
 
@@ -1040,28 +763,24 @@
 
     function renderKalender(dataKalender) {
       const y = tanggalKalender.getFullYear(), m = tanggalKalender.getMonth(), now = new Date();
-      document.getElementById('judulBulanKalender').innerText = `${["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][m]} ${y}`;
+      document.getElementById('judulBulanKalender').innerText = `${["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des"][m]} ${y}`;
       const first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate(), grid = document.getElementById('gridKalender');
-      grid.innerHTML = ''; ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => grid.innerHTML += `<div class="text-[11px] md:text-sm font-bold pb-2 border-b border-slate-100 ${i===0?'text-rose-500':'text-slate-500'}">${d}</div>`);
+      grid.innerHTML = ''; ['M', 'S', 'S', 'R', 'K', 'J', 'S'].forEach((d, i) => grid.innerHTML += `<div class="text-[10px] font-bold pb-2 ${i===0?'text-rose-500':'text-slate-400'}">${d}</div>`);
       for (let i = 0; i < first; i++) grid.innerHTML += `<div></div>`;
       for (let i = 1; i <= total; i++) {
-        let key = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`; let isToday = (i === now.getDate() && m === now.getMonth() && y === now.getFullYear()) ? 'ring-2 ring-emerald-400 bg-emerald-50' : 'bg-slate-50 border border-slate-100';
+        let key = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`; let isToday = (i === now.getDate() && m === now.getMonth() && y === now.getFullYear()) ? 'bg-blue-50 border border-blue-200' : 'bg-transparent border border-transparent';
         let libur = liburNasional[key.substring(5)]; let dH = dataKalender[key];
         
-        let h = `<div class="relative rounded-xl p-1 md:p-2 min-h-[70px] md:min-h-[80px] flex flex-col items-center transition-all ${isToday} ${dH?'cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:border-blue-300 active:scale-95 bg-white':' opacity-80'}" ${dH?`onclick="bukaDetailKunjungan('${key}', '${JSON.stringify(dH.pasien).replace(/"/g, '&quot;')}', ${dH.totalBiaya})"`:''}>
-                  <div class="text-[13px] md:text-sm font-bold mb-1 ${(new Date(y,m,i).getDay()===0 || libur)?'text-rose-500':'text-slate-700'}">${i}</div>`;
-        
-        if(libur) h += `<div class="text-[8px] md:text-[9px] font-bold text-rose-600 bg-rose-100 px-1 py-0.5 rounded w-full truncate mb-1" title="${libur}">${libur}</div>`;
-        if(dH) h += `<div class="text-[9px] md:text-[11px] font-bold text-white bg-blue-500 px-1 py-0.5 rounded-md w-full truncate mb-1 shadow-sm">${dH.jumlahKunjungan} Ps</div>
-                     <div class="text-[8px] md:text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.5 rounded-md w-full truncate">Rp ${new Intl.NumberFormat('id-ID').format(dH.totalBiaya)}</div>
-                     <i class="fas fa-coins absolute top-1.5 right-1.5 text-amber-400 text-[10px] drop-shadow-sm hidden md:block"></i>`;
+        let h = `<div class="rounded-xl p-1 min-h-[45px] flex flex-col items-center justify-center relative ${isToday} ${dH?'cursor-pointer hover:bg-slate-50 border-slate-100':' opacity-90'}" ${dH?`onclick="bukaDetailKunjungan('${key}', '${JSON.stringify(dH.pasien).replace(/"/g, '&quot;')}', ${dH.totalBiaya})"`:''}>
+                  <span class="text-[11px] font-bold ${(new Date(y,m,i).getDay()===0 || libur)?'text-rose-500':(isToday?'text-blue-700':'text-slate-600')}">${i}</span>`;
+        if(dH) h += `<div class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-0.5"></div>`;
         grid.innerHTML += h + `</div>`;
       }
     }
 
     function bukaDetailKunjungan(tgl, json, total) {
-      const list = JSON.parse(json); document.getElementById('tglDetailDisp').innerText = new Date(tgl).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      let h = ''; list.forEach((p, i) => h += `<div class="flex justify-between items-center py-3 border-b border-dashed border-slate-200"><div class="flex items-center gap-2.5"><span class="text-[10px] text-white bg-slate-400 px-2 py-0.5 rounded">${i+1}</span><span class="text-[13px] font-bold text-slate-800">${p.nama}</span></div><span class="text-xs text-blue-700 font-bold bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-100">${formatRp(p.biaya)}</span></div>`);
+      const list = JSON.parse(json); document.getElementById('tglDetailDisp').innerText = new Date(tgl).toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+      let h = ''; list.forEach((p, i) => h += `<div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex justify-between items-center"><div class="flex items-center gap-2"><span class="w-5 h-5 flex items-center justify-center bg-slate-200 text-slate-500 rounded-md text-[9px] font-bold">${i+1}</span><p class="text-xs font-bold text-slate-700">${p.nama}</p></div><span class="text-[10px] font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded-lg">${formatRp(p.biaya)}</span></div>`);
       document.getElementById('listPasienKunjungan').innerHTML = h; document.getElementById('totalDetailDisp').innerText = formatRp(total); bukaModal('modalDetailKunjungan');
     }
   </script>
