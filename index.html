@@ -2,7 +2,12 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <!-- Optimalisasi Viewport untuk Fullscreen & Safe Area -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
   <title>E-RM KETITANG MEDIKA</title>
   
   <!-- Font & Icons -->
@@ -16,12 +21,26 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #334155; }
+    :root {
+      --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    }
     
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background-color: #f8fafc; 
+      color: #334155;
+      /* Mencegah overscroll bounce (efek karet) layaknya aplikasi native */
+      overscroll-behavior-y: none;
+    }
+    
+    /* Scrollbar Styling (Desktop) */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #f1f1f1; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    /* Mencegah Zoom di iOS saat fokus input */
+    input, textarea, select { font-size: 16px !important; }
 
     /* Efek Glassmorphism Premium (Light Grey) */
     .glass-card {
@@ -35,7 +54,7 @@
 
     .glass-card:hover {
       box-shadow: 0 25px 50px -10px rgba(15, 23, 42, 0.3), 0 15px 25px -10px rgba(15, 23, 42, 0.2) !important;
-      transform: translateY(-4px) !important;
+      transform: translateY(-4px);
     }
 
     .page { display: none; animation: fadeIn 0.3s ease-out; }
@@ -47,11 +66,12 @@
       background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); 
       display: none; justify-content: center; align-items: center; z-index: 1000; 
       opacity: 0; transition: opacity 0.3s ease;
+      padding: 1rem;
     }
     .modal-overlay.show { opacity: 1; }
     
     .modal-content { 
-      max-height: 90vh; overflow-y: auto; 
+      max-height: 85dvh; overflow-y: auto; 
       background: rgba(248, 250, 252, 0.98) !important; 
       backdrop-filter: blur(20px);
       border: 1px solid rgba(255, 255, 255, 0.8);
@@ -61,17 +81,26 @@
     .modal-overlay.show .modal-content { transform: scale(1); }
 
     .desktop-nav { box-shadow: 0 15px 30px -10px rgba(15, 23, 42, 0.15) !important; }
-    .mobile-nav { box-shadow: 0 20px 40px -5px rgba(15, 23, 42, 0.35) !important; }
+    
+    /* Navigasi Bawah Mobile dengan Safe Area */
+    .mobile-nav { 
+      box-shadow: 0 -10px 40px -5px rgba(15, 23, 42, 0.15) !important; 
+      padding-bottom: calc(0.75rem + var(--safe-area-bottom));
+    }
 
     .loader-spin { animation: spin 1s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
     .radio-group input[type="radio"] { accent-color: #3b82f6; width: 1.2rem; height: 1.2rem; cursor: pointer; }
     
+    /* Mobile Layout Tweaks */
     @media (max-width: 768px) {
+      ::-webkit-scrollbar { display: none; } /* Hilangkan scrollbar di HP agar lebih native */
       .desktop-nav { display: none; }
       .mobile-nav { display: flex; }
-      .main-content { padding-bottom: 80px; }
+      /* Tambah padding bawah agar konten tidak tertutup nav menu (termasuk safe area) */
+      .main-content { padding-bottom: calc(90px + var(--safe-area-bottom)); }
+      .glass-card:hover { transform: none; /* Disable hover float on mobile */ }
     }
     @media (min-width: 769px) {
       .desktop-nav { display: flex; }
@@ -79,7 +108,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="min-h-[100dvh] flex flex-col antialiased relative">
 
   <!-- Desktop Navigation -->
   <div class="desktop-nav sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex justify-between items-center w-full">
@@ -98,98 +127,99 @@
   </div>
 
   <!-- Mobile Navigation (Bottom) -->
-  <div class="mobile-nav fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 justify-around items-center py-3 px-2 z-50 pb-safe">
-    <button class="nav-btn-mobile nav-erm active flex flex-col items-center gap-1 text-slate-800 w-1/2 transition-colors" onclick="switchTabMobile('erm', this)">
-      <i class="fas fa-notes-medical text-xl"></i>
-      <span class="text-[10px] font-bold uppercase tracking-wider">E-RM</span>
+  <div class="mobile-nav fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-200 justify-around items-center pt-3 px-2 z-50">
+    <button class="nav-btn-mobile nav-erm active flex flex-col items-center gap-1.5 text-slate-800 w-1/2 transition-colors" onclick="switchTabMobile('erm', this)">
+      <div class="p-2 rounded-xl transition-all duration-300 icon-container"><i class="fas fa-notes-medical text-xl"></i></div>
+      <span class="text-[11px] font-bold uppercase tracking-wider">E-RM</span>
     </button>
-    <button class="nav-btn-mobile nav-pendapatan flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 w-1/2 transition-colors" onclick="switchTabMobile('pendapatan', this)">
-      <i class="fas fa-chart-pie text-xl"></i>
-      <span class="text-[10px] font-bold uppercase tracking-wider">Rekap</span>
+    <button class="nav-btn-mobile nav-pendapatan flex flex-col items-center gap-1.5 text-slate-400 hover:text-slate-600 w-1/2 transition-colors" onclick="switchTabMobile('pendapatan', this)">
+      <div class="p-2 rounded-xl transition-all duration-300 icon-container"><i class="fas fa-chart-pie text-xl"></i></div>
+      <span class="text-[11px] font-bold uppercase tracking-wider">Rekap</span>
     </button>
   </div>
 
   <!-- Main Container -->
-  <div class="main-content container mx-auto px-4 md:px-6 pt-6 md:pt-8 w-full max-w-7xl flex-grow">
+  <div class="main-content container mx-auto px-4 md:px-6 pt-6 md:pt-8 w-full max-w-7xl flex-grow flex flex-col">
     
     <!-- PAGE 1: E-RM PASIEN -->
-    <div id="erm" class="page active">
+    <div id="erm" class="page active flex-grow">
       <div class="flex flex-col md:flex-row gap-4 mb-8 items-center justify-center">
         <div class="relative w-full max-w-lg">
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <i class="fas fa-search text-slate-400"></i>
           </div>
-          <input type="text" id="searchInput" class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-300 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-shadow shadow-sm" placeholder="Cari Nama atau Alamat Pasien..." onkeyup="filterPasien()">
+          <input type="text" id="searchInput" class="w-full pl-11 pr-4 py-3.5 bg-white border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent transition-shadow shadow-sm" placeholder="Cari Nama atau Alamat Pasien..." onkeyup="filterPasien()">
         </div>
-        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl font-bold text-sm shadow-xl shadow-slate-300/50 transition-transform transform hover:-translate-y-0.5 flex items-center justify-center gap-2" onclick="bukaModal('modalTambah')">
+        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl font-bold text-sm shadow-xl shadow-slate-300/50 transition-transform transform md:hover:-translate-y-0.5 flex items-center justify-center gap-2 active:scale-95" onclick="bukaModal('modalTambah')">
           <i class="fas fa-user-plus"></i> Pasien Baru
         </button>
       </div>
 
-      <div id="loaderData" class="flex flex-col items-center justify-center py-12 text-slate-500">
-        <i class="fas fa-circle-notch loader-spin text-4xl mb-3 text-blue-500"></i>
-        <span class="text-sm font-semibold animate-pulse">Memuat Data Pasien...</span>
+      <div id="loaderData" class="flex flex-col items-center justify-center py-20 text-slate-500">
+        <i class="fas fa-circle-notch loader-spin text-4xl mb-4 text-blue-500"></i>
+        <span class="text-sm font-semibold animate-pulse tracking-wide">Memuat Data Pasien...</span>
       </div>
 
-      <div id="patientList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div id="patientList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pb-6">
         <!-- List Pasien Masuk Sini -->
       </div>
     </div>
 
     <!-- PAGE 2: REKAP PENDAPATAN -->
-    <div id="pendapatan" class="page">
-      <div class="glass-card rounded-3xl p-6 md:p-8 mb-6 text-center max-w-2xl mx-auto border-emerald-100">
-        <h1 class="text-2xl md:text-3xl font-extrabold text-emerald-800 flex justify-center items-center gap-3">
+    <div id="pendapatan" class="page flex-grow">
+      <div class="glass-card rounded-3xl p-6 md:p-8 mb-6 text-center max-w-2xl mx-auto border-emerald-100 relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-200 rounded-full blur-3xl opacity-50"></div>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-emerald-800 flex justify-center items-center gap-3 relative z-10">
           <i class="fas fa-chart-line text-emerald-600"></i> Rekapitulasi Pendapatan
         </h1>
       </div>
 
       <div class="text-right mb-6">
-        <button class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-semibold text-sm shadow-lg shadow-slate-300/50 transition-colors inline-flex items-center gap-2" onclick="loadPendapatanManual()">
+        <button class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-semibold text-sm shadow-lg shadow-slate-300/50 transition-colors inline-flex items-center gap-2 active:scale-95" onclick="loadPendapatanManual()">
           <i class="fas fa-sync-alt"></i> Refresh Data
         </button>
       </div>
       
-      <div id="loaderPendapatan" class="flex flex-col items-center justify-center py-12 text-slate-500">
-        <i class="fas fa-circle-notch loader-spin text-4xl mb-3 text-emerald-500"></i>
-        <span class="text-sm font-semibold animate-pulse">Menghitung Rekapitulasi...</span>
+      <div id="loaderPendapatan" class="flex flex-col items-center justify-center py-20 text-slate-500">
+        <i class="fas fa-circle-notch loader-spin text-4xl mb-4 text-emerald-500"></i>
+        <span class="text-sm font-semibold animate-pulse tracking-wide">Menghitung Rekapitulasi...</span>
       </div>
       
-      <div id="kontenPendapatan" style="display:none;">
+      <div id="kontenPendapatan" style="display:none;" class="pb-6">
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <!-- HARI -->
           <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center transition-all group cursor-pointer" id="swipeHari">
             <div class="flex justify-between w-full items-center mb-2 px-1">
-              <button class="text-slate-400 hover:text-orange-500 p-1" onclick="ubahOffset('hari', -1, event)"><i class="fas fa-chevron-left"></i></button>
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-orange-600" id="labelHari" onclick="bukaDetailPeriode('hari')">Hari Ini</h4>
-              <button class="text-slate-400 hover:text-orange-500 p-1" onclick="ubahOffset('hari', 1, event)"><i class="fas fa-chevron-right"></i></button>
+              <button class="text-slate-400 hover:text-orange-500 p-2 -ml-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('hari', -1, event)"><i class="fas fa-chevron-left"></i></button>
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-orange-600 transition-colors" id="labelHari" onclick="bukaDetailPeriode('hari')">Hari Ini</h4>
+              <button class="text-slate-400 hover:text-orange-500 p-2 -mr-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('hari', 1, event)"><i class="fas fa-chevron-right"></i></button>
             </div>
             <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 w-full text-center group-hover:text-orange-600 transition-colors" id="pdptHari" onclick="bukaDetailPeriode('hari')">Rp 0</h2>
           </div>
           <!-- MINGGU -->
           <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center transition-all group cursor-pointer" id="swipeMinggu">
             <div class="flex justify-between w-full items-center mb-2 px-1">
-              <button class="text-slate-400 hover:text-blue-500 p-1" onclick="ubahOffset('minggu', -1, event)"><i class="fas fa-chevron-left"></i></button>
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-blue-600" id="labelMinggu" onclick="bukaDetailPeriode('minggu')">Minggu Ini</h4>
-              <button class="text-slate-400 hover:text-blue-500 p-1" onclick="ubahOffset('minggu', 1, event)"><i class="fas fa-chevron-right"></i></button>
+              <button class="text-slate-400 hover:text-blue-500 p-2 -ml-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('minggu', -1, event)"><i class="fas fa-chevron-left"></i></button>
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-blue-600 transition-colors" id="labelMinggu" onclick="bukaDetailPeriode('minggu')">Minggu Ini</h4>
+              <button class="text-slate-400 hover:text-blue-500 p-2 -mr-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('minggu', 1, event)"><i class="fas fa-chevron-right"></i></button>
             </div>
             <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 w-full text-center group-hover:text-blue-600 transition-colors" id="pdptMinggu" onclick="bukaDetailPeriode('minggu')">Rp 0</h2>
           </div>
           <!-- BULAN -->
           <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center transition-all group cursor-pointer" id="swipeBulan">
             <div class="flex justify-between w-full items-center mb-2 px-1">
-              <button class="text-slate-400 hover:text-emerald-500 p-1" onclick="ubahOffset('bulan', -1, event)"><i class="fas fa-chevron-left"></i></button>
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-emerald-600" id="labelBulan" onclick="bukaDetailPeriode('bulan')">Bulan Ini</h4>
-              <button class="text-slate-400 hover:text-emerald-500 p-1" onclick="ubahOffset('bulan', 1, event)"><i class="fas fa-chevron-right"></i></button>
+              <button class="text-slate-400 hover:text-emerald-500 p-2 -ml-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('bulan', -1, event)"><i class="fas fa-chevron-left"></i></button>
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-emerald-600 transition-colors" id="labelBulan" onclick="bukaDetailPeriode('bulan')">Bulan Ini</h4>
+              <button class="text-slate-400 hover:text-emerald-500 p-2 -mr-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('bulan', 1, event)"><i class="fas fa-chevron-right"></i></button>
             </div>
             <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 w-full text-center group-hover:text-emerald-600 transition-colors" id="pdptBulan" onclick="bukaDetailPeriode('bulan')">Rp 0</h2>
           </div>
           <!-- TAHUN -->
           <div class="glass-card rounded-2xl p-4 flex flex-col items-center justify-center transition-all group cursor-pointer" id="swipeTahun">
             <div class="flex justify-between w-full items-center mb-2 px-1">
-              <button class="text-slate-400 hover:text-purple-500 p-1" onclick="ubahOffset('tahun', -1, event)"><i class="fas fa-chevron-left"></i></button>
-              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-purple-600" id="labelTahun" onclick="bukaDetailPeriode('tahun')">Tahun Ini</h4>
-              <button class="text-slate-400 hover:text-purple-500 p-1" onclick="ubahOffset('tahun', 1, event)"><i class="fas fa-chevron-right"></i></button>
+              <button class="text-slate-400 hover:text-purple-500 p-2 -ml-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('tahun', -1, event)"><i class="fas fa-chevron-left"></i></button>
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wide group-hover:text-purple-600 transition-colors" id="labelTahun" onclick="bukaDetailPeriode('tahun')">Tahun Ini</h4>
+              <button class="text-slate-400 hover:text-purple-500 p-2 -mr-2 rounded-lg active:bg-slate-100" onclick="ubahOffset('tahun', 1, event)"><i class="fas fa-chevron-right"></i></button>
             </div>
             <h2 class="text-xl md:text-2xl font-extrabold text-slate-800 w-full text-center group-hover:text-purple-600 transition-colors" id="pdptTahun" onclick="bukaDetailPeriode('tahun')">Rp 0</h2>
           </div>
@@ -197,11 +227,11 @@
         
         <div class="glass-card rounded-3xl p-5 md:p-8">
           <div class="flex justify-between items-center mb-6">
-              <button class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors flex items-center justify-center" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left"></i></button>
+              <button class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 active:bg-slate-200 transition-colors flex items-center justify-center" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left"></i></button>
               <h3 id="judulBulanKalender" class="text-lg md:text-xl font-bold text-slate-800 uppercase tracking-wide">Memuat...</h3>
-              <button class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors flex items-center justify-center" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right"></i></button>
+              <button class="w-10 h-10 rounded-full bg-slate-100 text-slate-600 active:bg-slate-200 transition-colors flex items-center justify-center" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right"></i></button>
           </div>
-          <div id="gridKalender" class="grid grid-cols-7 gap-1 md:gap-3 text-center"></div>
+          <div id="gridKalender" class="grid grid-cols-7 gap-1.5 md:gap-3 text-center"></div>
         </div>
       </div>
     </div>
@@ -211,102 +241,103 @@
 
   <!-- Modal Konfirmasi Hapus Pasien -->
   <div id="modalHapus" class="modal-overlay">
-    <div class="modal-content bg-white w-[95%] max-w-sm rounded-3xl p-6 text-center relative z-10">
+    <div class="modal-content w-full max-w-sm rounded-3xl p-6 text-center relative">
       <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
         <i class="fas fa-exclamation-triangle"></i>
       </div>
       <h2 class="text-xl font-bold text-slate-800 mb-2">Hapus Pasien?</h2>
       <p class="text-sm text-slate-500 mb-6">Data <b id="hapusNamaPasienDisp" class="text-slate-700"></b> beserta seluruh rekam medisnya akan dihapus permanen. Tindakan ini tidak dapat dibatalkan.</p>
       <div class="flex gap-3">
-        <button class="w-1/2 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors" onclick="tutupModal('modalHapus')">Batal</button>
-        <button class="w-1/2 py-3 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold transition-colors shadow-lg shadow-rose-200 flex items-center justify-center gap-2" id="btnEksekusiHapus" onclick="eksekusiHapusPasien()"><i class="fas fa-trash"></i> Hapus</button>
+        <button class="w-1/2 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors active:scale-95" onclick="tutupModal('modalHapus')">Batal</button>
+        <button class="w-1/2 py-3.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold transition-colors shadow-lg shadow-rose-200 flex items-center justify-center gap-2 active:scale-95" id="btnEksekusiHapus" onclick="eksekusiHapusPasien()"><i class="fas fa-trash"></i> Hapus</button>
       </div>
     </div>
   </div>
 
   <!-- Modal Detail Periode -->
   <div id="modalDetailPeriode" class="modal-overlay">
-    <div class="modal-content w-[95%] max-w-md rounded-3xl p-6">
-      <div class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-200 flex flex-col">
+    <div class="modal-content w-full max-w-md rounded-3xl p-6 flex flex-col">
+      <div class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-200 flex flex-col shrink-0">
         <div class="flex items-center gap-2"><i class="fas fa-list-alt text-slate-600"></i> Rekap Kunjungan</div>
         <span id="judulPeriodeDisp" class="text-sm font-normal text-slate-500 mt-1"></span>
       </div>
-      <div id="listPasienPeriode" class="max-h-[50vh] overflow-y-auto mb-4 pr-2 space-y-2"></div>
-      <div class="flex justify-between items-center border-t border-dashed border-slate-300 pt-4 mt-2">
+      <div id="listPasienPeriode" class="overflow-y-auto mb-4 pr-2 space-y-2 flex-grow"></div>
+      <div class="flex justify-between items-center border-t border-dashed border-slate-300 pt-4 mt-2 shrink-0">
         <h4 class="m-0 text-slate-700 font-bold text-sm">Total Pendapatan:</h4>
         <h3 id="totalPeriodeDisp" class="m-0 text-slate-800 font-extrabold text-xl"></h3>
       </div>
-      <div class="text-right mt-6">
-        <button class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-semibold transition-colors" onclick="tutupModal('modalDetailPeriode')">Tutup</button>
+      <div class="text-right mt-6 shrink-0">
+        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalDetailPeriode')">Tutup</button>
       </div>
     </div>
   </div>
 
   <!-- Modal Detail Kunjungan (Harian) -->
   <div id="modalDetailKunjungan" class="modal-overlay">
-    <div class="modal-content w-[95%] max-w-md rounded-3xl p-6">
-      <div class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-200 flex flex-col">
+    <div class="modal-content w-full max-w-md rounded-3xl p-6 flex flex-col">
+      <div class="text-lg font-bold text-slate-800 mb-4 pb-3 border-b border-slate-200 flex flex-col shrink-0">
         <div class="flex items-center gap-2"><i class="fas fa-users text-blue-600"></i> Detail Kunjungan Harian</div>
         <span id="tglDetailDisp" class="text-sm font-normal text-slate-500 mt-1"></span>
       </div>
-      <div id="listPasienKunjungan" class="max-h-[50vh] overflow-y-auto mb-4 pr-2 space-y-2"></div>
-      <div class="flex justify-between items-center border-t border-dashed border-slate-300 pt-4 mt-2">
+      <div id="listPasienKunjungan" class="overflow-y-auto mb-4 pr-2 space-y-2 flex-grow"></div>
+      <div class="flex justify-between items-center border-t border-dashed border-slate-300 pt-4 mt-2 shrink-0">
         <h4 class="m-0 text-slate-700 font-bold text-sm">Total Biaya Hari Ini:</h4>
         <h3 id="totalDetailDisp" class="m-0 text-blue-700 font-extrabold text-xl"></h3>
       </div>
-      <div class="text-right mt-6">
-        <button class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl font-semibold transition-colors" onclick="tutupModal('modalDetailKunjungan')">Tutup</button>
+      <div class="text-right mt-6 shrink-0">
+        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-200 hover:bg-slate-300 text-slate-800 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalDetailKunjungan')">Tutup</button>
       </div>
     </div>
   </div>
 
   <!-- Modal Tambah Pasien -->
   <div id="modalTambah" class="modal-overlay">
-    <div class="modal-content w-[95%] max-w-lg rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-2">
-        <div class="bg-slate-800 text-white p-2 rounded-lg"><i class="fas fa-user-plus"></i></div> Registrasi Pasien
+    <div class="modal-content w-full max-w-lg rounded-3xl p-6">
+      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3">
+        <div class="bg-slate-800 text-white w-10 h-10 flex items-center justify-center rounded-xl shadow-md"><i class="fas fa-user-plus"></i></div> 
+        Registrasi Pasien
       </div>
       <form id="formTambahPasien" onsubmit="submitTambahPasien(event)">
         <div class="mb-4">
           <label class="block text-sm font-bold text-slate-700 mb-2">Sapaan (Gelar)</label>
-          <div class="radio-group flex flex-wrap gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="titlePasien" value="Tn. " checked> Tn.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="titlePasien" value="Ny. "> Ny.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="titlePasien" value="An. "> An.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="titlePasien" value="Nn. "> Nn.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="titlePasien" value=""> Tanpa Gelar</label>
+          <div class="radio-group flex flex-wrap gap-3 bg-slate-50/50 p-3 rounded-xl border border-slate-200">
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value="Tn. " checked> Tn.</label>
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value="Ny. "> Ny.</label>
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value="An. "> An.</label>
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value="Nn. "> Nn.</label>
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="titlePasien" value=""> Kosong</label>
           </div>
         </div>
         <div class="mb-4">
           <label class="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap</label>
-          <input type="text" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none" id="newNama" required placeholder="Contoh: Budi Santoso">
+          <input type="text" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none transition-shadow" id="newNama" required placeholder="Contoh: Budi Santoso">
         </div>
         
-        <div class="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="md:col-span-1">
-            <label class="block text-sm font-bold text-slate-700 mb-2">Usia (Tahun)</label>
-            <input type="number" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none" id="newUsia" required>
+        <div class="mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="col-span-1">
+            <label class="block text-sm font-bold text-slate-700 mb-2">Usia (Th)</label>
+            <input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none transition-shadow" id="newUsia" required>
           </div>
-          <div class="md:col-span-2">
+          <div class="col-span-1 md:col-span-2">
             <label class="block text-sm font-bold text-slate-700 mb-2">Jenis Kelamin</label>
-            <div class="radio-group flex gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200 h-[46px] items-center">
-              <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="newJk" value="L" checked> Laki-laki</label>
-              <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="newJk" value="P"> Perempuan</label>
+            <div class="radio-group flex flex-col md:flex-row gap-2 md:gap-4 bg-slate-50/50 p-2.5 rounded-xl border border-slate-200 h-full justify-center">
+              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="newJk" value="L" checked> Laki-laki</label>
+              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="newJk" value="P"> Perempuan</label>
             </div>
           </div>
         </div>
 
         <div class="mb-4">
           <label class="block text-sm font-bold text-slate-700 mb-2">Alamat Lengkap</label>
-          <textarea class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none" id="newAlamat" rows="2" required placeholder="Nama dusun, desa..."></textarea>
+          <textarea class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 focus:border-transparent outline-none transition-shadow" id="newAlamat" rows="2" required placeholder="Nama dusun, desa..."></textarea>
         </div>
         <div class="grid grid-cols-2 gap-4 mb-6">
-          <div><label class="block text-sm font-bold text-slate-700 mb-2">RT</label><input type="number" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none" id="newRT" required></div>
-          <div><label class="block text-sm font-bold text-slate-700 mb-2">RW</label><input type="number" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none" id="newRW" required></div>
+          <div><label class="block text-sm font-bold text-slate-700 mb-2">RT</label><input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none transition-shadow" id="newRT" required></div>
+          <div><label class="block text-sm font-bold text-slate-700 mb-2">RW</label><input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none transition-shadow" id="newRW" required></div>
         </div>
-        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200">
-          <button type="button" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors" onclick="tutupModal('modalTambah')">Batal</button>
-          <button type="submit" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg" id="btnSavePasien"><i class="fas fa-save"></i> Simpan & Periksa</button>
+        <div class="flex flex-col-reverse md:flex-row justify-end gap-3 pt-4 border-t border-slate-200">
+          <button type="button" class="w-full md:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalTambah')">Batal</button>
+          <button type="submit" class="w-full md:w-auto px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-slate-300/50 active:scale-95" id="btnSavePasien"><i class="fas fa-save"></i> Simpan & Periksa</button>
         </div>
       </form>
     </div>
@@ -314,52 +345,53 @@
 
   <!-- Modal Edit Pasien -->
   <div id="modalEditPasien" class="modal-overlay">
-    <div class="modal-content w-[95%] max-w-lg rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-2">
-        <div class="bg-red-100 text-red-600 p-2 rounded-lg"><i class="fas fa-user-edit"></i></div> Edit Biodata Pasien
+    <div class="modal-content w-full max-w-lg rounded-3xl p-6">
+      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3">
+        <div class="bg-red-100 text-red-600 w-10 h-10 flex items-center justify-center rounded-xl shadow-sm"><i class="fas fa-user-edit"></i></div> 
+        Edit Biodata Pasien
       </div>
       <form id="formEditPasien" onsubmit="submitEditPasien(event)">
         <input type="hidden" id="editIdPasien">
         <div class="mb-4">
           <label class="block text-sm font-bold text-slate-700 mb-2">Sapaan (Gelar)</label>
-          <div class="radio-group flex flex-wrap gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="editTitlePasien" value="Tn. "> Tn.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="editTitlePasien" value="Ny. "> Ny.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="editTitlePasien" value="An. "> An.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="editTitlePasien" value="Nn. "> Nn.</label>
-            <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="editTitlePasien" value=""> Kosong</label>
+          <div class="radio-group flex flex-wrap gap-3 bg-slate-50/50 p-3 rounded-xl border border-slate-200">
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value="Tn. "> Tn.</label>
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value="Ny. "> Ny.</label>
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value="An. "> An.</label>
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value="Nn. "> Nn.</label>
+            <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editTitlePasien" value=""> Kosong</label>
           </div>
         </div>
         <div class="mb-4">
           <label class="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap</label>
-          <input type="text" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none" id="editNama" required>
+          <input type="text" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editNama" required>
         </div>
 
-        <div class="mb-4 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="md:col-span-1">
-            <label class="block text-sm font-bold text-slate-700 mb-2">Usia (Tahun)</label>
-            <input type="number" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none" id="editUsia" required>
+        <div class="mb-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="col-span-1">
+            <label class="block text-sm font-bold text-slate-700 mb-2">Usia (Th)</label>
+            <input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editUsia" required>
           </div>
-          <div class="md:col-span-2">
+          <div class="col-span-1 md:col-span-2">
             <label class="block text-sm font-bold text-slate-700 mb-2">Jenis Kelamin</label>
-            <div class="radio-group flex gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200 h-[46px] items-center">
-              <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="editJk" value="L" checked> Laki-laki</label>
-              <label class="flex items-center gap-2 text-sm font-semibold text-slate-600"><input type="radio" name="editJk" value="P"> Perempuan</label>
+            <div class="radio-group flex flex-col md:flex-row gap-2 md:gap-4 bg-slate-50/50 p-2.5 rounded-xl border border-slate-200 h-full justify-center">
+              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editJk" value="L" checked> Laki-laki</label>
+              <label class="flex items-center gap-2 text-sm font-semibold text-slate-700"><input type="radio" name="editJk" value="P"> Perempuan</label>
             </div>
           </div>
         </div>
 
         <div class="mb-4">
-          <label class="block text-sm font-bold text-slate-700 mb-2">Alamat</label>
-          <textarea class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none" id="editAlamat" rows="2" required></textarea>
+          <label class="block text-sm font-bold text-slate-700 mb-2">Alamat Lengkap</label>
+          <textarea class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editAlamat" rows="2" required></textarea>
         </div>
         <div class="grid grid-cols-2 gap-4 mb-6">
-          <div><label class="block text-sm font-bold text-slate-700 mb-2">RT</label><input type="number" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none" id="editRT" required></div>
-          <div><label class="block text-sm font-bold text-slate-700 mb-2">RW</label><input type="number" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 outline-none" id="editRW" required></div>
+          <div><label class="block text-sm font-bold text-slate-700 mb-2">RT</label><input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editRT" required></div>
+          <div><label class="block text-sm font-bold text-slate-700 mb-2">RW</label><input type="number" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-400 outline-none transition-shadow" id="editRW" required></div>
         </div>
-        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200">
-          <button type="button" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors" onclick="tutupModal('modalEditPasien')">Batal</button>
-          <button type="submit" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg" id="btnUpdatePasien"><i class="fas fa-save"></i> Update Biodata</button>
+        <div class="flex flex-col-reverse md:flex-row justify-end gap-3 pt-4 border-t border-slate-200">
+          <button type="button" class="w-full md:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalEditPasien')">Batal</button>
+          <button type="submit" class="w-full md:w-auto px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-red-200 active:scale-95" id="btnUpdatePasien"><i class="fas fa-save"></i> Update Biodata</button>
         </div>
       </form>
     </div>
@@ -367,53 +399,53 @@
 
   <!-- Modal Pemeriksaan (RM) -->
   <div id="modalForm" class="modal-overlay">
-    <div class="modal-content w-[95%] max-w-xl rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-2">
-        <div class="bg-slate-800 text-white p-2 rounded-lg"><i class="fas fa-stethoscope"></i></div> 
-        Pemeriksaan: <span id="namaPasienDisp" class="text-slate-800 ml-1"></span>
+    <div class="modal-content w-full max-w-xl rounded-3xl p-6">
+      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3">
+        <div class="bg-slate-800 text-white w-10 h-10 flex items-center justify-center rounded-xl shadow-md"><i class="fas fa-stethoscope"></i></div> 
+        Pemeriksaan: <span id="namaPasienDisp" class="text-slate-800 ml-1 truncate max-w-[200px] md:max-w-xs"></span>
       </div>
       <form id="formPemeriksaan" onsubmit="submitPemeriksaan(event)">
         <input type="hidden" id="idPasien">
         <div class="mb-5">
           <label class="block text-sm font-bold text-slate-700 mb-2"><i class="fas fa-comment-medical text-rose-500 mr-1"></i> Anamnesa / Keluhan</label>
-          <textarea id="anamnesa" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none" rows="2" required></textarea>
+          <textarea id="anamnesa" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none transition-shadow" rows="2" required></textarea>
         </div>
         
         <div class="mb-5">
           <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-heartbeat text-sky-500 mr-1"></i> Tanda Vital</label>
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">Tensi (TD)</label><input type="text" id="td" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-400 outline-none text-sm" placeholder="120/80"></div>
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">Suhu (°C)</label><input type="text" id="suhu" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-400 outline-none text-sm"></div>
+            <div><label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" id="td" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-400 outline-none" placeholder="120/80"></div>
+            <div><label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" id="suhu" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-400 outline-none" placeholder="36.5"></div>
           </div>
         </div>
 
-        <div class="mb-5 bg-purple-50/50 p-4 border border-purple-100 rounded-2xl">
+        <div class="mb-5 bg-purple-50/70 p-4 border border-purple-100 rounded-2xl">
           <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-flask text-purple-500 mr-1"></i> Laboratorium Sederhana</label>
           <div class="grid grid-cols-3 gap-3">
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">GDA</label><input type="text" id="gda" class="w-full p-2.5 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none text-sm" placeholder="mg/dL"></div>
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">Cholesterol</label><input type="text" id="chol" class="w-full p-2.5 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none text-sm" placeholder="mg/dL"></div>
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">Asam Urat (UA)</label><input type="text" id="ua" class="w-full p-2.5 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none text-sm" placeholder="mg/dL"></div>
+            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">GDA</label><input type="text" id="gda" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none" placeholder="mg/dL"></div>
+            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">Chol</label><input type="text" id="chol" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none" placeholder="mg/dL"></div>
+            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">UA</label><input type="text" id="ua" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none" placeholder="mg/dL"></div>
           </div>
         </div>
 
-        <div class="mb-5 bg-teal-50/50 p-4 border border-teal-100 rounded-2xl">
+        <div class="mb-5 bg-teal-50/70 p-4 border border-teal-100 rounded-2xl">
           <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-capsules text-teal-500 mr-1"></i> Resep Obat (Maks 4)</label>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <input type="text" id="obat1" class="w-full p-2.5 bg-white border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-400 outline-none text-sm" placeholder="Obat 1 & Dosis">
-            <input type="text" id="obat2" class="w-full p-2.5 bg-white border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-400 outline-none text-sm" placeholder="Obat 2 & Dosis">
-            <input type="text" id="obat3" class="w-full p-2.5 bg-white border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-400 outline-none text-sm" placeholder="Obat 3 & Dosis">
-            <input type="text" id="obat4" class="w-full p-2.5 bg-white border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-400 outline-none text-sm" placeholder="Obat 4 & Dosis">
+            <input type="text" id="obat1" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none" placeholder="Obat 1 & Dosis">
+            <input type="text" id="obat2" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none" placeholder="Obat 2 & Dosis">
+            <input type="text" id="obat3" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none" placeholder="Obat 3 & Dosis">
+            <input type="text" id="obat4" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none" placeholder="Obat 4 & Dosis">
           </div>
         </div>
 
         <div class="mb-6">
           <label class="block text-sm font-bold text-slate-700 mb-2"><i class="fas fa-money-bill-wave text-amber-500 mr-1"></i> Total Biaya (Rp)</label>
-          <input type="text" id="biaya" class="w-full p-4 bg-amber-50/50 border-2 border-amber-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-lg font-bold text-amber-700 placeholder-amber-200" required placeholder="Contoh: 50.000" oninput="formatRibuan(this)">
+          <input type="text" id="biaya" class="w-full p-4 bg-amber-50/70 border-2 border-amber-300 rounded-2xl focus:ring-2 focus:ring-amber-500 outline-none text-xl font-bold text-amber-700 placeholder-amber-300" required placeholder="Contoh: 50.000" oninput="formatRibuan(this)">
         </div>
 
-        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200">
-          <button type="button" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors" onclick="tutupModal('modalForm')">Batal</button>
-          <button type="submit" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg" id="btnSimpanRM"><i class="fas fa-save"></i> Simpan Data</button>
+        <div class="flex flex-col-reverse md:flex-row justify-end gap-3 pt-4 border-t border-slate-200">
+          <button type="button" class="w-full md:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalForm')">Batal</button>
+          <button type="submit" class="w-full md:w-auto px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-slate-300/50 active:scale-95" id="btnSimpanRM"><i class="fas fa-save"></i> Simpan Data</button>
         </div>
       </form>
     </div>
@@ -421,52 +453,53 @@
 
   <!-- Modal Edit Pemeriksaan (RM) -->
   <div id="modalEditRM" class="modal-overlay">
-    <div class="modal-content w-[95%] max-w-xl rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-2">
-        <div class="bg-red-100 text-red-600 p-2 rounded-lg"><i class="fas fa-edit"></i></div> Edit Hasil Pemeriksaan
+    <div class="modal-content w-full max-w-xl rounded-3xl p-6">
+      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3">
+        <div class="bg-red-100 text-red-600 w-10 h-10 flex items-center justify-center rounded-xl shadow-sm"><i class="fas fa-edit"></i></div> 
+        Edit Hasil Pemeriksaan
       </div>
       <form id="formEditRM" onsubmit="submitEditRM(event)">
         <input type="hidden" id="editRMRowIndex">
         <div class="mb-5">
           <label class="block text-sm font-bold text-slate-700 mb-2"><i class="fas fa-comment-medical text-rose-500 mr-1"></i> Anamnesa / Keluhan</label>
-          <textarea id="editAnamnesa" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none" rows="2" required></textarea>
+          <textarea id="editAnamnesa" class="w-full p-3.5 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-400 outline-none" rows="2" required></textarea>
         </div>
         
         <div class="mb-5">
           <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-heartbeat text-sky-500 mr-1"></i> Tanda Vital</label>
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">Tensi (TD)</label><input type="text" id="editTd" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-400 outline-none text-sm"></div>
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">Suhu (°C)</label><input type="text" id="editSuhu" class="w-full p-2.5 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-400 outline-none text-sm"></div>
+            <div><label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" id="editTd" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-400 outline-none"></div>
+            <div><label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" id="editSuhu" class="w-full p-3 bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-sky-400 outline-none"></div>
           </div>
         </div>
 
-        <div class="mb-5 bg-purple-50/50 p-4 border border-purple-100 rounded-2xl">
+        <div class="mb-5 bg-purple-50/70 p-4 border border-purple-100 rounded-2xl">
           <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-flask text-purple-500 mr-1"></i> Laboratorium Sederhana</label>
           <div class="grid grid-cols-3 gap-3">
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">GDA</label><input type="text" id="editGda" class="w-full p-2.5 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none text-sm"></div>
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">Cholesterol</label><input type="text" id="editChol" class="w-full p-2.5 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none text-sm"></div>
-            <div><label class="block text-xs font-semibold text-slate-500 mb-1">Asam Urat (UA)</label><input type="text" id="editUa" class="w-full p-2.5 bg-white border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-400 outline-none text-sm"></div>
+            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">GDA</label><input type="text" id="editGda" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none"></div>
+            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">Chol</label><input type="text" id="editChol" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none"></div>
+            <div><label class="block text-[11px] font-bold text-purple-600/70 uppercase tracking-wide mb-1">UA</label><input type="text" id="editUa" class="w-full p-3 bg-white border border-purple-200 rounded-xl focus:ring-2 focus:ring-purple-400 outline-none"></div>
           </div>
         </div>
 
-        <div class="mb-5 bg-teal-50/50 p-4 border border-teal-100 rounded-2xl">
+        <div class="mb-5 bg-teal-50/70 p-4 border border-teal-100 rounded-2xl">
           <label class="block text-sm font-bold text-slate-700 mb-3"><i class="fas fa-capsules text-teal-500 mr-1"></i> Resep Obat (Maks 4)</label>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <input type="text" id="editObat1" class="w-full p-2.5 bg-white border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-400 outline-none text-sm">
-            <input type="text" id="editObat2" class="w-full p-2.5 bg-white border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-400 outline-none text-sm">
-            <input type="text" id="editObat3" class="w-full p-2.5 bg-white border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-400 outline-none text-sm">
-            <input type="text" id="editObat4" class="w-full p-2.5 bg-white border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-400 outline-none text-sm">
+            <input type="text" id="editObat1" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none">
+            <input type="text" id="editObat2" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none">
+            <input type="text" id="editObat3" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none">
+            <input type="text" id="editObat4" class="w-full p-3 bg-white border border-teal-200 rounded-xl focus:ring-2 focus:ring-teal-400 outline-none">
           </div>
         </div>
 
         <div class="mb-6">
           <label class="block text-sm font-bold text-slate-700 mb-2"><i class="fas fa-money-bill-wave text-amber-500 mr-1"></i> Total Biaya (Rp)</label>
-          <input type="text" id="editBiaya" class="w-full p-4 bg-amber-50/50 border-2 border-amber-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-lg font-bold text-amber-700" required oninput="formatRibuan(this)">
+          <input type="text" id="editBiaya" class="w-full p-4 bg-amber-50/70 border-2 border-amber-300 rounded-2xl focus:ring-2 focus:ring-amber-500 outline-none text-xl font-bold text-amber-700" required oninput="formatRibuan(this)">
         </div>
 
-        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200">
-          <button type="button" class="px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors" onclick="tutupModal('modalEditRM')">Batal</button>
-          <button type="submit" class="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold flex items-center gap-2 transition-colors shadow-lg" id="btnUpdateRM"><i class="fas fa-save"></i> Update Data RM</button>
+        <div class="flex flex-col-reverse md:flex-row justify-end gap-3 pt-4 border-t border-slate-200">
+          <button type="button" class="w-full md:w-auto px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalEditRM')">Batal</button>
+          <button type="submit" class="w-full md:w-auto px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-colors shadow-lg shadow-red-200 active:scale-95" id="btnUpdateRM"><i class="fas fa-save"></i> Update Data RM</button>
         </div>
       </form>
     </div>
@@ -474,20 +507,20 @@
 
   <!-- Modal Riwayat -->
   <div id="modalRiwayat" class="modal-overlay">
-    <div class="modal-content w-[95%] max-w-xl rounded-3xl p-6">
-      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-2">
-        <div class="bg-blue-100 text-blue-600 p-2 rounded-lg"><i class="fas fa-history"></i></div> 
-        Riwayat: <span id="namaRiwayat" class="text-blue-600 ml-1"></span>
+    <div class="modal-content w-full max-w-xl rounded-3xl p-6 flex flex-col">
+      <div class="text-xl font-bold text-slate-800 mb-5 pb-3 border-b border-slate-200 flex items-center gap-3 shrink-0">
+        <div class="bg-blue-100 text-blue-600 w-10 h-10 flex items-center justify-center rounded-xl shadow-sm"><i class="fas fa-history"></i></div> 
+        <span class="truncate">Riwayat: <span id="namaRiwayat" class="text-blue-600 ml-1"></span></span>
       </div>
       
-      <div id="loaderRiwayat" class="flex flex-col items-center justify-center py-8 text-blue-500" style="display:block;">
-        <i class="fas fa-circle-notch loader-spin text-3xl mb-2"></i>
+      <div id="loaderRiwayat" class="flex flex-col items-center justify-center py-12 text-blue-500" style="display:block;">
+        <i class="fas fa-circle-notch loader-spin text-3xl mb-3"></i>
       </div>
       
-      <div id="listRiwayat" class="max-h-[60vh] overflow-y-auto pr-2 space-y-3"></div>
+      <div id="listRiwayat" class="overflow-y-auto pr-2 space-y-4 flex-grow"></div>
       
-      <div class="text-right mt-6 pt-4 border-t border-slate-200">
-        <button class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors" onclick="tutupModal('modalRiwayat')">Tutup</button>
+      <div class="text-right mt-6 pt-4 border-t border-slate-200 shrink-0">
+        <button class="w-full md:w-auto px-8 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold transition-colors active:scale-95" onclick="tutupModal('modalRiwayat')">Tutup</button>
       </div>
     </div>
   </div>
@@ -541,15 +574,19 @@
       document.getElementById(tabId).classList.add('active'); 
       btn.classList.add('bg-slate-800', 'text-white', 'shadow-lg', 'active');
       btn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+      window.scrollTo({top:0, behavior:'smooth'});
     }
 
     function switchTabMobile(tabId, btn) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.mobile-nav .nav-btn-mobile').forEach(b => {
         b.classList.remove('text-slate-800', 'active'); b.classList.add('text-slate-400');
+        b.querySelector('.icon-container').classList.remove('bg-slate-100', 'text-slate-800');
       });
       document.getElementById(tabId).classList.add('active'); 
       btn.classList.add('text-slate-800', 'active'); btn.classList.remove('text-slate-400');
+      btn.querySelector('.icon-container').classList.add('bg-slate-100', 'text-slate-800');
+      window.scrollTo({top:0, behavior:'smooth'});
     }
 
     function bukaModal(id) { 
@@ -573,10 +610,10 @@
       if (!isSupabaseConfigured) {
         document.getElementById('loaderData').style.display = 'none';
         document.getElementById('patientList').innerHTML = `
-          <div class="col-span-full flex flex-col items-center justify-center py-10 bg-amber-50 rounded-3xl border border-amber-200 shadow-sm">
+          <div class="col-span-full flex flex-col items-center justify-center py-10 bg-amber-50 rounded-3xl border border-amber-200 shadow-sm mx-2">
             <i class="fas fa-plug text-4xl text-amber-500 mb-3"></i>
             <h3 class="font-bold text-amber-800 text-lg">Hubungkan ke Supabase</h3>
-            <p class="text-sm text-amber-700 mt-2 max-w-md text-center leading-relaxed">Ganti nilai <b>SUPABASE_URL</b> dan <b>SUPABASE_KEY</b> di dalam kode HTML ini dengan kredensial dari project Supabase Anda untuk mulai mengambil dan menyimpan data.</p>
+            <p class="text-sm text-amber-700 mt-2 max-w-md text-center leading-relaxed px-4">Ganti nilai <b>SUPABASE_URL</b> dan <b>SUPABASE_KEY</b> di dalam kode HTML ini dengan kredensial dari project Supabase Anda untuk mulai mengambil dan menyimpan data.</p>
           </div>
         `;
         return;
@@ -596,32 +633,33 @@
 
     function renderPasien(data) { 
       const list = document.getElementById('patientList'); list.innerHTML = ''; 
-      if(data.length === 0) { list.innerHTML = `<div class="col-span-full text-center text-slate-400 py-8 font-semibold">Belum ada data pasien.</div>`; return; }
+      if(data.length === 0) { list.innerHTML = `<div class="col-span-full text-center text-slate-400 py-12 font-semibold bg-white rounded-3xl border border-dashed border-slate-300">Belum ada data pasien.</div>`; return; }
       
       data.forEach(p => { 
         let detailKlinis = '';
-        if(p.jk || p.usia) detailKlinis = `<span class="text-[11px] text-slate-500 font-bold ml-2 bg-slate-200/60 px-2 py-0.5 rounded-md border border-slate-300/50">${p.jk || '-'}, ${p.usia || '-'} Th</span>`;
+        if(p.jk || p.usia) detailKlinis = `<span class="text-[11px] text-slate-500 font-bold ml-2 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 shrink-0">${p.jk || '-'}, ${p.usia || '-'} Th</span>`;
 
         list.innerHTML += `
-        <div class="glass-card rounded-[1.5rem] p-5 flex flex-col justify-between group cursor-pointer relative" onclick="bukaFormPemeriksaan('${p.id}', '${p.nama}')">
+        <div class="glass-card rounded-[1.5rem] p-5 flex flex-col justify-between group cursor-pointer relative active:scale-[0.98]" onclick="bukaFormPemeriksaan('${p.id}', '${p.nama}')">
           
-          <button class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 hover:bg-rose-100 text-slate-400 hover:text-rose-600 transition-colors z-10" onclick="event.stopPropagation(); konfirmasiHapusPasien('${p.id}', '${p.nama}')" title="Hapus Pasien">
+          <button class="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 hover:bg-rose-100 text-slate-400 hover:text-rose-600 transition-colors z-10 active:bg-rose-200" onclick="event.stopPropagation(); konfirmasiHapusPasien('${p.id}', '${p.nama}')" title="Hapus Pasien">
             <i class="fas fa-trash-alt text-sm"></i>
           </button>
 
-          <div class="mb-5 pr-8">
-            <h3 class="font-black text-slate-800 text-lg mb-2 flex items-start gap-2">
-              <i class="fas fa-user-circle text-slate-400 mt-1 group-hover:text-blue-500 transition-colors"></i> <span class="flex items-center flex-wrap gap-y-1 group-hover:text-blue-700 transition-colors">${p.nama} ${detailKlinis}</span>
+          <div class="mb-5 pr-10">
+            <h3 class="font-black text-slate-800 text-lg mb-2.5 flex items-start gap-2">
+              <i class="fas fa-user-circle text-slate-400 mt-1 group-hover:text-blue-500 transition-colors"></i> 
+              <span class="flex items-center flex-wrap gap-y-2 group-hover:text-blue-700 transition-colors leading-tight">${p.nama} ${detailKlinis}</span>
             </h3>
-            <p class="text-sm font-medium text-slate-500 leading-tight flex items-start gap-2 bg-white/60 p-2.5 rounded-xl border border-slate-200/60">
+            <p class="text-[13px] font-medium text-slate-500 leading-tight flex items-start gap-2 bg-white/60 p-3 rounded-xl border border-slate-200/60">
               <i class="fas fa-map-marker-alt text-slate-400 mt-0.5"></i> <span>${p.alamat}, RT ${p.rt}/RW ${p.rw}</span>
             </p>
           </div>
-          <div class="grid grid-cols-2 gap-2 mt-auto relative z-10">
-            <button class="py-2.5 bg-red-50 border border-red-200 hover:border-red-400 hover:bg-red-100 text-red-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-sm" onclick="event.stopPropagation(); bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}', '${p.usia || ''}', '${p.jk || ''}')">
+          <div class="grid grid-cols-2 gap-3 mt-auto relative z-10">
+            <button class="py-3 bg-red-50 border border-red-200 hover:border-red-400 hover:bg-red-100 text-red-600 rounded-xl text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95" onclick="event.stopPropagation(); bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}', '${p.usia || ''}', '${p.jk || ''}')">
               <i class="fas fa-edit"></i> Edit
             </button>
-            <button class="py-2.5 bg-blue-50 border border-blue-200 hover:border-blue-400 hover:bg-blue-100 text-blue-600 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1 shadow-sm" onclick="event.stopPropagation(); bukaRiwayat('${p.id}', '${p.nama}')">
+            <button class="py-3 bg-blue-50 border border-blue-200 hover:border-blue-400 hover:bg-blue-100 text-blue-600 rounded-xl text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95" onclick="event.stopPropagation(); bukaRiwayat('${p.id}', '${p.nama}')">
               <i class="fas fa-history"></i> Riwayat
             </button>
           </div>
@@ -808,22 +846,22 @@
         }));
 
         let h = ''; 
-        if(riwayatPasienGlobal.length === 0) h = '<p class="text-center text-slate-500 py-4">Belum ada riwayat pasien.</p>';
+        if(riwayatPasienGlobal.length === 0) h = '<p class="text-center text-slate-500 py-8 border border-dashed border-slate-300 rounded-2xl bg-slate-50">Belum ada riwayat pasien.</p>';
         riwayatPasienGlobal.forEach((r, idx) => { 
           let labInfo = [];
           if(r.gda) labInfo.push(`GDA: ${r.gda}`);
           if(r.chol) labInfo.push(`Chol: ${r.chol}`);
           if(r.ua) labInfo.push(`UA: ${r.ua}`);
-          let labDisplay = labInfo.length > 0 ? `<div class="mb-2"><span class="text-xs font-bold text-purple-400 block uppercase mb-1">Lab:</span><p class="text-sm font-medium text-slate-700">${labInfo.join(', ')}</p></div>` : '';
+          let labDisplay = labInfo.length > 0 ? `<div class="mb-3"><span class="text-[10px] font-bold text-purple-400 block uppercase mb-1 tracking-wider">Lab:</span><p class="text-[13px] font-medium text-slate-700">${labInfo.join(', ')}</p></div>` : '';
 
-          h += `<div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm relative group">
-                  <div class="flex justify-between items-center mb-3">
-                    <span class="text-xs font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full"><i class="far fa-calendar-alt text-blue-500"></i> ${r.tanggal}</span>
-                    <button class="text-red-500 hover:text-red-600 hover:bg-red-50 p-1.5 rounded text-sm font-semibold transition-colors flex items-center gap-1" onclick="bukaEditRM(${idx})"><i class="fas fa-edit"></i> Edit</button>
+          h += `<div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm relative group">
+                  <div class="flex justify-between items-center mb-4">
+                    <span class="text-[11px] font-bold text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full"><i class="far fa-calendar-alt text-blue-500 mr-1"></i> ${r.tanggal}</span>
+                    <button class="text-red-500 hover:text-red-600 active:bg-red-100 p-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1.5" onclick="bukaEditRM(${idx})"><i class="fas fa-edit"></i> Edit</button>
                   </div>
-                  <div class="mb-2"><span class="text-xs font-bold text-slate-400 block uppercase mb-1">Keluhan & TV:</span><p class="text-sm font-medium text-slate-700">${r.anamnesa} (TD: ${r.td||'-'}, S: ${r.suhu||'-'}°C)</p></div>
+                  <div class="mb-3"><span class="text-[10px] font-bold text-slate-400 block uppercase mb-1 tracking-wider">Keluhan & TV:</span><p class="text-[13px] font-medium text-slate-700">${r.anamnesa} (TD: ${r.td||'-'}, S: ${r.suhu||'-'}°C)</p></div>
                   ${labDisplay}
-                  <div><span class="text-xs font-bold text-slate-400 block uppercase mb-1">Terapi / Obat:</span><p class="text-sm text-slate-600">${r.obat || '-'}</p></div>
+                  <div><span class="text-[10px] font-bold text-slate-400 block uppercase mb-1 tracking-wider">Terapi / Obat:</span><p class="text-[13px] text-slate-600">${r.obat || '-'}</p></div>
                 </div>`; 
         }); 
         document.getElementById('listRiwayat').innerHTML = h; 
@@ -981,8 +1019,8 @@
       const list = summaryFiltered[tipe]; const total = list.reduce((a,b) => a + b.biaya, 0);
       document.getElementById('judulPeriodeDisp').innerText = document.getElementById('label'+tipe.charAt(0).toUpperCase() + tipe.slice(1)).innerText;
       let h = '';
-      if(list.length === 0) h = '<p class="text-center text-slate-500 py-4 text-sm">Belum ada kunjungan pasien.</p>';
-      else list.forEach((p, i) => h += `<div class="flex justify-between items-center py-3 border-b border-dashed border-slate-200"><div class="flex flex-col"><div class="flex items-center gap-2"><span class="text-[10px] text-white bg-slate-400 px-2 py-0.5 rounded">${i+1}</span><span class="text-sm font-bold text-slate-800">${p.nama}</span></div><span class="text-xs text-slate-400 ml-8 mt-1">${p.tglString}</span></div><span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-100">${formatRp(p.biaya)}</span></div>`);
+      if(list.length === 0) h = '<p class="text-center text-slate-500 py-6 text-sm bg-slate-50 rounded-xl">Belum ada kunjungan pasien.</p>';
+      else list.forEach((p, i) => h += `<div class="flex justify-between items-center py-3 border-b border-dashed border-slate-200"><div class="flex flex-col"><div class="flex items-center gap-2.5"><span class="text-[10px] text-white bg-slate-400 px-2 py-0.5 rounded">${i+1}</span><span class="text-[13px] font-bold text-slate-800 leading-tight">${p.nama}</span></div><span class="text-xs text-slate-400 ml-8 mt-1">${p.tglString}</span></div><span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-100">${formatRp(p.biaya)}</span></div>`);
       document.getElementById('listPasienPeriode').innerHTML = h; document.getElementById('totalPeriodeDisp').innerText = formatRp(total); bukaModal('modalDetailPeriode');
     }
 
@@ -1004,26 +1042,26 @@
       const y = tanggalKalender.getFullYear(), m = tanggalKalender.getMonth(), now = new Date();
       document.getElementById('judulBulanKalender').innerText = `${["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"][m]} ${y}`;
       const first = new Date(y, m, 1).getDay(), total = new Date(y, m + 1, 0).getDate(), grid = document.getElementById('gridKalender');
-      grid.innerHTML = ''; ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => grid.innerHTML += `<div class="text-xs md:text-sm font-bold pb-2 border-b border-slate-100 ${i===0?'text-rose-500':'text-slate-500'}">${d}</div>`);
+      grid.innerHTML = ''; ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].forEach((d, i) => grid.innerHTML += `<div class="text-[11px] md:text-sm font-bold pb-2 border-b border-slate-100 ${i===0?'text-rose-500':'text-slate-500'}">${d}</div>`);
       for (let i = 0; i < first; i++) grid.innerHTML += `<div></div>`;
       for (let i = 1; i <= total; i++) {
         let key = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`; let isToday = (i === now.getDate() && m === now.getMonth() && y === now.getFullYear()) ? 'ring-2 ring-emerald-400 bg-emerald-50' : 'bg-slate-50 border border-slate-100';
         let libur = liburNasional[key.substring(5)]; let dH = dataKalender[key];
         
-        let h = `<div class="relative rounded-xl p-1 md:p-2 min-h-[60px] md:min-h-[80px] flex flex-col items-center transition-all ${isToday} ${dH?'cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:border-blue-300 bg-white':' opacity-80'}" ${dH?`onclick="bukaDetailKunjungan('${key}', '${JSON.stringify(dH.pasien).replace(/"/g, '&quot;')}', ${dH.totalBiaya})"`:''}>
-                  <div class="text-xs md:text-sm font-bold mb-1 ${(new Date(y,m,i).getDay()===0 || libur)?'text-rose-500':'text-slate-700'}">${i}</div>`;
+        let h = `<div class="relative rounded-xl p-1 md:p-2 min-h-[70px] md:min-h-[80px] flex flex-col items-center transition-all ${isToday} ${dH?'cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:border-blue-300 active:scale-95 bg-white':' opacity-80'}" ${dH?`onclick="bukaDetailKunjungan('${key}', '${JSON.stringify(dH.pasien).replace(/"/g, '&quot;')}', ${dH.totalBiaya})"`:''}>
+                  <div class="text-[13px] md:text-sm font-bold mb-1 ${(new Date(y,m,i).getDay()===0 || libur)?'text-rose-500':'text-slate-700'}">${i}</div>`;
         
         if(libur) h += `<div class="text-[8px] md:text-[9px] font-bold text-rose-600 bg-rose-100 px-1 py-0.5 rounded w-full truncate mb-1" title="${libur}">${libur}</div>`;
-        if(dH) h += `<div class="text-[9px] md:text-xs font-bold text-white bg-blue-500 px-1 py-0.5 rounded-md w-full truncate mb-1 shadow-sm">${dH.jumlahKunjungan} Ps</div>
+        if(dH) h += `<div class="text-[9px] md:text-[11px] font-bold text-white bg-blue-500 px-1 py-0.5 rounded-md w-full truncate mb-1 shadow-sm">${dH.jumlahKunjungan} Ps</div>
                      <div class="text-[8px] md:text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.5 rounded-md w-full truncate">Rp ${new Intl.NumberFormat('id-ID').format(dH.totalBiaya)}</div>
-                     <i class="fas fa-coins absolute top-1.5 right-1.5 text-amber-400 text-[10px] drop-shadow-sm"></i>`;
+                     <i class="fas fa-coins absolute top-1.5 right-1.5 text-amber-400 text-[10px] drop-shadow-sm hidden md:block"></i>`;
         grid.innerHTML += h + `</div>`;
       }
     }
 
     function bukaDetailKunjungan(tgl, json, total) {
       const list = JSON.parse(json); document.getElementById('tglDetailDisp').innerText = new Date(tgl).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      let h = ''; list.forEach((p, i) => h += `<div class="flex justify-between items-center py-3 border-b border-dashed border-slate-200"><div class="flex items-center gap-3"><span class="text-[10px] text-white bg-slate-400 px-2 py-0.5 rounded">${i+1}</span><span class="text-sm font-bold text-slate-800">${p.nama}</span></div><span class="text-xs text-blue-700 font-bold bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-100">${formatRp(p.biaya)}</span></div>`);
+      let h = ''; list.forEach((p, i) => h += `<div class="flex justify-between items-center py-3 border-b border-dashed border-slate-200"><div class="flex items-center gap-2.5"><span class="text-[10px] text-white bg-slate-400 px-2 py-0.5 rounded">${i+1}</span><span class="text-[13px] font-bold text-slate-800">${p.nama}</span></div><span class="text-xs text-blue-700 font-bold bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-100">${formatRp(p.biaya)}</span></div>`);
       document.getElementById('listPasienKunjungan').innerHTML = h; document.getElementById('totalDetailDisp').innerText = formatRp(total); bukaModal('modalDetailKunjungan');
     }
   </script>
