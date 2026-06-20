@@ -27,20 +27,16 @@
     
     body { 
       font-family: 'Inter', sans-serif; 
-      /* Background luar untuk versi desktop */
       background-color: #cbd5e1; 
       color: #334155;
       overscroll-behavior-y: none;
     }
 
-    /* Menyembunyikan scrollbar agar terasa seperti App Asli */
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Mencegah Zoom di iOS */
     input, textarea, select { font-size: 16px !important; }
 
-    /* Animasi Halaman */
     .page { display: none; animation: fadeScale 0.25s ease-out; }
     .page.active { display: block; }
     @keyframes fadeScale { 
@@ -48,13 +44,12 @@
       to { opacity: 1; transform: scale(1); } 
     }
 
-    /* Bottom Sheet Modal Styling */
     .modal-overlay { 
-      position: absolute; /* Terkunci di dalam wrapper HP */
+      position: absolute; 
       top: 0; left: 0; width: 100%; height: 100%; 
       background: rgba(15, 23, 42, 0.6); 
       backdrop-filter: blur(4px); 
-      display: none; justify-content: center; align-items: flex-end; /* Nempel bawah */
+      display: none; justify-content: center; align-items: flex-end; 
       z-index: 1000; opacity: 0; transition: opacity 0.3s ease;
     }
     .modal-overlay.show { opacity: 1; }
@@ -63,20 +58,18 @@
       width: 100%;
       max-height: 85%; overflow-y: auto; 
       background: #ffffff;
-      border-radius: 1.5rem 1.5rem 0 0; /* Melengkung di atas saja */
+      border-radius: 1.5rem 1.5rem 0 0; 
       box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
       transform: translateY(100%); 
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      padding-bottom: calc(1rem + var(--safe-area-bottom)); /* Safe area padding */
+      padding-bottom: calc(1rem + var(--safe-area-bottom)); 
     }
     .modal-overlay.show .modal-content { transform: translateY(0); }
 
-    /* Loader */
     .loader-spin { animation: spin 1s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
     .radio-group input[type="radio"] { accent-color: #3b82f6; width: 1.2rem; height: 1.2rem; cursor: pointer; }
     
-    /* Navigasi Bawah */
     .nav-bottom-safe {
       padding-bottom: calc(0.5rem + var(--safe-area-bottom));
     }
@@ -88,7 +81,6 @@
   <!-- FRAME SMARTPHONE: Membatasi ukuran aplikasi max lebar 400px -->
   <div class="w-full max-w-[400px] h-[100dvh] md:h-[850px] bg-[#f8fafc] md:rounded-[2.5rem] relative shadow-2xl overflow-hidden flex flex-col md:border-[8px] border-slate-800">
     
-    <!-- Header Aplikasi -->
     <header class="bg-white/90 backdrop-blur-md px-5 pt-[calc(1rem+var(--safe-area-top))] pb-4 border-b border-slate-200 flex justify-between items-center z-40 relative shadow-sm shrink-0">
       <div class="flex items-center gap-3">
         <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
@@ -195,21 +187,19 @@
       </div>
     </main>
 
-    <!-- Navigasi Bawah Mobile Modern -->
-    <nav class="absolute bottom-0 w-full bg-white/95 backdrop-blur-lg border-t border-slate-200 flex justify-around items-center pt-2 nav-bottom-safe z-40 rounded-b-[2rem]">
-      <button class="nav-btn-mobile nav-erm w-1/2 flex flex-col items-center gap-1 group" onclick="switchTab('erm', this)">
-        <div class="px-5 py-1.5 rounded-full transition-all duration-300 bg-blue-50 text-blue-600 icon-bg">
-          <i class="fas fa-notes-medical text-lg"></i>
-        </div>
-        <span class="text-[10px] font-bold text-blue-600 tracking-wide tab-text">Pasien</span>
-      </button>
-      <button class="nav-btn-mobile nav-pendapatan w-1/2 flex flex-col items-center gap-1 group" onclick="switchTab('pendapatan', this)">
-        <div class="px-5 py-1.5 rounded-full transition-all duration-300 bg-transparent text-slate-400 icon-bg group-active:bg-slate-100">
-          <i class="fas fa-chart-pie text-lg"></i>
-        </div>
-        <span class="text-[10px] font-bold text-slate-400 tracking-wide tab-text">Dashboard</span>
-      </button>
-    </nav>
+    <!-- Navigasi Bawah Mobile Modern (Floating Pill) -->
+    <div class="absolute bottom-0 w-full z-40 pb-5 pt-12 px-6 bg-gradient-to-t from-[#f8fafc] via-[#f8fafc]/90 to-transparent pointer-events-none flex justify-center nav-bottom-safe rounded-b-[2.5rem]">
+      <nav class="bg-slate-800 text-white backdrop-blur-xl shadow-2xl shadow-slate-400/40 flex justify-around items-center p-1.5 rounded-3xl w-full max-w-[280px] pointer-events-auto">
+        <button class="nav-btn-mobile nav-erm w-1/2 flex items-center justify-center gap-2 group py-2.5 rounded-2xl transition-all duration-300 bg-blue-500 shadow-md tab-active" onclick="switchTab('erm', this)">
+          <i class="fas fa-notes-medical text-base icon-color text-white"></i>
+          <span class="text-xs font-bold tracking-wide tab-text text-white">Pasien</span>
+        </button>
+        <button class="nav-btn-mobile nav-pendapatan w-1/2 flex items-center justify-center gap-2 group py-2.5 rounded-2xl transition-all duration-300 bg-transparent tab-inactive" onclick="switchTab('pendapatan', this)">
+          <i class="fas fa-chart-pie text-base icon-color text-slate-400 group-hover:text-slate-300"></i>
+          <span class="text-xs font-bold tracking-wide tab-text text-slate-400 group-hover:text-slate-300">Dashboard</span>
+        </button>
+      </nav>
+    </div>
 
     <!-- MODALS (Akan meluncur dari bawah) -->
 
@@ -374,7 +364,7 @@
       </div>
     </div>
 
-    <!-- Modal Edit RM (Sama persis dengan input RM, beda id) -->
+    <!-- Modal Edit RM -->
     <div id="modalEditRM" class="modal-overlay">
       <div class="modal-content p-6">
         <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
@@ -498,28 +488,37 @@
       } else { btn.innerHTML = originalText; btn.disabled = false; }
     }
 
-    // --- NAVIGATION (Mobile Tab Bar) ---
+    // --- NAVIGATION (Mobile Tab Bar Floating Pill) ---
     function switchTab(tabId, btn) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      
+      /* Reset semua tombol ke state tidak aktif */
       document.querySelectorAll('.nav-btn-mobile').forEach(b => {
-        let iconBg = b.querySelector('.icon-bg'); let text = b.querySelector('.tab-text');
-        iconBg.classList.remove('bg-blue-50', 'text-blue-600', 'bg-emerald-50', 'text-emerald-600');
-        iconBg.classList.add('bg-transparent', 'text-slate-400');
-        text.classList.remove('text-blue-600', 'text-emerald-600'); text.classList.add('text-slate-400');
+        b.classList.remove('bg-blue-500', 'bg-emerald-500', 'shadow-md', 'tab-active');
+        b.classList.add('bg-transparent', 'tab-inactive');
+        
+        let icon = b.querySelector('.icon-color');
+        let text = b.querySelector('.tab-text');
+        icon.classList.remove('text-white'); icon.classList.add('text-slate-400');
+        text.classList.remove('text-white'); text.classList.add('text-slate-400');
       });
       
+      /* Set state aktif untuk tombol yang diklik */
       document.getElementById(tabId).classList.add('active'); 
-      let activeIconBg = btn.querySelector('.icon-bg'); let activeText = btn.querySelector('.tab-text');
-      activeIconBg.classList.remove('bg-transparent', 'text-slate-400');
-      activeText.classList.remove('text-slate-400');
+      btn.classList.remove('bg-transparent', 'tab-inactive');
+      btn.classList.add('shadow-md', 'tab-active');
+      
+      let activeIcon = btn.querySelector('.icon-color'); 
+      let activeText = btn.querySelector('.tab-text');
+      activeIcon.classList.remove('text-slate-400'); activeIcon.classList.add('text-white');
+      activeText.classList.remove('text-slate-400'); activeText.classList.add('text-white');
       
       if(tabId === 'erm') {
-          activeIconBg.classList.add('bg-blue-50', 'text-blue-600'); activeText.classList.add('text-blue-600');
+          btn.classList.add('bg-blue-500');
       } else {
-          activeIconBg.classList.add('bg-emerald-50', 'text-emerald-600'); activeText.classList.add('text-emerald-600');
+          btn.classList.add('bg-emerald-500');
       }
     }
-    // Alias untuk kompatibilitas code lama jika dipanggil dari luar
     const switchTabMobile = switchTab; 
 
     // --- MODAL CONTROLS ---
@@ -554,7 +553,7 @@
       
       data.forEach(p => { 
         list.innerHTML += `
-        <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 relative active:scale-[0.98] transition-transform" onclick="bukaFormPemeriksaan('${p.id}', '${p.nama}')">
+        <div class="bg-white p-4 rounded-3xl shadow-2xl shadow-slate-400/50 border border-slate-100 relative active:scale-[0.98] transition-transform" onclick="bukaFormPemeriksaan('${p.id}', '${p.nama}')">
           <div class="flex justify-between items-start mb-3">
              <div class="flex items-center gap-3">
                 <div class="w-11 h-11 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center text-lg border border-slate-100">
@@ -571,8 +570,8 @@
             <i class="fas fa-map-marker-alt text-slate-400 mt-0.5 shrink-0"></i> <span class="leading-snug line-clamp-1">${p.alamat}, RT ${p.rt}/${p.rw}</span>
           </div>
           <div class="flex gap-2">
-            <button class="flex-1 py-2.5 bg-white border border-slate-200 text-slate-600 text-[11px] font-bold rounded-xl active:bg-slate-50 shadow-sm" onclick="event.stopPropagation(); bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}', '${p.usia || ''}', '${p.jk || ''}')">Edit Profil</button>
-            <button class="flex-1 py-2.5 bg-blue-50 text-blue-600 text-[11px] font-bold rounded-xl active:bg-blue-100 shadow-sm" onclick="event.stopPropagation(); bukaRiwayat('${p.id}', '${p.nama}')">Riwayat RM</button>
+            <button class="flex-1 py-2.5 bg-emerald-500 text-white text-[11px] font-bold rounded-xl active:bg-emerald-600 active:scale-95 transition-all shadow-md shadow-emerald-200" onclick="event.stopPropagation(); bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}', '${p.usia || ''}', '${p.jk || ''}')"><i class="fas fa-user-edit mr-1"></i> Edit Profil</button>
+            <button class="flex-1 py-2.5 bg-blue-500 text-white text-[11px] font-bold rounded-xl active:bg-blue-600 active:scale-95 transition-all shadow-md shadow-blue-200" onclick="event.stopPropagation(); bukaRiwayat('${p.id}', '${p.nama}')"><i class="fas fa-history mr-1"></i> Riwayat RM</button>
           </div>
         </div>`; 
       }); 
@@ -662,6 +661,7 @@
     }
 
     function bukaEditRM(idx) { 
+      tutupModal('modalRiwayat');
       const d = riwayatPasienGlobal[idx]; document.getElementById('editRMRowIndex').value = d.rowIndex; 
       document.getElementById('editAnamnesa').value = d.anamnesa; document.getElementById('editTd').value = d.td; document.getElementById('editSuhu').value = d.suhu; 
       document.getElementById('editGda').value = d.gda||""; document.getElementById('editChol').value = d.chol||""; document.getElementById('editUa').value = d.ua||""; 
