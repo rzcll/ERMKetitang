@@ -81,12 +81,12 @@
   <!-- FRAME SMARTPHONE: Membatasi ukuran aplikasi max lebar 400px -->
   <div class="w-full max-w-[400px] h-[100dvh] md:h-[850px] bg-[#f8fafc] md:rounded-[2.5rem] relative shadow-2xl overflow-hidden flex flex-col md:border-[8px] border-slate-800">
     
-    <header class="bg-white/90 backdrop-blur-md px-5 pt-[calc(1rem+var(--safe-area-top))] pb-4 border-b border-slate-200 flex justify-between items-center z-40 relative shadow-sm shrink-0">
+    <header class="bg-white/90 backdrop-blur-md px-5 pt-[calc(1rem+var(--safe-area-top))] pb-4 border-b border-slate-200 flex justify-center items-center z-40 relative shadow-sm shrink-0">
       <div class="flex items-center gap-3">
         <!-- Menggunakan tag <img> untuk logo asli -->
         <img src="https://github.com/rzcll/ERMKetitang/blob/main/logo%20km.png?raw=true" alt="Logo Ketitang Medika" class="w-10 h-10 rounded-xl object-cover shadow-md">
         
-        <h1 class="text-slate-800 font-extrabold text-lg tracking-tight">Ketitang Medika</h1>
+        <h1 class="text-slate-800 font-extrabold text-lg uppercase tracking-wider">KETITANG MEDIKA</h1>
       </div>
     </header>
 
@@ -552,11 +552,16 @@
       if(data.length === 0) { list.innerHTML = `<div class="text-center text-slate-400 py-10 text-sm">Tidak ada data pasien.</div>`; return; }
       
       data.forEach(p => { 
+        // Logika untuk menentukan warna ikon berdasarkan jenis kelamin (P = Pink, L/default = Biru)
+        let iconColorClass = p.jk === 'P' 
+          ? 'bg-pink-100 text-pink-500 border-pink-200' 
+          : 'bg-blue-100 text-blue-500 border-blue-200';
+
         list.innerHTML += `
         <div class="bg-white p-4 rounded-3xl shadow-2xl shadow-slate-400/50 border border-slate-100 relative active:scale-[0.98] transition-transform" onclick="bukaFormPemeriksaan('${p.id}', '${p.nama}')">
           <div class="flex justify-between items-start mb-3">
              <div class="flex items-center gap-3">
-                <div class="w-11 h-11 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center text-lg border border-slate-100">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-lg border ${iconColorClass}">
                    <i class="fas fa-user"></i>
                 </div>
                 <div>
