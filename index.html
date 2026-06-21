@@ -81,20 +81,21 @@
   <!-- FRAME SMARTPHONE: Membatasi ukuran aplikasi max lebar 400px -->
   <div class="w-full max-w-[400px] h-[100dvh] md:h-[850px] bg-[#f8fafc] md:rounded-[2.5rem] relative shadow-2xl overflow-hidden flex flex-col md:border-[8px] border-slate-800">
     
-    <header class="bg-white/90 backdrop-blur-md px-5 pt-[calc(1rem+var(--safe-area-top))] pb-4 border-b border-slate-200 flex justify-center items-center z-40 relative shadow-sm shrink-0">
+    <!-- HEADER DENGAN EFEK KACA (GLASSMORPHISM) -->
+    <header class="absolute top-0 left-0 w-full bg-white/60 backdrop-blur-xl px-5 pt-[calc(1rem+var(--safe-area-top))] pb-4 border-b border-white/50 flex justify-center items-center z-50 shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
       <div class="flex items-center gap-3">
         <!-- Menggunakan tag <img> untuk logo asli -->
         <img src="https://github.com/rzcll/ERMKetitang/blob/main/logo%20km.png?raw=true" alt="Logo Ketitang Medika" class="w-10 h-10 rounded-xl object-cover shadow-md">
         
-        <h1 class="text-slate-800 font-extrabold text-lg uppercase tracking-wider">KETITANG MEDIKA</h1>
+        <h1 class="font-black text-[1.1rem] uppercase tracking-[0.15em] bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 drop-shadow-sm">KETITANG MEDIKA</h1>
       </div>
     </header>
 
     <!-- AREA KONTEN SCROLLABLE -->
-    <main class="flex-grow overflow-y-auto hide-scrollbar relative z-10 bg-[#f8fafc]">
+    <main class="flex-grow overflow-y-auto hide-scrollbar relative z-10 bg-[#f8fafc] pt-[calc(5.5rem+var(--safe-area-top))]">
       
       <!-- PAGE 1: E-RM PASIEN -->
-      <div id="erm" class="page active px-4 py-5 pb-28">
+      <div id="erm" class="page active px-4 pb-28">
         
         <!-- Search & Add -->
         <div class="flex gap-2 mb-6">
@@ -102,7 +103,7 @@
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <i class="fas fa-search text-slate-400"></i>
             </div>
-            <input type="text" id="searchInput" class="w-full pl-10 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-blue-400 outline-none shadow-sm" placeholder="Cari nama/alamat..." onkeyup="filterPasien()">
+            <input type="text" id="searchInput" class="w-full pl-11 pr-4 py-3.5 bg-slate-100 border border-slate-200/60 rounded-2xl text-sm focus:ring-2 focus:ring-blue-400 focus:bg-white outline-none shadow-[inset_0_2px_6px_rgba(0,0,0,0.08)] transition-all font-medium placeholder:text-slate-400" placeholder="Cari..." onkeyup="filterPasien()">
           </div>
           <button class="w-[52px] h-[52px] shrink-0 bg-slate-800 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-slate-300 active:scale-95 transition-transform" onclick="bukaModal('modalTambah')">
             <i class="fas fa-plus"></i>
@@ -120,7 +121,7 @@
       </div>
 
       <!-- PAGE 2: REKAP PENDAPATAN -->
-      <div id="pendapatan" class="page px-4 py-5 pb-28">
+      <div id="pendapatan" class="page px-4 pb-28">
         <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 mb-5 text-white shadow-lg shadow-emerald-200 relative overflow-hidden">
           <i class="fas fa-chart-pie absolute -right-4 -bottom-4 text-white/20 text-7xl"></i>
           <h2 class="text-sm font-semibold opacity-90 mb-1">Total Pemasukan</h2>
