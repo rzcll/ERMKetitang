@@ -78,15 +78,13 @@
 
 <body class="min-h-[100dvh] flex justify-center items-center md:py-4">
 
-  <!-- FRAME SMARTPHONE: Membatasi ukuran aplikasi max lebar 400px -->
+  <!-- FRAME SMARTPHONE -->
   <div class="w-full max-w-[400px] h-[100dvh] md:h-[850px] bg-[#f8fafc] md:rounded-[2.5rem] relative shadow-2xl overflow-hidden flex flex-col md:border-[8px] border-slate-800">
     
-    <!-- HEADER DENGAN EFEK KACA (GLASSMORPHISM) -->
+    <!-- HEADER -->
     <header class="absolute top-0 left-0 w-full bg-white/60 backdrop-blur-xl px-5 pt-[calc(1rem+var(--safe-area-top))] pb-4 border-b border-white/50 flex justify-center items-center z-50 shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
       <div class="flex items-center gap-3">
-        <!-- Menggunakan tag <img> untuk logo asli -->
         <img src="https://github.com/rzcll/ERMKetitang/blob/main/logo%20km.png?raw=true" alt="Logo Ketitang Medika" class="w-10 h-10 rounded-xl object-cover shadow-md">
-        
         <h1 class="font-black text-[1.1rem] uppercase tracking-[0.15em] bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 drop-shadow-sm">KETITANG MEDIKA</h1>
       </div>
     </header>
@@ -188,7 +186,7 @@
       </div>
     </main>
 
-    <!-- Navigasi Bawah Mobile Modern (Floating Pill) -->
+    <!-- Navigasi Bawah -->
     <div class="absolute bottom-0 w-full z-40 pb-5 pt-12 px-6 bg-gradient-to-t from-[#f8fafc] via-[#f8fafc]/90 to-transparent pointer-events-none flex justify-center nav-bottom-safe rounded-b-[2.5rem]">
       <nav class="bg-slate-800 text-white backdrop-blur-xl shadow-2xl shadow-slate-400/40 flex justify-around items-center p-1.5 rounded-3xl w-full max-w-[280px] pointer-events-auto">
         <button class="nav-btn-mobile nav-erm w-1/2 flex items-center justify-center gap-2 group py-2.5 rounded-2xl transition-all duration-300 bg-blue-500 shadow-md tab-active" onclick="switchTab('erm', this)">
@@ -202,9 +200,7 @@
       </nav>
     </div>
 
-    <!-- MODALS (Akan meluncur dari bawah) -->
-
-    <!-- Modal Konfirmasi Hapus -->
+    <!-- MODALS -->
     <div id="modalHapus" class="modal-overlay">
       <div class="modal-content p-6 text-center">
         <div class="w-14 h-14 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
@@ -241,8 +237,9 @@
           
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Usia</label>
-              <input type="number" id="newUsia" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required placeholder="Tahun">
+              <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Usia (Saat ini)</label>
+              <!-- Tambahan inputmode numeric agar muncul numpad -->
+              <input type="number" inputmode="numeric" pattern="[0-9]*" id="newUsia" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required placeholder="Tahun">
             </div>
             <div>
               <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Kelamin</label>
@@ -258,8 +255,8 @@
           </div>
           
           <div class="grid grid-cols-2 gap-3 mb-2">
-            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RT</label><input type="number" id="newRT" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required></div>
-            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RW</label><input type="number" id="newRW" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required></div>
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RT</label><input type="number" inputmode="numeric" pattern="[0-9]*" id="newRT" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required></div>
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RW</label><input type="number" inputmode="numeric" pattern="[0-9]*" id="newRW" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-400 text-sm" required></div>
           </div>
 
           <button type="submit" class="w-full py-4 mt-2 bg-slate-800 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-slate-300" id="btnSavePasien">
@@ -280,6 +277,8 @@
         
         <form id="formEditPasien" onsubmit="submitEditPasien(event)" class="space-y-4">
           <input type="hidden" id="editIdPasien">
+          <input type="hidden" id="editCreatedAt"> <!-- Untuk tracking perhitungan umur dinamis -->
+
           <div>
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Gelar & Nama</label>
             <div class="flex gap-2">
@@ -291,7 +290,7 @@
           </div>
           
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Usia</label><input type="number" id="editUsia" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Usia Sekarang</label><input type="number" inputmode="numeric" pattern="[0-9]*" id="editUsia" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
             <div>
               <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Kelamin</label>
               <select name="editJk" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 font-semibold text-slate-700 text-sm">
@@ -302,8 +301,8 @@
 
           <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Alamat</label><textarea id="editAlamat" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" rows="2" required></textarea></div>
           <div class="grid grid-cols-2 gap-3 mb-2">
-            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RT</label><input type="number" id="editRT" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
-            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RW</label><input type="number" id="editRW" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RT</label><input type="number" inputmode="numeric" pattern="[0-9]*" id="editRT" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
+            <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">RW</label><input type="number" inputmode="numeric" pattern="[0-9]*" id="editRW" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-amber-400 text-sm" required></div>
           </div>
 
           <button type="submit" class="w-full py-4 mt-2 bg-amber-500 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-amber-200" id="btnUpdatePasien"><i class="fas fa-save"></i> Simpan Perubahan</button>
@@ -332,16 +331,16 @@
           </div>
           
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" id="td" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm text-center" placeholder="120/80"></div>
-            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" id="suhu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm text-center" placeholder="36.5"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" inputmode="decimal" id="td" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm text-center" placeholder="120.80"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" inputmode="decimal" id="suhu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm text-center" placeholder="36.5"></div>
           </div>
 
           <div class="bg-purple-50/50 p-3 rounded-2xl border border-purple-100">
             <label class="block text-xs font-bold text-purple-600 uppercase tracking-wide mb-2"><i class="fas fa-vial mr-1"></i> Lab Sederhana</label>
             <div class="grid grid-cols-3 gap-2">
-              <input type="text" id="gda" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="GDA">
-              <input type="text" id="chol" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="Chol">
-              <input type="text" id="ua" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="UA">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" id="gda" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="GDA">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" id="chol" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="Chol">
+              <input type="text" inputmode="decimal" id="ua" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="UA">
             </div>
           </div>
 
@@ -357,7 +356,7 @@
 
           <div>
             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2"><i class="fas fa-wallet text-emerald-500 mr-1"></i> Biaya (Rp)</label>
-            <input type="text" id="biaya" class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-400 text-lg font-black text-emerald-700 text-center" required placeholder="0" oninput="formatRibuan(this)">
+            <input type="text" inputmode="numeric" pattern="[0-9]*" id="biaya" class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-400 text-lg font-black text-emerald-700 text-center" required placeholder="0" oninput="formatRibuan(this)">
           </div>
 
           <button type="submit" class="w-full py-4 mt-2 bg-indigo-600 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-indigo-200" id="btnSimpanRM"><i class="fas fa-save"></i> Simpan Data</button>
@@ -378,15 +377,15 @@
           <input type="hidden" id="editRMRowIndex">
           <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Anamnesa</label><textarea id="editAnamnesa" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none text-sm" rows="2" required></textarea></div>
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" id="editTd" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm text-center"></div>
-            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" id="editSuhu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm text-center"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" inputmode="decimal" id="editTd" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm text-center"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" inputmode="decimal" id="editSuhu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm text-center"></div>
           </div>
           <div class="bg-purple-50/50 p-3 rounded-2xl border border-purple-100">
             <label class="block text-xs font-bold text-purple-600 uppercase tracking-wide mb-2">Lab Sederhana</label>
             <div class="grid grid-cols-3 gap-2">
-              <input type="text" id="editGda" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
-              <input type="text" id="editChol" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
-              <input type="text" id="editUa" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" id="editGda" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
+              <input type="text" inputmode="numeric" pattern="[0-9]*" id="editChol" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
+              <input type="text" inputmode="decimal" id="editUa" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
             </div>
           </div>
           <div class="bg-teal-50/50 p-3 rounded-2xl border border-teal-100">
@@ -395,7 +394,7 @@
               <input type="text" id="editObat1" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat2" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat3" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat4" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs">
             </div>
           </div>
-          <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Biaya (Rp)</label><input type="text" id="editBiaya" class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl outline-none text-lg font-black text-emerald-700 text-center" required oninput="formatRibuan(this)"></div>
+          <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Biaya (Rp)</label><input type="text" inputmode="numeric" pattern="[0-9]*" id="editBiaya" class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl outline-none text-lg font-black text-emerald-700 text-center" required oninput="formatRibuan(this)"></div>
           <button type="submit" class="w-full py-4 mt-2 bg-amber-500 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-amber-200" id="btnUpdateRM"><i class="fas fa-save"></i> Update Rekam Medis</button>
         </form>
       </div>
@@ -489,11 +488,34 @@
       } else { btn.innerHTML = originalText; btn.disabled = false; }
     }
 
+    // FUNGSI UNTUK MENGHITUNG UMUR DINAMIS OTOMATIS BERDASARKAN TAHUN
+    function hitungUsiaSekarang(usiaAwal, createdAt) {
+        if (!usiaAwal) return '';
+        let awal = parseInt(usiaAwal);
+        if (isNaN(awal)) return usiaAwal;
+        if (awal > 1900) return new Date().getFullYear() - awal; 
+
+        // Menambahkan selisih tahun pembuatan data dengan tahun saat ini
+        let yearCreated = createdAt ? new Date(createdAt).getFullYear() : new Date().getFullYear();
+        let currentYear = new Date().getFullYear();
+        return awal + (currentYear - yearCreated);
+    }
+
+    function kembalikanUsiaAwal(usiaSekarang, createdAt) {
+        if (!usiaSekarang) return '';
+        let skrg = parseInt(usiaSekarang);
+        if (isNaN(skrg)) return usiaSekarang;
+        if (skrg > 1900) return skrg;
+
+        let yearCreated = createdAt ? new Date(createdAt).getFullYear() : new Date().getFullYear();
+        let currentYear = new Date().getFullYear();
+        return skrg - (currentYear - yearCreated);
+    }
+
     // --- NAVIGATION (Mobile Tab Bar Floating Pill) ---
     function switchTab(tabId, btn) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       
-      /* Reset semua tombol ke state tidak aktif */
       document.querySelectorAll('.nav-btn-mobile').forEach(b => {
         b.classList.remove('bg-blue-500', 'bg-emerald-500', 'shadow-md', 'tab-active');
         b.classList.add('bg-transparent', 'tab-inactive');
@@ -504,7 +526,6 @@
         text.classList.remove('text-white'); text.classList.add('text-slate-400');
       });
       
-      /* Set state aktif untuk tombol yang diklik */
       document.getElementById(tabId).classList.add('active'); 
       btn.classList.remove('bg-transparent', 'tab-inactive');
       btn.classList.add('shadow-md', 'tab-active');
@@ -553,7 +574,9 @@
       if(data.length === 0) { list.innerHTML = `<div class="text-center text-slate-400 py-10 text-sm">Tidak ada data pasien.</div>`; return; }
       
       data.forEach(p => { 
-        // Logika untuk menentukan warna ikon berdasarkan jenis kelamin (P = Pink, L/default = Biru)
+        // Mengkalkulasi Umur Secara Dinamis
+        let usiaDinamis = hitungUsiaSekarang(p.usia, p.created_at);
+
         let iconColorClass = p.jk === 'P' 
           ? 'bg-pink-100 text-pink-500 border-pink-200' 
           : 'bg-blue-100 text-blue-500 border-blue-200';
@@ -567,7 +590,7 @@
                 </div>
                 <div>
                    <h3 class="font-black text-slate-800 text-sm leading-tight">${p.nama}</h3>
-                   <p class="text-[11px] font-bold text-slate-400 mt-0.5">${p.jk || '-'}, ${p.usia || '-'} Th</p>
+                   <p class="text-[11px] font-bold text-slate-400 mt-0.5">${p.jk || '-'}, ${usiaDinamis ? usiaDinamis + ' Th' : '-'}</p>
                 </div>
              </div>
              <button class="w-8 h-8 flex justify-center items-center rounded-full bg-slate-50 text-slate-300 hover:text-rose-500 active:bg-rose-50 transition-colors" onclick="event.stopPropagation(); konfirmasiHapusPasien('${p.id}', '${p.nama}')"><i class="fas fa-trash text-[11px]"></i></button>
@@ -576,7 +599,7 @@
             <i class="fas fa-map-marker-alt text-slate-400 mt-0.5 shrink-0"></i> <span class="leading-snug line-clamp-1">${p.alamat}, RT ${p.rt}/${p.rw}</span>
           </div>
           <div class="flex gap-2">
-            <button class="flex-1 py-2.5 bg-emerald-500 text-white text-[11px] font-bold rounded-xl active:bg-emerald-600 active:scale-95 transition-all shadow-md shadow-emerald-200" onclick="event.stopPropagation(); bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}', '${p.usia || ''}', '${p.jk || ''}')"><i class="fas fa-user-edit mr-1"></i> Edit Profil</button>
+            <button class="flex-1 py-2.5 bg-emerald-500 text-white text-[11px] font-bold rounded-xl active:bg-emerald-600 active:scale-95 transition-all shadow-md shadow-emerald-200" onclick="event.stopPropagation(); bukaEditPasien('${p.id}', '${p.nama}', '${p.alamat}', '${p.rt}', '${p.rw}', '${usiaDinamis}', '${p.jk || ''}', '${p.created_at || ''}')"><i class="fas fa-user-edit mr-1"></i> Edit Profil</button>
             <button class="flex-1 py-2.5 bg-blue-500 text-white text-[11px] font-bold rounded-xl active:bg-blue-600 active:scale-95 transition-all shadow-md shadow-blue-200" onclick="event.stopPropagation(); bukaRiwayat('${p.id}', '${p.nama}')"><i class="fas fa-history mr-1"></i> Riwayat RM</button>
           </div>
         </div>`; 
@@ -609,11 +632,15 @@
       catch (err) { setLoadingBtn(btn, false, ori); alert("Gagal"); }
     }
 
-    function bukaEditPasien(id, nF, al, rt, rw, usia, jk) { 
+    function bukaEditPasien(id, nF, al, rt, rw, usia, jk, createdAt) { 
       document.getElementById('editIdPasien').value = id; let sD = "", nA = nF; 
       for (let s of ["Tn. ", "Ny. ", "An. ", "Nn. "]) { if (nF.startsWith(s)) { sD = s; nA = nF.substring(s.length); break; } } 
       document.querySelector('select[name="editTitlePasien"]').value = sD; 
-      document.getElementById('editNama').value = nA; document.getElementById('editAlamat').value = al; document.getElementById('editRT').value = rt; document.getElementById('editRW').value = rw; document.getElementById('editUsia').value = usia || "";
+      document.getElementById('editNama').value = nA; document.getElementById('editAlamat').value = al; document.getElementById('editRT').value = rt; document.getElementById('editRW').value = rw; 
+      
+      document.getElementById('editUsia').value = usia || "";
+      document.getElementById('editCreatedAt').value = createdAt || "";
+      
       document.querySelector('select[name="editJk"]').value = jk || "L";
       bukaModal('modalEditPasien'); 
     }
@@ -621,8 +648,15 @@
     async function submitEditPasien(e) { 
       e.preventDefault(); if (!isSupabaseConfigured) return;
       const btn = document.getElementById('btnUpdatePasien'); let ori = setLoadingBtn(btn, true);
-      const t = document.querySelector('select[name="editTitlePasien"]').value; const id = document.getElementById('editIdPasien').value;
-      const updateData = { nama: t + document.getElementById('editNama').value, alamat: document.getElementById('editAlamat').value, rt: document.getElementById('editRT').value, rw: document.getElementById('editRW').value, usia: document.getElementById('editUsia').value, jk: document.querySelector('select[name="editJk"]').value }; 
+      const t = document.querySelector('select[name="editTitlePasien"]').value; 
+      const id = document.getElementById('editIdPasien').value;
+      
+      // Membalikkan perhitungan agar saat disimpan ke database selalu akurat relatif terhadap created_at
+      const usiaSekarang = document.getElementById('editUsia').value;
+      const createdAt = document.getElementById('editCreatedAt').value;
+      const usiaSimpan = kembalikanUsiaAwal(usiaSekarang, createdAt);
+
+      const updateData = { nama: t + document.getElementById('editNama').value, alamat: document.getElementById('editAlamat').value, rt: document.getElementById('editRT').value, rw: document.getElementById('editRW').value, usia: usiaSimpan, jk: document.querySelector('select[name="editJk"]').value }; 
       try { await supabaseClient.from('pasien').update(updateData).eq('id', id); setLoadingBtn(btn, false, ori); tutupModal('modalEditPasien'); refreshData(); } 
       catch (err) { setLoadingBtn(btn, false, ori); alert("Gagal"); }
     }
