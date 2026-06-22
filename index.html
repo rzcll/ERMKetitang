@@ -82,10 +82,10 @@
   <div class="w-full max-w-[400px] h-[100dvh] md:h-[850px] bg-[#f8fafc] md:rounded-[2.5rem] relative shadow-2xl overflow-hidden flex flex-col md:border-[8px] border-slate-800">
     
     <!-- HEADER -->
-    <header class="absolute top-0 left-0 w-full bg-white/60 backdrop-blur-xl px-5 pt-[calc(1rem+var(--safe-area-top))] pb-4 border-b border-white/50 flex justify-center items-center z-50 shadow-[0_8px_32px_rgba(0,0,0,0.06)]">
+    <header class="absolute top-0 left-0 w-full bg-white/60 backdrop-blur-xl px-5 pt-[calc(1rem+var(--safe-area-top))] pb-5 border-b border-white/50 flex justify-center items-center z-50 shadow-[0_10px_30px_rgba(0,0,0,0.08)] rounded-b-[2.5rem]">
       <div class="flex items-center gap-3">
         <img src="https://github.com/rzcll/ERMKetitang/blob/main/logo%20km.png?raw=true" alt="Logo Ketitang Medika" class="w-10 h-10 rounded-xl object-cover shadow-md">
-        <h1 class="font-black text-[1.1rem] uppercase tracking-[0.15em] bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 drop-shadow-sm">KETITANG MEDIKA</h1>
+        <h1 class="font-black text-[1.1rem] uppercase tracking-[0.15em] bg-clip-text text-transparent bg-gradient-to-r from-slate-900 via-slate-700 to-slate-800 drop-shadow-sm">E-RM MOBILE</h1>
       </div>
     </header>
 
@@ -123,10 +123,7 @@
         <div class="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-6 mb-5 text-white shadow-lg shadow-emerald-200 relative overflow-hidden">
           <i class="fas fa-chart-pie absolute -right-4 -bottom-4 text-white/20 text-7xl"></i>
           <h2 class="text-sm font-semibold opacity-90 mb-1">Total Pemasukan</h2>
-          <h1 class="text-2xl font-black mb-4 relative z-10">Rekapitulasi E-RM</h1>
-          <button class="px-4 py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-xl font-semibold text-xs transition-colors flex items-center gap-2 relative z-10" onclick="loadPendapatanManual()">
-            <i class="fas fa-sync-alt"></i> Segarkan Data
-          </button>
+          <h1 class="text-2xl font-black relative z-10">Rekapitulasi E-RM</h1>
         </div>
 
         <div id="loaderPendapatan" class="flex flex-col items-center justify-center py-12 text-slate-400">
@@ -174,13 +171,42 @@
             </div>
           </div>
           
-          <div class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100">
+          <div id="kalenderContainer" class="bg-white rounded-3xl p-4 shadow-sm border border-slate-100">
             <div class="flex justify-between items-center mb-4">
                 <button class="w-8 h-8 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center active:bg-slate-200" onclick="ubahBulanKalender(-1)"><i class="fas fa-chevron-left text-xs"></i></button>
                 <h3 id="judulBulanKalender" class="text-sm font-bold text-slate-800 uppercase tracking-wide">Memuat...</h3>
                 <button class="w-8 h-8 rounded-full bg-slate-50 text-slate-600 flex items-center justify-center active:bg-slate-200" onclick="ubahBulanKalender(1)"><i class="fas fa-chevron-right text-xs"></i></button>
             </div>
             <div id="gridKalender" class="grid grid-cols-7 gap-1 text-center"></div>
+          </div>
+
+          <!-- Statistik Total Kunjungan Pasien -->
+          <div class="mt-5 bg-white rounded-3xl p-5 shadow-sm border border-slate-100 mb-6">
+             <h3 class="text-slate-800 font-black text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
+                <i class="fas fa-users text-emerald-500"></i> Total Kunjungan
+             </h3>
+             <div class="space-y-3">
+                <div class="flex justify-between items-center bg-slate-50 p-3.5 rounded-2xl">
+                   <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Hari Ini</span>
+                   <span class="text-sm font-black text-emerald-600" id="jmlHari">0 Ps</span>
+                </div>
+                <div class="flex justify-between items-center bg-slate-50 p-3.5 rounded-2xl">
+                   <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Minggu Ini</span>
+                   <span class="text-sm font-black text-emerald-600" id="jmlMinggu">0 Ps</span>
+                </div>
+                <div class="flex justify-between items-center bg-slate-50 p-3.5 rounded-2xl">
+                   <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Bulan Ini</span>
+                   <span class="text-sm font-black text-emerald-600" id="jmlBulan">0 Ps</span>
+                </div>
+                <div class="flex justify-between items-center bg-slate-50 p-3.5 rounded-2xl">
+                   <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Tahun Ini</span>
+                   <span class="text-sm font-black text-emerald-600" id="jmlTahun">0 Ps</span>
+                </div>
+                <div class="flex justify-between items-center bg-emerald-50 p-3.5 rounded-2xl border border-emerald-100 mt-1">
+                   <span class="text-[10px] font-black text-emerald-800 uppercase tracking-widest">Total Keseluruhan</span>
+                   <span class="text-sm font-black text-emerald-800" id="jmlTotal">0 Ps</span>
+                </div>
+             </div>
           </div>
         </div>
       </div>
@@ -313,53 +339,53 @@
     <!-- Modal Form Pemeriksaan (RM) -->
     <div id="modalForm" class="modal-overlay">
       <div class="modal-content p-6">
-        <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
-          <div class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-stethoscope text-sm"></i></div>
+        <div class="flex items-center gap-3 mb-6">
+          <div class="bg-[#00c2d6]/10 text-[#00c2d6] w-10 h-10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-stethoscope text-sm"></i></div>
           <div class="truncate">
-            <h2 class="text-sm font-bold text-slate-800 truncate" id="namaPasienDisp"></h2>
+            <h2 class="text-lg font-black text-[#0a2440] truncate" id="namaPasienDisp"></h2>
             <p class="text-[10px] text-slate-400 uppercase tracking-widest">Pemeriksaan Baru</p>
           </div>
-          <button class="ml-auto text-slate-400 p-2 shrink-0" onclick="tutupModal('modalForm')"><i class="fas fa-times text-lg"></i></button>
+          <button class="ml-auto text-slate-400 p-2 bg-slate-50 rounded-full w-8 h-8 flex items-center justify-center shrink-0" onclick="tutupModal('modalForm')"><i class="fas fa-times text-sm"></i></button>
         </div>
         
         <form id="formPemeriksaan" onsubmit="submitPemeriksaan(event)" class="space-y-4">
           <input type="hidden" id="idPasien">
           
           <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2"><i class="fas fa-comment-medical text-rose-500 mr-1"></i> Anamnesa</label>
-            <textarea id="anamnesa" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm" rows="2" required placeholder="Keluhan utama..."></textarea>
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2"><i class="fas fa-comment-medical text-[#ffca28] mr-1"></i> Anamnesa</label>
+            <textarea id="anamnesa" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-[#00c2d6] text-sm font-bold text-[#0a2440]" rows="2" required placeholder="Keluhan utama..."></textarea>
           </div>
           
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" inputmode="decimal" id="td" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm text-center" placeholder="120.80"></div>
-            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" inputmode="decimal" id="suhu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-indigo-400 text-sm text-center" placeholder="36.5"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Tensi (TD)</label><input type="text" inputmode="decimal" id="td" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-[#00c2d6] text-sm text-center font-bold text-[#0a2440]" placeholder="120.80"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Suhu (°C)</label><input type="text" inputmode="decimal" id="suhu" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-[#00c2d6] text-sm text-center font-bold text-[#0a2440]" placeholder="36.5"></div>
           </div>
 
-          <div class="bg-purple-50/50 p-3 rounded-2xl border border-purple-100">
-            <label class="block text-xs font-bold text-purple-600 uppercase tracking-wide mb-2"><i class="fas fa-vial mr-1"></i> Lab Sederhana</label>
+          <div class="bg-slate-50 p-4 rounded-3xl">
+            <label class="block text-xs font-bold text-[#0a2440] uppercase tracking-widest mb-3"><i class="fas fa-vial mr-1 text-[#00c2d6]"></i> Lab Sederhana</label>
             <div class="grid grid-cols-3 gap-2">
-              <input type="text" inputmode="numeric" pattern="[0-9]*" id="gda" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="GDA">
-              <input type="text" inputmode="numeric" pattern="[0-9]*" id="chol" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="Chol">
-              <input type="text" inputmode="decimal" id="ua" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl outline-none text-xs text-center" placeholder="UA">
+              <input type="text" inputmode="numeric" id="gda" class="w-full p-3 bg-white rounded-xl outline-none text-xs text-center font-bold text-[#0a2440] shadow-sm" placeholder="GDA">
+              <input type="text" inputmode="numeric" id="chol" class="w-full p-3 bg-white rounded-xl outline-none text-xs text-center font-bold text-[#0a2440] shadow-sm" placeholder="Chol">
+              <input type="text" inputmode="decimal" id="ua" class="w-full p-3 bg-white rounded-xl outline-none text-xs text-center font-bold text-[#0a2440] shadow-sm" placeholder="UA">
             </div>
           </div>
 
-          <div class="bg-teal-50/50 p-3 rounded-2xl border border-teal-100">
-            <label class="block text-xs font-bold text-teal-600 uppercase tracking-wide mb-2"><i class="fas fa-pills mr-1"></i> Resep (Maks 4)</label>
+          <div class="bg-slate-50 p-4 rounded-3xl">
+            <label class="block text-xs font-bold text-[#0a2440] uppercase tracking-widest mb-3"><i class="fas fa-pills mr-1 text-[#00c2d6]"></i> Resep (Maks 4)</label>
             <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="obat1" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl outline-none text-xs" placeholder="Obat 1">
-              <input type="text" id="obat2" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl outline-none text-xs" placeholder="Obat 2">
-              <input type="text" id="obat3" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl outline-none text-xs" placeholder="Obat 3">
-              <input type="text" id="obat4" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl outline-none text-xs" placeholder="Obat 4">
+              <input type="text" id="obat1" class="w-full p-3 bg-white rounded-xl outline-none text-xs font-bold text-[#0a2440] shadow-sm" placeholder="Obat 1">
+              <input type="text" id="obat2" class="w-full p-3 bg-white rounded-xl outline-none text-xs font-bold text-[#0a2440] shadow-sm" placeholder="Obat 2">
+              <input type="text" id="obat3" class="w-full p-3 bg-white rounded-xl outline-none text-xs font-bold text-[#0a2440] shadow-sm" placeholder="Obat 3">
+              <input type="text" id="obat4" class="w-full p-3 bg-white rounded-xl outline-none text-xs font-bold text-[#0a2440] shadow-sm" placeholder="Obat 4">
             </div>
           </div>
 
           <div>
-            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2"><i class="fas fa-wallet text-emerald-500 mr-1"></i> Biaya (Rp)</label>
-            <input type="text" inputmode="numeric" pattern="[0-9]*" id="biaya" class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-400 text-lg font-black text-emerald-700 text-center" required placeholder="0" oninput="formatRibuan(this)">
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 text-center mt-2">Biaya (Rp)</label>
+            <input type="text" inputmode="numeric" id="biaya" class="w-full p-4 bg-white border-2 border-[#00c2d6] rounded-full outline-none focus:ring-4 focus:ring-[#00c2d6]/20 text-xl font-black text-[#00c2d6] text-center shadow-md" required placeholder="0" oninput="formatRibuan(this)">
           </div>
 
-          <button type="submit" class="w-full py-4 mt-2 bg-indigo-600 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-indigo-200" id="btnSimpanRM"><i class="fas fa-save"></i> Simpan Data</button>
+          <button type="submit" class="w-full py-4 mt-2 bg-[#0a2440] text-white rounded-full font-black flex justify-center items-center gap-2 active:scale-95 shadow-lg" id="btnSimpanRM">SIMPAN DATA</button>
         </form>
       </div>
     </div>
@@ -367,35 +393,50 @@
     <!-- Modal Edit RM -->
     <div id="modalEditRM" class="modal-overlay">
       <div class="modal-content p-6">
-        <div class="flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
-          <div class="bg-amber-100 text-amber-600 w-8 h-8 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-edit text-sm"></i></div>
-          <h2 class="text-lg font-bold text-slate-800">Edit Rekam Medis</h2>
-          <button class="ml-auto text-slate-400 p-2 shrink-0" onclick="tutupModal('modalEditRM')"><i class="fas fa-times text-lg"></i></button>
+        <div class="flex items-center gap-3 mb-6">
+          <div class="bg-blue-100 text-blue-600 w-10 h-10 rounded-full flex items-center justify-center shrink-0"><i class="fas fa-edit text-sm"></i></div>
+          <h2 class="text-xl font-black text-[#0a2440]">Edit Rekam Medis</h2>
+          <button class="ml-auto text-slate-400 p-2 bg-slate-50 rounded-full w-8 h-8 flex items-center justify-center shrink-0" onclick="tutupModal('modalEditRM')"><i class="fas fa-times text-sm"></i></button>
         </div>
         
         <form id="formEditRM" onsubmit="submitEditRM(event)" class="space-y-4">
           <input type="hidden" id="editRMRowIndex">
-          <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Anamnesa</label><textarea id="editAnamnesa" class="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl outline-none text-sm" rows="2" required></textarea></div>
+          
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Anamnesa</label>
+            <textarea id="editAnamnesa" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-[#00c2d6] text-sm font-bold text-[#0a2440]" rows="2" required></textarea>
+          </div>
+          
           <div class="grid grid-cols-2 gap-3">
-            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Tensi (TD)</label><input type="text" inputmode="decimal" id="editTd" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm text-center"></div>
-            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-1">Suhu (°C)</label><input type="text" inputmode="decimal" id="editSuhu" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl outline-none text-sm text-center"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Tensi (TD)</label><input type="text" inputmode="decimal" id="editTd" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-[#00c2d6] text-sm text-center font-bold text-[#0a2440]"></div>
+            <div><label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Suhu (°C)</label><input type="text" inputmode="decimal" id="editSuhu" class="w-full p-4 bg-slate-50 rounded-2xl outline-none focus:ring-2 focus:ring-[#00c2d6] text-sm text-center font-bold text-[#0a2440]"></div>
           </div>
-          <div class="bg-purple-50/50 p-3 rounded-2xl border border-purple-100">
-            <label class="block text-xs font-bold text-purple-600 uppercase tracking-wide mb-2">Lab Sederhana</label>
+
+          <div class="bg-slate-50 p-4 rounded-3xl">
+            <label class="block text-xs font-bold text-[#0a2440] uppercase tracking-widest mb-3">Lab Sederhana</label>
             <div class="grid grid-cols-3 gap-2">
-              <input type="text" inputmode="numeric" pattern="[0-9]*" id="editGda" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
-              <input type="text" inputmode="numeric" pattern="[0-9]*" id="editChol" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
-              <input type="text" inputmode="decimal" id="editUa" class="w-full p-2.5 bg-white border border-purple-200 rounded-xl text-xs text-center">
+              <input type="text" inputmode="numeric" id="editGda" class="w-full p-3 bg-white rounded-xl outline-none text-xs text-center font-bold text-[#0a2440] shadow-sm" placeholder="GDA">
+              <input type="text" inputmode="numeric" id="editChol" class="w-full p-3 bg-white rounded-xl outline-none text-xs text-center font-bold text-[#0a2440] shadow-sm" placeholder="Chol">
+              <input type="text" inputmode="decimal" id="editUa" class="w-full p-3 bg-white rounded-xl outline-none text-xs text-center font-bold text-[#0a2440] shadow-sm" placeholder="UA">
             </div>
           </div>
-          <div class="bg-teal-50/50 p-3 rounded-2xl border border-teal-100">
-            <label class="block text-xs font-bold text-teal-600 uppercase tracking-wide mb-2">Resep (Maks 4)</label>
+
+          <div class="bg-slate-50 p-4 rounded-3xl">
+            <label class="block text-xs font-bold text-[#0a2440] uppercase tracking-widest mb-3">Resep (Maks 4)</label>
             <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="editObat1" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat2" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat3" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs"><input type="text" id="editObat4" class="w-full p-2.5 bg-white border border-teal-200 rounded-xl text-xs">
+              <input type="text" id="editObat1" class="w-full p-3 bg-white rounded-xl outline-none text-xs font-bold text-[#0a2440] shadow-sm" placeholder="Obat 1">
+              <input type="text" id="editObat2" class="w-full p-3 bg-white rounded-xl outline-none text-xs font-bold text-[#0a2440] shadow-sm" placeholder="Obat 2">
+              <input type="text" id="editObat3" class="w-full p-3 bg-white rounded-xl outline-none text-xs font-bold text-[#0a2440] shadow-sm" placeholder="Obat 3">
+              <input type="text" id="editObat4" class="w-full p-3 bg-white rounded-xl outline-none text-xs font-bold text-[#0a2440] shadow-sm" placeholder="Obat 4">
             </div>
           </div>
-          <div><label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Biaya (Rp)</label><input type="text" inputmode="numeric" pattern="[0-9]*" id="editBiaya" class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl outline-none text-lg font-black text-emerald-700 text-center" required oninput="formatRibuan(this)"></div>
-          <button type="submit" class="w-full py-4 mt-2 bg-amber-500 text-white rounded-2xl font-bold flex justify-center items-center gap-2 active:scale-95 shadow-lg shadow-amber-200" id="btnUpdateRM"><i class="fas fa-save"></i> Update Rekam Medis</button>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 text-center mt-2">Biaya (Rp)</label>
+            <input type="text" inputmode="numeric" id="editBiaya" class="w-full p-4 bg-white border-2 border-[#00c2d6] rounded-full outline-none focus:ring-4 focus:ring-[#00c2d6]/20 text-xl font-black text-[#00c2d6] text-center shadow-md" required oninput="formatRibuan(this)">
+          </div>
+
+          <button type="submit" class="w-full py-4 mt-2 bg-[#0a2440] text-white rounded-full font-black flex justify-center items-center gap-2 active:scale-95 shadow-lg" id="btnUpdateRM">UPDATE REKAM MEDIS</button>
         </form>
       </div>
     </div>
@@ -474,10 +515,12 @@
 
     // --- UTILITIES ---
     function formatRibuan(input) {
-      let value = input.value.replace(/[^,\d]/g, '').toString(); let split = value.split(',');
-      let sisa = split[0].length % 3; let rupiah = split[0].substr(0, sisa); let ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-      if (ribuan) { let separator = sisa ? '.' : ''; rupiah += separator + ribuan.join('.'); }
-      rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah; input.value = rupiah;
+      let value = input.value.replace(/[^0-9]/g, '');
+      if (value) {
+        input.value = new Intl.NumberFormat('id-ID').format(value);
+      } else {
+        input.value = '';
+      }
     }
     function formatRp(n) { return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(n); }
     function generateIdPasien() { return "P-" + Date.now().toString().slice(-6); }
@@ -539,6 +582,7 @@
           btn.classList.add('bg-blue-500');
       } else {
           btn.classList.add('bg-emerald-500');
+          loadPendapatanBackground(); // Segarkan data otomatis saat menu dibuka
       }
     }
     const switchTabMobile = switchTab; 
@@ -666,7 +710,7 @@
     async function submitPemeriksaan(e) { 
       e.preventDefault(); if (!isSupabaseConfigured) return;
       const btn = document.getElementById('btnSimpanRM'); let ori = setLoadingBtn(btn, true);
-      let cleanBiaya = Number(document.getElementById('biaya').value.replace(/\./g, ''));
+      let cleanBiaya = Number(document.getElementById('biaya').value.replace(/[^0-9]/g, ''));
       const d = { id_pasien: document.getElementById('idPasien').value, nama_pasien: document.getElementById('namaPasienDisp').innerText, anamnesa: document.getElementById('anamnesa').value, td: document.getElementById('td').value, suhu: document.getElementById('suhu').value, gda: document.getElementById('gda').value, chol: document.getElementById('chol').value, ua: document.getElementById('ua').value, obat1: document.getElementById('obat1').value, obat2: document.getElementById('obat2').value, obat3: document.getElementById('obat3').value, obat4: document.getElementById('obat4').value, biaya: cleanBiaya }; 
       try { await supabaseClient.from('rekam_medis').insert([d]); setLoadingBtn(btn, false, ori); tutupModal('modalForm'); loadPendapatanBackground(); } 
       catch (err) { setLoadingBtn(btn, false, ori); alert("Gagal"); }
@@ -712,7 +756,7 @@
     async function submitEditRM(e) { 
       e.preventDefault(); if (!isSupabaseConfigured) return;
       const btn = document.getElementById('btnUpdateRM'); let ori = setLoadingBtn(btn, true);
-      let cleanBiaya = Number(document.getElementById('editBiaya').value.replace(/\./g, '')); const id = document.getElementById('editRMRowIndex').value;
+      let cleanBiaya = Number(document.getElementById('editBiaya').value.replace(/[^0-9]/g, '')); const id = document.getElementById('editRMRowIndex').value;
       const d = { anamnesa: document.getElementById('editAnamnesa').value, td: document.getElementById('editTd').value, suhu: document.getElementById('editSuhu').value, gda: document.getElementById('editGda').value, chol: document.getElementById('editChol').value, ua: document.getElementById('editUa').value, obat1: document.getElementById('editObat1').value, obat2: document.getElementById('editObat2').value, obat3: document.getElementById('editObat3').value, obat4: document.getElementById('editObat4').value, biaya: cleanBiaya }; 
       try { await supabaseClient.from('rekam_medis').update(d).eq('id', id); setLoadingBtn(btn, false, ori); tutupModal('modalEditRM'); loadPendapatanBackground(); bukaRiwayat(currentPasienId, currentPasienNama); } 
       catch(err) { setLoadingBtn(btn, false, ori); alert("Gagal"); }
@@ -739,6 +783,20 @@
         el.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; }, {passive: true});
         el.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; if (touchendX > touchstartX + 40) ubahOffset(tipe, -1); else if (touchendX < touchstartX - 40) ubahOffset(tipe, 1); }, {passive: true});
       });
+
+      // Tambahan event listener geser (swipe) untuk kotak Kalender
+      let kalenderEl = document.getElementById('kalenderContainer');
+      if (kalenderEl) {
+        let kStartX = 0; let kEndX = 0;
+        kalenderEl.addEventListener('touchstart', e => { kStartX = e.changedTouches[0].screenX; }, {passive: true});
+        kalenderEl.addEventListener('touchend', e => { 
+            kEndX = e.changedTouches[0].screenX; 
+            // Jika geser ke kiri (finger bergerak dari kanan ke kiri), tampilkan bulan selanjutnya (1)
+            if (kEndX < kStartX - 40) ubahBulanKalender(1); 
+            // Jika geser ke kanan (finger bergerak dari kiri ke kanan), tampilkan bulan sebelumnya (-1)
+            else if (kEndX > kStartX + 40) ubahBulanKalender(-1); 
+        }, {passive: true});
+      }
     }
 
     function updateDashboards() {
@@ -750,8 +808,19 @@
       let targetBulan = new Date(); targetBulan.setMonth(now.getMonth() + offset.bulan); let bBln = targetBulan.getMonth(), bThn = targetBulan.getFullYear();
       let targetTahun = new Date(); targetTahun.setFullYear(now.getFullYear() + offset.tahun); let tThn = targetTahun.getFullYear();
 
+      // Variabel untuk perhitungan rekap kunjungan pasien
+      let jmlHariIni = 0, jmlMingguIni = 0, jmlBulanIni = 0, jmlTahunIni = 0;
+      const today = new Date();
+      const strToday = today.toDateString();
+      const dAbs = today.getDay(), dfAbs = today.getDate() - dAbs + (dAbs === 0 ? -6:1);
+      const startWeekAbs = new Date(new Date().setDate(dfAbs)); startWeekAbs.setHours(0,0,0,0);
+      const endWeekAbs = new Date(new Date(startWeekAbs).setDate(startWeekAbs.getDate() + 6)); endWeekAbs.setHours(23,59,59,999);
+      const curMon = today.getMonth(), curYear = today.getFullYear();
+
       allTransactions.forEach(r => {
         let tgl = new Date(r.tglStr); let info = { nama: r.nama, biaya: r.biaya, tglString: tgl.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) };
+        
+        // Memfilter data sesuai tampilan card atas (bisa diubah sesuai tombol panah kiri-kanan)
         if (tgl.toDateString() === tHariStr) summaryFiltered.hari.push(info);
         if (tgl >= mon && tgl <= sun) summaryFiltered.minggu.push(info);
         if (tgl.getMonth() === bBln && tgl.getFullYear() === bThn) {
@@ -763,6 +832,12 @@
           }
         }
         if (tgl.getFullYear() === tThn) summaryFiltered.tahun.push(info);
+
+        // Menghitung statistik kunjungan pasien saat ini (Terkunci ke masa sekarang)
+        if(tgl.toDateString() === strToday) jmlHariIni++;
+        if(tgl >= startWeekAbs && tgl <= endWeekAbs) jmlMingguIni++;
+        if(tgl.getMonth() === curMon && tgl.getFullYear() === curYear) jmlBulanIni++;
+        if(tgl.getFullYear() === curYear) jmlTahunIni++;
       });
 
       document.getElementById('labelHari').innerText = offset.hari === 0 ? "Hari Ini" : targetHari.toLocaleDateString('id-ID', {day:'numeric', month:'short'});
@@ -774,6 +849,16 @@
       document.getElementById('pdptBulan').innerText = formatRp(summaryFiltered.bulan.reduce((a,b) => a+b.biaya, 0));
       document.getElementById('labelTahun').innerText = offset.tahun === 0 ? "Tahun Ini" : `${tThn}`;
       document.getElementById('pdptTahun').innerText = formatRp(summaryFiltered.tahun.reduce((a,b) => a+b.biaya, 0));
+
+      // Menampilkan statistik jumlah pasien ke UI
+      const psSuffix = " Ps";
+      if (document.getElementById('jmlHari')) {
+          document.getElementById('jmlHari').innerText = jmlHariIni + psSuffix;
+          document.getElementById('jmlMinggu').innerText = jmlMingguIni + psSuffix;
+          document.getElementById('jmlBulan').innerText = jmlBulanIni + psSuffix;
+          document.getElementById('jmlTahun').innerText = jmlTahunIni + psSuffix;
+          document.getElementById('jmlTotal').innerText = allTransactions.length + psSuffix;
+      }
 
       if(offset.bulan === 0) renderKalender(dataKalender);
     }
